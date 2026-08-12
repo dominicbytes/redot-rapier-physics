@@ -87,10 +87,18 @@ def patch_descriptor_for_release(project: Path) -> dict[str, str]:
         text = text.replace(old, new)
     descriptor.write_text(text, encoding="utf-8", newline="\n")
     binaries = descriptor.parent / "bin"
-    return {
-        "windows-x86_64": sha256_file(binaries / "libgodot_rapier.windows.release.x86_64-pc-windows-msvc.dll"),
-        "linux-x86_64": sha256_file(binaries / "libgodot_rapier.linux.release.x86_64-unknown-linux-gnu.so"),
-    }
+    host_system = platform.system()
+    if host_system == "Windows":
+        target = "windows-x86_64"
+        library = binaries / "libgodot_rapier.windows.release.x86_64-pc-windows-msvc.dll"
+    elif host_system == "Linux":
+        target = "linux-x86_64"
+        library = binaries / "libgodot_rapier.linux.release.x86_64-unknown-linux-gnu.so"
+    else:
+        raise PerformanceError(f"unsupported performance host: {host_system}")
+    if not library.is_file():
+        raise PerformanceError(f"host release library not found: {library}")
+    return {target: sha256_file(library)}
 
 
 def engine_version(redot: Path) -> str:

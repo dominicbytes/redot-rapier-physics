@@ -6,6 +6,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,6 +35,40 @@ def sample_summary(value: float) -> dict:
 
 
 class PerformanceGuardrailTests(unittest.TestCase):
+    def test_release_descriptor_hashes_only_the_host_library(self) -> None:
+        cases = (
+            (
+                "Windows",
+                "windows-x86_64",
+                "libgodot_rapier.windows.release.x86_64-pc-windows-msvc.dll",
+            ),
+            (
+                "Linux",
+                "linux-x86_64",
+                "libgodot_rapier.linux.release.x86_64-unknown-linux-gnu.so",
+            ),
+        )
+        for host, target, filename in cases:
+            with self.subTest(host=host), tempfile.TemporaryDirectory() as temp_name:
+                addon = Path(temp_name) / "addons" / "godot-rapier2d"
+                binaries = addon / "bin"
+                binaries.mkdir(parents=True)
+                (addon / "godot-rapier2d.gdextension").write_text(
+                    "\n".join(
+                        (
+                            '[libraries]',
+                            'windows.editor.x86_64 = "bin/libgodot_rapier.windows.editor.x86_64-pc-windows-msvc.dll"',
+                            'linux.editor.x86_64 = "bin/libgodot_rapier.linux.editor.x86_64-unknown-linux-gnu.so"',
+                        )
+                    ),
+                    encoding="utf-8",
+                )
+                library = binaries / filename
+                library.write_bytes(host.encode("utf-8"))
+                with mock.patch.object(PERFORMANCE.platform, "system", return_value=host):
+                    hashes = PERFORMANCE.patch_descriptor_for_release(Path(temp_name))
+                self.assertEqual(hashes, {target: PERFORMANCE.sha256_file(library)})
+
     def test_process_affinity_is_sorted_when_available(self) -> None:
         affinity = PERFORMANCE.process_affinity()
         if affinity is not None:
