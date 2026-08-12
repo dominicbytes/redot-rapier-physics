@@ -5,6 +5,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,6 +18,14 @@ SPEC.loader.exec_module(METADATA)
 
 
 class DistributionMetadataTests(unittest.TestCase):
+    def test_cargo_shim_symlink_is_not_resolved_to_rustup(self) -> None:
+        cargo = mock.Mock(spec=Path)
+        absolute = Path("cargo-shim-absolute")
+        cargo.absolute.return_value = absolute
+        self.assertEqual(METADATA.cargo_executable_path(cargo), absolute)
+        cargo.absolute.assert_called_once_with()
+        cargo.resolve.assert_not_called()
+
     def test_exact_feature_profiles_use_dependency_qualified_custom_json(self) -> None:
         porting = json.loads((ROOT / "porting.json").read_text(encoding="utf-8"))
         profiles = METADATA.profiles(porting)
