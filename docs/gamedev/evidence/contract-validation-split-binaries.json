@@ -1,0 +1,30 @@
+{
+  "addon_files_verified": [
+    "2d",
+    "3d"
+  ],
+  "addons": [
+    "2d",
+    "3d"
+  ],
+  "deferred_platforms": [
+    "macos-universal"
+  ],
+  "infrastructure": {
+    "file_count": 31,
+    "manifest_sha256": "ec5f2e8fe2fe65b94a17d577043aad16b70652bf23a09930e34001710b2ddf54",
+    "source_files_verified": 31
+  },
+  "local_api_verified": true,
+  "redot_commit": "4f5b14abade2239104847d03d8f9056e4467cfcd",
+  "redot_version_output": "26.2.stable.official.4f5b14aba",
+  "release_tag": "v0.35.2-redot.1",
+  "release_version": "0.35.2-redot.1",
+  "required_platforms": [
+    "linux-x86_64",
+    "windows-x86_64"
+  ],
+  "source_contract_verified": true,
+  "status": "PASS",
+  "upstream_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75"
+}

@@ -1,0 +1,162 @@
+{
+  "baseline": "<WORKSPACE>/docs\\gamedev\\evidence\\performance-linux\\performance-default.json",
+  "baseline_sha256": "a548e5d304928396c6fcb29a9c31d682dc8bf3de36fbac0542776e2082aaf9ca",
+  "candidate": "<WORKSPACE>/docs\\gamedev\\evidence\\performance-linux\\performance-rapier.json",
+  "candidate_sha256": "7f8d03b010da9c1da132a4ecc95804b589789b201abeaa7909c104750b7cc0a2",
+  "checks": [
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 1.3304866258459558,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 1.073549594510293,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 1.0,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 1.6035220701146797,
+      "pass": false,
+      "scenario": "fluid-2048"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "fluid-2048"
+    },
+    {
+      "limit": 1.0,
+      "metric": "physics_ms.median",
+      "observed": 0.0,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 2.0,
+      "metric": "physics_ms.p95",
+      "observed": 0.0,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 127596919,
+      "metric": "static_memory_bytes.maximum",
+      "observed": 22476458,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 1.5,
+      "metric": "physics_ms.median",
+      "observed": 0.0,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 54.656,
+      "metric": "physics_ms.p95",
+      "observed": 17.209,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 136356769,
+      "metric": "static_memory_bytes.maximum",
+      "observed": 24261598,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 46.08,
+      "metric": "physics_ms.median",
+      "observed": 37.236,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 91.268,
+      "metric": "physics_ms.p95",
+      "observed": 49.542,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 169873329,
+      "metric": "static_memory_bytes.maximum",
+      "observed": 31439526,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 100.0,
+      "metric": "physics_ms.p95",
+      "observed": 98.158,
+      "pass": true,
+      "scenario": "fluid-2048"
+    },
+    {
+      "limit": 100.0,
+      "metric": "physics_ms.maximum",
+      "observed": 105.195,
+      "pass": false,
+      "scenario": "fluid-2048"
+    }
+  ],
+  "failures": [
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 1.6035220701146797,
+      "pass": false,
+      "scenario": "fluid-2048"
+    },
+    {
+      "limit": 100.0,
+      "metric": "physics_ms.maximum",
+      "observed": 105.195,
+      "pass": false,
+      "scenario": "fluid-2048"
+    }
+  ],
+  "guardrail": "<WORKSPACE>/tests\\performance_guardrail.json",
+  "guardrail_sha256": "8aaf5abaec74e86951d8389de0e62abc173b9887791ed5dcfd2f2e8eb7b05bee",
+  "policy": "regression guardrail; improvement over the default backend is not required",
+  "schema_version": 1,
+  "status": "FAIL"
+}

@@ -1,0 +1,147 @@
+{
+  "baseline": "<WORKSPACE>/docs\\gamedev\\evidence\\performance-linux\\performance-default.json",
+  "baseline_sha256": "e6158e2bf6953f7ea7ed49b37cb462df9d516c1190aa2606211c3efdaea37a2a",
+  "candidate": "<WORKSPACE>/docs\\gamedev\\evidence\\performance-linux\\performance-rapier.json",
+  "candidate_sha256": "073bc80782edcead3445e4e3de55f699250270a54355eaa414597fbbebd1b9e0",
+  "checks": [
+    {
+      "limit": 16.667,
+      "metric": "per_run_p95_range_ms",
+      "observed": 14.467999999999998,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 16.667,
+      "metric": "per_run_p95_range_ms",
+      "observed": 3.976,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 16.667,
+      "metric": "per_run_p95_range_ms",
+      "observed": 0.754,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 16.667,
+      "metric": "per_run_p95_range_ms",
+      "observed": 9.831999999999997,
+      "pass": true,
+      "scenario": "fluid-2048"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "fluid-2048"
+    },
+    {
+      "limit": 5.529999999999999,
+      "metric": "physics_ms.median",
+      "observed": 0.8075000000000001,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 8.992,
+      "metric": "physics_ms.p95",
+      "observed": 1.421,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 127598499,
+      "metric": "static_memory_bytes.maximum",
+      "observed": 22477090,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 11.048,
+      "metric": "physics_ms.median",
+      "observed": 2.436,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 14.156,
+      "metric": "physics_ms.p95",
+      "observed": 6.426,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 136358349,
+      "metric": "static_memory_bytes.maximum",
+      "observed": 24262230,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 49.214,
+      "metric": "physics_ms.median",
+      "observed": 8.922,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 71.3,
+      "metric": "physics_ms.p95",
+      "observed": 22.97,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 169874909,
+      "metric": "static_memory_bytes.maximum",
+      "observed": 31440158,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 100.0,
+      "metric": "physics_ms.p95",
+      "observed": 29.29,
+      "pass": true,
+      "scenario": "fluid-2048"
+    },
+    {
+      "limit": 100.0,
+      "metric": "physics_ms.maximum",
+      "observed": 58.931,
+      "pass": true,
+      "scenario": "fluid-2048"
+    }
+  ],
+  "failures": [],
+  "guardrail": "<WORKSPACE>/tests\\performance_guardrail.json",
+  "guardrail_sha256": "5529a81fa8029b1370af207c29097c83d8a07445e721ef39817241a33f8d1939",
+  "policy": "regression guardrail; improvement over the default backend is not required",
+  "schema_version": 1,
+  "status": "PASS"
+}

@@ -1,0 +1,41 @@
+{
+  "api_sha256": "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577",
+  "contract": {
+    "addon_files_verified": [
+      "2d",
+      "3d"
+    ],
+    "addons": [
+      "2d",
+      "3d"
+    ],
+    "deferred_platforms": [
+      "macos-universal"
+    ],
+    "infrastructure": {
+      "file_count": 31,
+      "manifest_sha256": "ec5f2e8fe2fe65b94a17d577043aad16b70652bf23a09930e34001710b2ddf54",
+      "source_files_verified": 31
+    },
+    "local_api_verified": true,
+    "redot_commit": "4f5b14abade2239104847d03d8f9056e4467cfcd",
+    "release_tag": "v0.35.2-redot.1",
+    "release_version": "0.35.2-redot.1",
+    "required_platforms": [
+      "linux-x86_64",
+      "windows-x86_64"
+    ],
+    "source_contract_verified": true,
+    "upstream_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75"
+  },
+  "dimension": "2d",
+  "features": [
+    "single-dim2",
+    "redot-compat",
+    "godot/api-custom-json"
+  ],
+  "gdext_revision": "637cef73172bba23850131acd8583b0c72ebf0c7",
+  "profile": "release",
+  "status": "PASS",
+  "target_dir": "<SHARED_BUILD>/redot-rapier-port-target"
+}

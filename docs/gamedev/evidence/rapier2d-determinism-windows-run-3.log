@@ -1,0 +1,6 @@
+Redot Engine LTS v26.2.stable.official.4f5b14aba (2026-06-29 19:32:24 UTC) - https://redotengine.org
+
+PHYSICS ENGINE 2D: Rapier2D v0.35.2-redot.1
+DETERMINISM_TEST: Output written to <WORKSPACE>\docs\gamedev\evidence\rapier2d-determinism-windows-run-3.json
+DETERMINISM_TEST: 300 frames, 26 bodies
+DETERMINISM_TEST: STATUS=SUCCESS

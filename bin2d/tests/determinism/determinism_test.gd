@@ -9,11 +9,12 @@ extends Node2D
 ## compares the output files byte-for-byte.
 
 const SIMULATION_FRAMES := 300
-const OUTPUT_PATH := "user://determinism_output.json"
+const DEFAULT_OUTPUT_PATH := "user://determinism_output.json"
+const PROTOCOL := "redot-rapier2d-determinism-v1"
 
 var bodies: Array[RigidBody2D] = []
 var joints: Array[Joint2D] = []
-var frame_records: Array[Dictionary] = []
+var frame_records: Array[Array] = []
 var current_frame := 0
 var simulation_started := false
 
@@ -41,10 +42,10 @@ func _physics_process(_delta: float) -> void:
 	current_frame += 1
 
 	# Record state every frame
-	var frame_state := {}
+	var frame_state := []
 	for i in bodies.size():
 		var body := bodies[i]
-		frame_state["body_%d" % i] = _serialize_body(body)
+		frame_state.append(_serialize_body(body))
 	frame_records.append(frame_state)
 
 	if current_frame >= SIMULATION_FRAMES:
@@ -251,22 +252,22 @@ func _create_high_speed_collision() -> void:
 ## Serialize a body's full state using bit-exact float representation.
 ## Uses PhysicsServer2D.body_get_state() to read directly from the physics
 ## engine, bypassing any node-side caching or processing.
-func _serialize_body(body: RigidBody2D) -> Dictionary:
+func _serialize_body(body: RigidBody2D) -> Array[String]:
 	var rid := body.get_rid()
 	var transform: Transform2D = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
 	var lin_vel: Vector2 = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
 	var ang_vel: float = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
-	return {
-		"tx_ax": _float_to_hex(transform.x.x),
-		"tx_ay": _float_to_hex(transform.x.y),
-		"tx_bx": _float_to_hex(transform.y.x),
-		"tx_by": _float_to_hex(transform.y.y),
-		"tx_ox": _float_to_hex(transform.origin.x),
-		"tx_oy": _float_to_hex(transform.origin.y),
-		"vx": _float_to_hex(lin_vel.x),
-		"vy": _float_to_hex(lin_vel.y),
-		"av": _float_to_hex(ang_vel),
-	}
+	return [
+		_float_to_hex(transform.x.x),
+		_float_to_hex(transform.x.y),
+		_float_to_hex(transform.y.x),
+		_float_to_hex(transform.y.y),
+		_float_to_hex(transform.origin.x),
+		_float_to_hex(transform.origin.y),
+		_float_to_hex(lin_vel.x),
+		_float_to_hex(lin_vel.y),
+		_float_to_hex(ang_vel),
+	]
 
 ## Convert a float to its IEEE 754 bit representation as a hex string.
 ## This guarantees bit-exact comparison across platforms.
@@ -281,11 +282,46 @@ func _float_to_hex(value: float) -> String:
 	return hex
 
 func _finish() -> void:
+	if frame_records.size() != SIMULATION_FRAMES:
+		print("DETERMINISM_TEST: ERROR - recorded %d of %d frames" % [
+			frame_records.size(),
+			SIMULATION_FRAMES,
+		])
+		print("DETERMINISM_TEST: STATUS=FAILED")
+		get_tree().quit(1)
+		return
+	for frame_index in frame_records.size():
+		if frame_records[frame_index].size() != bodies.size():
+			print("DETERMINISM_TEST: ERROR - frame %d recorded %d of %d bodies" % [
+				frame_index + 1,
+				frame_records[frame_index].size(),
+				bodies.size(),
+			])
+			print("DETERMINISM_TEST: STATUS=FAILED")
+			get_tree().quit(1)
+			return
+
+	var separate_thread := bool(ProjectSettings.get_setting(
+		"physics/2d/run_on_separate_thread", false
+	))
+	if separate_thread:
+		print("DETERMINISM_TEST: ERROR - separate physics thread is enabled")
+		print("DETERMINISM_TEST: STATUS=FAILED")
+		get_tree().quit(1)
+		return
+
 	var output := {
-		"metadata": {
+		"protocol": PROTOCOL,
+		"profile": {
 			"simulation_frames": SIMULATION_FRAMES,
 			"physics_ticks_per_second": 60,
 			"body_count": bodies.size(),
+			"seed": 0,
+			"precision": "single",
+			"solver_parallel": false,
+			"redot_separate_thread": separate_thread,
+		},
+		"observed": {
 			"os": OS.get_name(),
 			"arch": Engine.get_architecture_name(),
 		},
@@ -294,20 +330,26 @@ func _finish() -> void:
 
 	var json_string := JSON.stringify(output, "", false)
 
-	# Write to user:// directory
-	var file := FileAccess.open(OUTPUT_PATH, FileAccess.WRITE)
+	var output_path := _output_path()
+	var file := FileAccess.open(output_path, FileAccess.WRITE)
 	if file:
 		file.store_string(json_string)
 		file.close()
-		print("DETERMINISM_TEST: Output written to %s" % OUTPUT_PATH)
+		print("DETERMINISM_TEST: Output written to %s" % output_path)
 		print("DETERMINISM_TEST: %d frames, %d bodies" % [frame_records.size(), bodies.size()])
-		# Also compute a simple hash for quick comparison in logs
-		var hash_val := json_string.md5_text()
-		print("DETERMINISM_TEST: MD5=%s" % hash_val)
 		print("DETERMINISM_TEST: STATUS=SUCCESS")
 	else:
 		print("DETERMINISM_TEST: ERROR - Failed to open output file")
 		print("DETERMINISM_TEST: STATUS=FAILED")
+		get_tree().quit(1)
+		return
 
 	await get_tree().create_timer(0.5).timeout
 	get_tree().quit(0)
+
+
+func _output_path() -> String:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--rapier-determinism-output="):
+			return argument.trim_prefix("--rapier-determinism-output=")
+	return DEFAULT_OUTPUT_PATH

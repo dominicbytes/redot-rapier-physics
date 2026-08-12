@@ -1,0 +1,140 @@
+Redot Engine LTS v26.2.stable.official.4f5b14aba (2026-06-29 19:32:24 UTC) - https://redotengine.org
+
+[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
+[  16% ] first_scan_filesystem | Loading global class names...
+[  33% ] first_scan_filesystem | Verifying GDExtensions...
+PHYSICS ENGINE 2D: Rapier2D v0.35.2-redot.1
+[  50% ] first_scan_filesystem | Creating autoload scripts...
+[  66% ] first_scan_filesystem | Initializing plugins...
+[  83% ] first_scan_filesystem | Starting file scan...
+[ DONE ] first_scan_filesystem
+
+[   0% ] update_scripts_classes | Started Registering global classes... (99 steps)
+[   0% ] update_scripts_classes | RapierAnimatableBody2D
+[   1% ] update_scripts_classes | RapierArea2D
+[   2% ] update_scripts_classes | RapierCharacterBody2D
+[   3% ] update_scripts_classes | RapierDampedSpringJoint2D
+[   4% ] update_scripts_classes | RapierFixedJoint2D
+[   5% ] update_scripts_classes | RapierGrooveJoint2D
+[   6% ] update_scripts_classes | RapierPhysicalBone2D
+[   7% ] update_scripts_classes | RapierPinJoint2D
+[   8% ] update_scripts_classes | RapierRigidBody2D
+[   9% ] update_scripts_classes | RapierRopeJoint2D
+[  10% ] update_scripts_classes | RapierStaticBody2D
+[  11% ] update_scripts_classes | Faucet2D
+[  12% ] update_scripts_classes |
+[  13% ] update_scripts_classes |
+[  14% ] update_scripts_classes | Fluid2DRenderer
+[  15% ] update_scripts_classes | Fluid2DShaderRenderer
+[  16% ] update_scripts_classes | Monitor
+[  17% ] update_scripts_classes | PhysicsPerformanceTest2D
+[  18% ] update_scripts_classes | PhysicsPerformanceTest3D
+[  19% ] update_scripts_classes | PhysicsTest2D
+[  20% ] update_scripts_classes | PhysicsTest3D
+[  21% ] update_scripts_classes | PhysicsUnitTest2D
+[  22% ] update_scripts_classes | PhysicsUnitTest3D
+[  23% ] update_scripts_classes | TestRunner
+[  24% ] update_scripts_classes | TestScene
+[  25% ] update_scripts_classes |
+[  26% ] update_scripts_classes | GenericExpirationMonitor
+[  27% ] update_scripts_classes | GenericManualMonitor
+[  28% ] update_scripts_classes | GenericStepMonitor
+[  29% ] update_scripts_classes |
+[  30% ] update_scripts_classes |
+[  31% ] update_scripts_classes |
+[  32% ] update_scripts_classes |
+[  33% ] update_scripts_classes |
+[  34% ] update_scripts_classes |
+[  35% ] update_scripts_classes |
+[  36% ] update_scripts_classes |
+[  37% ] update_scripts_classes |
+[  38% ] update_scripts_classes |
+[  39% ] update_scripts_classes |
+[  40% ] update_scripts_classes |
+[  41% ] update_scripts_classes |
+[  42% ] update_scripts_classes | TestBase
+[  43% ] update_scripts_classes |
+[  44% ] update_scripts_classes |
+[  45% ] update_scripts_classes |
+[  46% ] update_scripts_classes |
+[  47% ] update_scripts_classes |
+[  48% ] update_scripts_classes |
+[  49% ] update_scripts_classes |
+[  50% ] update_scripts_classes |
+[  51% ] update_scripts_classes |
+[  52% ] update_scripts_classes |
+[  52% ] update_scripts_classes |
+[  54% ] update_scripts_classes |
+[  55% ] update_scripts_classes |
+[  56% ] update_scripts_classes |
+[  57% ] update_scripts_classes |
+[  58% ] update_scripts_classes |
+[  58% ] update_scripts_classes |
+[  60% ] update_scripts_classes |
+[  61% ] update_scripts_classes |
+[  62% ] update_scripts_classes |
+[  63% ] update_scripts_classes |
+[  64% ] update_scripts_classes |
+[  65% ] update_scripts_classes |
+[  66% ] update_scripts_classes |
+[  67% ] update_scripts_classes |
+[  68% ] update_scripts_classes |
+[  69% ] update_scripts_classes |
+[  70% ] update_scripts_classes |
+[  71% ] update_scripts_classes |
+[  72% ] update_scripts_classes |
+[  73% ] update_scripts_classes |
+[  74% ] update_scripts_classes |
+[  75% ] update_scripts_classes |
+[  76% ] update_scripts_classes |
+[  77% ] update_scripts_classes |
+[  78% ] update_scripts_classes |
+[  79% ] update_scripts_classes |
+[  80% ] update_scripts_classes |
+[  81% ] update_scripts_classes |
+[  82% ] update_scripts_classes |
+[  83% ] update_scripts_classes |
+[  84% ] update_scripts_classes |
+[  85% ] update_scripts_classes |
+[  86% ] update_scripts_classes |
+[  87% ] update_scripts_classes |
+[  88% ] update_scripts_classes |
+[  89% ] update_scripts_classes |
+[  90% ] update_scripts_classes |
+[  91% ] update_scripts_classes |
+[  92% ] update_scripts_classes |
+[  93% ] update_scripts_classes |
+[  94% ] update_scripts_classes |
+[  95% ] update_scripts_classes |
+[  96% ] update_scripts_classes |
+[  97% ] update_scripts_classes |
+[  98% ] update_scripts_classes |
+[ DONE ] update_scripts_classes
+
+[   0% ] _update_scan_actions | Started Scanning actions... (4 steps)
+[   0% ] _update_scan_actions | Fluid2D.svg
+[  20% ] _update_scan_actions | StateManager2D.svg
+[  40% ] _update_scan_actions | logo_square_2d.png
+[  60% ] _update_scan_actions | Radial2D.svg
+[ DONE ] _update_scan_actions
+
+[   0% ] reimport | Started (Re)Importing Assets (4 steps)
+[   0% ] reimport | Preparing files to reimport...
+[  20% ] reimport | Preparing files to reimport...
+[  40% ] reimport | Preparing files to reimport...
+[  60% ] reimport | Preparing files to reimport...
+[   0% ] reimport | Executing pre-reimport operations...
+[   0% ] reimport | Fluid2D.svg
+[  20% ] reimport | StateManager2D.svg
+[  40% ] reimport | logo_square_2d.png
+[  60% ] reimport | Radial2D.svg
+[  80% ] reimport | Finalizing Asset Import...
+[ DONE ] reimport
+
+[   0% ] reimport | Started (Re)Importing Assets (4 steps)
+[   0% ] reimport | Executing post-reimport operations...
+[ DONE ] reimport
+
+[   0% ] loading_editor_layout | Started Loading editor (5 steps)
+[   0% ] loading_editor_layout | Loading editor layout...
+[ DONE ] loading_editor_layout

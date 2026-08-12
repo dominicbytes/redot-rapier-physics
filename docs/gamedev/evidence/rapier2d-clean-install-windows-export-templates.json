@@ -1,0 +1,8 @@
+{
+  "presets": {
+    "Linux x86-64": "/templates/linux_release.x86_64",
+    "Windows x86-64": "<REDOT_TEMPLATE_CACHE>/templates/windows_release_x86_64.exe"
+  },
+  "project": "<WORKSPACE>/build/redot-rapier2d-clean-selected-20260812-b",
+  "status": "PASS"
+}

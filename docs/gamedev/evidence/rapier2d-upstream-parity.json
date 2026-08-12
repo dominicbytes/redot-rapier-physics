@@ -1,0 +1,38 @@
+{
+  "authorized_runtime_deltas": [
+    "src/bodies/rapier_direct_body_state_2d.rs",
+    "src/bodies/rapier_direct_body_state_3d.rs"
+  ],
+  "dependency_features": [
+    "godot/api-custom-json"
+  ],
+  "editor_features": [
+    "parallel",
+    "redot-compat",
+    "register-docs",
+    "serde-serialize",
+    "single-dim2"
+  ],
+  "export_features": [
+    "parallel",
+    "redot-compat",
+    "serde-serialize",
+    "single-dim2"
+  ],
+  "package": {
+    "file_count": 58,
+    "native_file_count": 6,
+    "path": "<WORKSPACE>/build\\final-package-a\\redot-rapier-physics-2d-0.35.2-redot.1.zip",
+    "sha256": "af8ec56c054981c3c699f166efd91ae1685fda18a87d67762603e609d984b258"
+  },
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64"
+  ],
+  "release_version": "0.35.2-redot.1",
+  "runtime_source_files_compared": 96,
+  "runtime_source_manifest_sha256": "21bad646b6b7b9b40a036ca5a3b0d435963cb0115bfe0545801092da2e2ef8a9",
+  "status": "PASS",
+  "upstream_addon_files_compared": 50,
+  "upstream_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75"
+}

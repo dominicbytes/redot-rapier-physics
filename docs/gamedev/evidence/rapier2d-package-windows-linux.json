@@ -1,0 +1,9 @@
+{
+  "archive": "redot-rapier-physics-2d-0.35.2-redot.1.zip",
+  "archive_bytes": 6645986,
+  "archive_sha256": "f382fc235107172776ab27a7f2cd4af8a8be9fa728168b06f975ec9756da3fcf",
+  "file_count": 52,
+  "manifest": "<SHARED_BUILD>/redot-rapier2d-package-20260812-a\\redot-rapier-physics-2d-0.35.2-redot.1.manifest.json",
+  "payload_manifest_sha256": "c777a154036ab94cddb9c79ca2ea3970b1dfe3164081c0db56d8d9eec6eb18f5",
+  "status": "PASS"
+}

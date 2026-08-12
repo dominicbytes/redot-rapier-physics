@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "observed_date": "2026-08-12",
+  "plugin": {
+    "repository": "https://github.com/appsinacup/godot-rapier-physics",
+    "source": "https://github.com/appsinacup/godot-rapier-physics/releases",
+    "latest_stable_tag": "v0.35.2",
+    "commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+    "selected_tag": "v0.35.2",
+    "selected_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75"
+  },
+  "rapier": {
+    "repository": "https://github.com/dimforge/rapier",
+    "source": "https://github.com/dimforge/rapier/tags",
+    "latest_stable_tag": "v0.35.1",
+    "selected_rapier2d_version": "0.35.1",
+    "selected_rapier2d_f64_version": "0.35.1"
+  },
+  "conclusion": "The candidate uses Godot Rapier plugin v0.35.2 and its locked Rapier 0.35.1 dependencies. The owner fixed v0.35.2 as this release line's source input on 2026-08-12; newer upstream releases are evaluated in a later planned update rather than invalidating this candidate."
+}

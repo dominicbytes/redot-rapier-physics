@@ -1,0 +1,289 @@
+{
+  "archive_sha256": "36642e4c56ce91d00e21fc3e29f7d4463e9b274e89c9fd9c5ce5c4a24d5dcb96",
+  "files": [
+    {
+      "bytes": 15249704,
+      "path": "addons/godot-rapier2d/bin/libgodot_rapier.linux.debug.x86_64-unknown-linux-gnu.so",
+      "sha256": "7355917045d2c7c6a3827c9dba0cbf5f8007eba73fa95edd1249af70e2f909fb"
+    },
+    {
+      "bytes": 15329824,
+      "path": "addons/godot-rapier2d/bin/libgodot_rapier.linux.editor.x86_64-unknown-linux-gnu.so",
+      "sha256": "729a6d525b59f0c6d73fd2a576dbd6c2eda7dddbe6b5efc87ce48e24f7265a1a"
+    },
+    {
+      "bytes": 10018912,
+      "path": "addons/godot-rapier2d/bin/libgodot_rapier.linux.release.x86_64-unknown-linux-gnu.so",
+      "sha256": "574d162d613b13b47454f4569e1e6e0d1729338160efabc98f9e7bc28fda7734"
+    },
+    {
+      "bytes": 12448256,
+      "path": "addons/godot-rapier2d/bin/libgodot_rapier.windows.debug.x86_64-pc-windows-msvc.dll",
+      "sha256": "b7b07ea0317548111e5e33775ec15a34ca4d208c8d6bd8a3098fc994c4597cca"
+    },
+    {
+      "bytes": 12526592,
+      "path": "addons/godot-rapier2d/bin/libgodot_rapier.windows.editor.x86_64-pc-windows-msvc.dll",
+      "sha256": "6c68af419493c1f496f19337a5cba996a8fc21a55a370ea5d4b793a536dfd433"
+    },
+    {
+      "bytes": 9767424,
+      "path": "addons/godot-rapier2d/bin/libgodot_rapier.windows.release.x86_64-pc-windows-msvc.dll",
+      "sha256": "b98fca1eaa3bb9f78b3ed5a3fe7bdaa6416d36c6afadb2163a7a2fe9ad2b1066"
+    },
+    {
+      "bytes": 635,
+      "path": "addons/godot-rapier2d/circle_mesh.tres",
+      "sha256": "1f4c9f68a0acdc843f95407766bc4998c685a8ce279c8e3bffd69104ca7f81f3"
+    },
+    {
+      "bytes": 506,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd",
+      "sha256": "cae5211711ac6bcfe66d0caab15fcfcac1ffbd8b91b5ed7207fb6fee7b0e3725"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.uid",
+      "sha256": "f2aa4518dc6b3f31a0b14f554db348701903d7fc51939d28900b894fdb2078e6"
+    },
+    {
+      "bytes": 486,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd",
+      "sha256": "040947e19f4fd397c6bf38ea66df0d18184f3eea935b0b0fd5bf451a9c46d5e9"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.uid",
+      "sha256": "84a39186546eeaedc3b664810deb00c21c80b4b298148952f1a7751886adbd43"
+    },
+    {
+      "bytes": 504,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd",
+      "sha256": "d9ec61bd78be0d060ae05f48deb2dcabaff20442857c026039b0143041593dc7"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.uid",
+      "sha256": "5917428dbce56669b872799097d254b10925d7bb7c2c2d8715883c259a48e128"
+    },
+    {
+      "bytes": 2992,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd",
+      "sha256": "9ab154b12964b803d2d22ce03d169cdac0dbcad050fdb79b0475543395f8c626"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.uid",
+      "sha256": "be0511542271047b2ba464dc67c2965871b5cf306a318e2f5364d9626feef113"
+    },
+    {
+      "bytes": 1097,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd",
+      "sha256": "7c66ee474bf2d0594307ffb4d51dd3a6893915268f6c4d84caa4e2b661315f1c"
+    },
+    {
+      "bytes": 20,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.uid",
+      "sha256": "bbcd60035ec8b9b3e348a87e86ce84a89dda24584475c38f38d87b1b42cf7bda"
+    },
+    {
+      "bytes": 2768,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd",
+      "sha256": "0372206af7fca1e549e9b6a990cae16ea24e14ab25378640e54b907388d68301"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.uid",
+      "sha256": "73e3e36e976a5aaf6232c4fd3729cb9f613e15c2648f9eb5bc3ef51b5823c1f2"
+    },
+    {
+      "bytes": 1675,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd",
+      "sha256": "c9c30e481864c67a378cbe6e9d41dc51d2222a3598e73336617dea6fdf61abcd"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.uid",
+      "sha256": "1afbc09345826e9aab9c6b5469233373212ef8ce14ebd202960c6cc9b62ea894"
+    },
+    {
+      "bytes": 4569,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd",
+      "sha256": "6854fa7534ff30c76ee3ab9c3eda57b7e9b049aef865b5038c700210db6635ab"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.uid",
+      "sha256": "00b18ea2e8cc7965a1051f73006d9a0710e61cc7e2b75b32044a52f5e6fd607b"
+    },
+    {
+      "bytes": 2263,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd",
+      "sha256": "f8990d74e44deebaa90fc98cf60c79f52723b5895c95d685f850d30dfe7267bf"
+    },
+    {
+      "bytes": 20,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.uid",
+      "sha256": "e7f89f338526bb8e6cd9783e7e2282a5169136c95e859d122f03291c93c66c23"
+    },
+    {
+      "bytes": 1381,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd",
+      "sha256": "d96185dc19e661fa2dbe05d571b024725203a5d71af7273319f372ddbf62fa43"
+    },
+    {
+      "bytes": 20,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.uid",
+      "sha256": "34f51816e357d4a92ee873c0aad79f247d949639c4ba69e0365de4835f5d872e"
+    },
+    {
+      "bytes": 498,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd",
+      "sha256": "54e4401172deffd6338b4c4c8d4c4527a083a0b001be0d4d847672c40c25419c"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.uid",
+      "sha256": "1bfe6bddbf322218badb1ebf942f4b3f31073b3dec2a679251218df9362e071c"
+    },
+    {
+      "bytes": 880,
+      "path": "addons/godot-rapier2d/faucet_2d.gd",
+      "sha256": "4f084ec815df5ee1a83debcdd6257ef341bb30eaadf76ebd30cf42e553db7879"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/faucet_2d.gd.uid",
+      "sha256": "95a96b750d3482f356bc5fda700d8d0f72d1dc1719d6257214caa2b18df71bc9"
+    },
+    {
+      "bytes": 210,
+      "path": "addons/godot-rapier2d/fluid_2d_circle.gd",
+      "sha256": "ff148c5ffa5daa6a2411ba8c5a25d92169ca7131e6be4039017f34812b84926d"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/fluid_2d_circle.gd.uid",
+      "sha256": "8c700c72b993cec1801e1e6a52531aa54d9ec6bf866a67e1bcd6c9694a77f0e5"
+    },
+    {
+      "bytes": 340,
+      "path": "addons/godot-rapier2d/fluid_2d_rectangle.gd",
+      "sha256": "a745b27f0d1faf24ef50bf66d3fcb746139d380f34f22bdbca41c5d153f3f160"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/fluid_2d_rectangle.gd.uid",
+      "sha256": "cb2b0442b9494ac26d06ce00561013571f30d6a3e58d4fa56034b4a04d5d5423"
+    },
+    {
+      "bytes": 912,
+      "path": "addons/godot-rapier2d/fluid_2d_renderer.gd",
+      "sha256": "0bf9d62bd17da9130cb0e1dc8bd58077b9373dba5f31f685f16835122808de28"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/fluid_2d_renderer.gd.uid",
+      "sha256": "6ea851cf5a6b599017545856d272d0b585ff4342553fcefa594617da2fc9c4ed"
+    },
+    {
+      "bytes": 2719,
+      "path": "addons/godot-rapier2d/fluid_2d_shader_renderer.gd",
+      "sha256": "10a1b8ab1267f189ef8fd903713e17a0c9524c1b99cf5a6c6dde05a67aafa21c"
+    },
+    {
+      "bytes": 20,
+      "path": "addons/godot-rapier2d/fluid_2d_shader_renderer.gd.uid",
+      "sha256": "67fb67e5444db61e4556df7a4544c740c309f23b8abc144709225f622dcaa56b"
+    },
+    {
+      "bytes": 715,
+      "path": "addons/godot-rapier2d/godot-rapier2d.gdextension",
+      "sha256": "351c4bbf651f6d2bbbaa9f565c953f6b173248157652fa0b692a5119c319e412"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/godot-rapier2d.gdextension.uid",
+      "sha256": "0089ba95a19f87c64524e8ce80ed7014587caf5f8b8365b4bfe90f35965e42b3"
+    },
+    {
+      "bytes": 558,
+      "path": "addons/godot-rapier2d/icons/Fluid2D.svg",
+      "sha256": "b5c214f850f42f2ae7a5b074cbc2f0f0d09218984b0f8b51797d18fa05e373af"
+    },
+    {
+      "bytes": 1077,
+      "path": "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+      "sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e"
+    },
+    {
+      "bytes": 3492,
+      "path": "addons/godot-rapier2d/icons/StateManager2D.svg",
+      "sha256": "9919026525d1b53edf904a74031e3b33e722b33b14e86ff32f3f323881c36ef1"
+    },
+    {
+      "bytes": 1070,
+      "path": "addons/godot-rapier2d/icons/StateManager2D.svg.import",
+      "sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0"
+    },
+    {
+      "bytes": 1123,
+      "path": "addons/godot-rapier2d/LICENSE",
+      "sha256": "e4ef4fcabb96d2ec7908d3ce798f847a0bbfe65d5ed2fcf489a0d9dedcce54f5"
+    },
+    {
+      "bytes": 31025,
+      "path": "addons/godot-rapier2d/logo_square_2d.png",
+      "sha256": "d3387239654b30b3e24ca3c42e9c320a11b130031df7ac65caee8d39341212f2"
+    },
+    {
+      "bytes": 968,
+      "path": "addons/godot-rapier2d/logo_square_2d.png.import",
+      "sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07"
+    },
+    {
+      "bytes": 267,
+      "path": "addons/godot-rapier2d/plugin.info.cfg",
+      "sha256": "e8cf367acafe9a3f2f1d9151bdb81a4187e13351efd2792ff44c3ce59fb9185b"
+    },
+    {
+      "bytes": 989,
+      "path": "addons/godot-rapier2d/Radial2D.svg",
+      "sha256": "711d58ac177fd8c097405a2e8ae4132ac5f7ca1113d05ac5fbc12d2d3e79910a"
+    },
+    {
+      "bytes": 1074,
+      "path": "addons/godot-rapier2d/Radial2D.svg.import",
+      "sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82"
+    },
+    {
+      "bytes": 1898,
+      "path": "addons/godot-rapier2d/README.md",
+      "sha256": "c01827ba7eae12920d37f88669c375803f187d368145e98108bb284a2a7b5b91"
+    },
+    {
+      "bytes": 16112,
+      "path": "addons/godot-rapier2d/THIRDPARTY.txt",
+      "sha256": "238d1caad628310bb5956a9abdbcfed61d34a2260b8dd7addd702745fab93098"
+    },
+    {
+      "bytes": 652,
+      "path": "addons/godot-rapier2d/water_shader.gdshader",
+      "sha256": "9a463bda32290e015180bca9abff03a9d2c9587032aa90709b91e3eb0b84c4e8"
+    },
+    {
+      "bytes": 21,
+      "path": "addons/godot-rapier2d/water_shader.gdshader.uid",
+      "sha256": "c03a83954f380f3dd0639bea411dd955167f0051d03a5d15b69e16a5f1052f2f"
+    },
+    {
+      "bytes": 443,
+      "path": "addons/godot-rapier2d/water_shader.tres",
+      "sha256": "b84df2953cee06b2bf5aa6df0f657460f3a241639229883f6790a683b431d975"
+    }
+  ],
+  "installed_file_count": 56,
+  "installed_payload_manifest_sha256": "f96f4faed6aa348ba324c750e2484ac12733e19390b7decc5b22a9ffb16a2089",
+  "project": "<SHARED_BUILD>/redot-rapier2d-final-linux-selected-20260812",
+  "status": "PASS"
+}

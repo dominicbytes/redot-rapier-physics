@@ -1,0 +1,19 @@
+Redot Engine LTS v26.2.stable.official.4f5b14aba (2026-06-29 19:32:24 UTC) - https://redotengine.org
+
+PHYSICS ENGINE 2D: Rapier2D v0.35.2-redot.1
+test_body_create
+test_body_empty
+test_body
+test_body_collision_exception_invalid
+test_body_invalid
+test_body_center_of_mass
+test_base_joint_empty
+test_base_joint
+test_spring_joint_empty
+test_spring_joint_base
+Spring joint base tests passed.
+Pin joint empty tests passed.
+Pin joint tests passed.
+Space tests passed.
+Separation ray tests passed.
+UNIT TESTS STATUS: SUCCESS

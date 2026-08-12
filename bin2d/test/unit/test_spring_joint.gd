@@ -18,11 +18,26 @@ func _ready() -> void:
 	test_spring_joint_empty()
 	test_spring_joint_base()
 	test_spring_joint()
+	_free_fixture_rids(new_space1, new_space2)
+
+
+func _free_fixture_rids(space1: RID, space2: RID) -> void:
+	for body in [
+		body_a,
+		body_b,
+		body_a_with_space1,
+		body_b_with_space1,
+		body_a_with_space2,
+		body_b_with_space2,
+	]:
+		PhysicsServer2D.free_rid(body)
+	PhysicsServer2D.free_rid(space1)
+	PhysicsServer2D.free_rid(space2)
 
 
 func test_spring_joint_empty():
 	print("test_spring_joint_empty")
-	
+
 	var stiffness = PhysicsServer2D.damped_spring_joint_get_param(RID(), PhysicsServer2D.DampedSpringParam.DAMPED_SPRING_STIFFNESS)
 	assert(stiffness == 0)
 	var length = PhysicsServer2D.damped_spring_joint_get_param(RID(), PhysicsServer2D.DampedSpringParam.DAMPED_SPRING_REST_LENGTH)
@@ -82,6 +97,7 @@ func test_spring_joint_base():
 	PhysicsServer2D.joint_make_damped_spring(joint_rid, Vector2.ZERO, Vector2.ZERO, body_a, RID())
 	assert(joint_type == PhysicsServer2D.JOINT_TYPE_MAX)
 	PhysicsServer2D.joint_clear(joint_rid)
+	PhysicsServer2D.free_rid(joint_rid)
 	print("Spring joint base tests passed.")
 
 func test_spring_joint():
@@ -115,14 +131,13 @@ func test_spring_joint():
 	assert(length == 0)
 	damping = PhysicsServer2D.damped_spring_joint_get_param(joint_rid, PhysicsServer2D.DAMPED_SPRING_DAMPING)
 	assert(damping == 0)
-	
+
 	# Cleanup
 	PhysicsServer2D.joint_clear(joint_rid)
 	joint_type = PhysicsServer2D.joint_get_type(joint_rid)
 	assert(joint_type == PhysicsServer2D.JointType.JOINT_TYPE_MAX)
-	
+
 	var disabled_collisions = PhysicsServer2D.joint_is_disabled_collisions_between_bodies(joint_rid)
 	assert(disabled_collisions == true)
 
 	PhysicsServer2D.joint_make_damped_spring(joint_rid, Vector2.ZERO, Vector2.ZERO, RID())
-	

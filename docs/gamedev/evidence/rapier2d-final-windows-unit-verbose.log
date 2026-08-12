@@ -1,0 +1,51 @@
+Redot Engine LTS v26.2.stable.official.4f5b14aba (2026-06-29 19:32:24 UTC) - https://redotengine.org
+TextServer: Added interface "Dummy"
+TextServer: Added interface "ICU / HarfBuzz / Graphite (Built-in)"
+Unrecognized output string "misc2" in mapping:
+030000000d0f00000202000000000000,Horipad O Nintendo Switch 2 Controller,a:b1,b:b0,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:b6,leftx:a0,lefty:a1,misc1:b13,misc2:b14,rightshoulder:b5,rightstick:b11,righttrigger:b7,rightx:a2,righty:a3,start:b9,x:b3,y:b2,platform:Windows,
+Unrecognized output string "misc2" in mapping:
+030000000d0f00009601000000000000,Horipad Steam,a:b0,b:b1,back:b10,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b6,leftstick:b13,lefttrigger:b8,leftx:a0,lefty:a1,misc2:b2,paddle1:b5,paddle2:b15,paddle3:b18,paddle4:b19,rightshoulder:b7,rightstick:b14,righttrigger:b9,rightx:a3,righty:a4,start:b11,x:b3,y:b4,platform:Windows,
+Unrecognized output string "misc2" in mapping:
+030000007e0500006920000000000000,Nintendo Switch 2 Pro Controller,a:b0,b:b1,back:b14,dpdown:b8,dpleft:b10,dpright:b9,dpup:b11,guide:b16,leftshoulder:b12,leftstick:b15,lefttrigger:b13,leftx:a0,lefty:a1~,misc1:b17,misc2:b20,paddle1:b18,paddle2:b19,rightshoulder:b4,rightstick:b7,righttrigger:b5,rightx:a2,righty:a3~,start:b6,x:b2,y:b3,platform:Windows,
+Using "default" pen tablet driver...
+
+TextServer: Primary interface set to: "ICU / HarfBuzz / Graphite (Built-in)".
+PHYSICS ENGINE 2D: Rapier2D v0.35.2-redot.1
+CORE API HASH: 2285062926
+EDITOR API HASH: 3241255979
+SceneTreeFTI: traversal method DEFAULT
+Loading resource: res://base/Global.gd
+Loading resource: res://base/pause.gd
+Loading resource: res://base/Utils.gd
+Loaded system CA certificates
+Loading resource: res://test/unit/run_unit_tests.tscn
+Loading resource: res://test/unit/run_unit_tests.gd
+Loading resource: res://test/unit/api_tests.tscn
+Loading resource: res://test/unit/test_body.gd
+Loading resource: res://test/unit/test_joint_base.gd
+Loading resource: res://test/unit/test_spring_joint.gd
+Loading resource: res://test/unit/test_pin_joint.gd
+Loading resource: res://test/unit/test_space.gd
+Loading resource: res://test/unit/test_separation_ray.gd
+test_body_create
+test_body_empty
+test_body
+test_body_collision_exception_invalid
+test_body_invalid
+test_body_center_of_mass
+test_base_joint_empty
+test_base_joint
+test_spring_joint_empty
+test_spring_joint_base
+Spring joint base tests passed.
+Pin joint empty tests passed.
+Pin joint tests passed.
+Space tests passed.
+Separation ray tests passed.
+UNIT TESTS STATUS: SUCCESS
+XR: Clearing primary interface
+XR: Removed interface "Native mobile"
+XR: Removed interface "OpenXR"
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+   at: cleanup (core/object/object.cpp:2568)
+Hint: Leaked instances typically happen when nodes are removed from the scene tree (with `remove_child()`) but not freed (with `free()` or `queue_free()`).

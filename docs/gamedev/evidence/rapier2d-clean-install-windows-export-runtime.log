@@ -1,0 +1,10 @@
+Redot Engine LTS v26.2.stable.official.4f5b14aba (2026-06-29 19:32:24 UTC) - https://redotengine.org
+
+PHYSICS ENGINE 2D: Rapier2D v0.35.2-redot.1
+WARNING: Feature `register-docs` is enabled in an exported (non-editor) build.
+Doing so embeds plaintext documentation of your Rust #[class], #[func] etc. into the binary.
+This has no runtime benefit, but can bloat binary size and make reverse-engineering easier.
+Consider disabling `register-docs` for exported builds.
+(Suppress this warning with env-var `GDRUST_SUPPRESSED_WARNINGS=RegisterDocsInExport,...`)
+   at: godot_core::init (<CARGO_HOME>\git\checkouts\gdext-067f4b88e7bd088f\637cef7\godot-core\src\init\mod.rs:735)
+REDOT RAPIER2D CLEAN INSTALL: SUCCESS

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-11",
+  "gate": "P7-G0 unchanged-source compatibility probe",
+  "status": "FAIL",
+  "source": {
+    "tag": "v0.35.2",
+    "commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+    "tree": "40db8bc1e0c0b04391c8458c518e6889713b851d",
+    "tracked_files": 637,
+    "tracked_payload_manifest_sha256_before": "7e150baf518b72e1b9d40657035be0932e6a3098d666cfedf8bfc93749907e3b",
+    "tracked_payload_manifest_sha256_after": "7e150baf518b72e1b9d40657035be0932e6a3098d666cfedf8bfc93749907e3b",
+    "clean_after": true
+  },
+  "consumer": {
+    "cargo_lock_sha256": "cf6937e50bb76ae542df41a065e00fc4bc04bcb4cd37bf4576961839075fb982",
+    "gdext_revision": "637cef73172bba23850131acd8583b0c72ebf0c7",
+    "gdext_version": "0.5.5",
+    "api_sha256": "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577",
+    "observed_godot_feature": "api-custom-json",
+    "forbidden_top_level_api_feature_observed": false
+  },
+  "profiles": [
+    {
+      "dimension": "2d",
+      "profile": "debug",
+      "features": [
+        "single-dim2",
+        "godot/api-custom-json"
+      ],
+      "status": "COMPILE_FAIL",
+      "error": "E0053/E0308: RapierDirectBodyState2D::get_space_state returns Gd<PhysicsDirectSpaceState2D>, but the generated trait requires Option<Gd<PhysicsDirectSpaceState2D>>."
+    },
+    {
+      "dimension": "3d",
+      "profile": "debug",
+      "features": [
+        "single-dim3",
+        "godot/api-custom-json"
+      ],
+      "status": "COMPILE_FAIL",
+      "error": "E0053/E0308: RapierDirectBodyState3D::get_space_state returns Gd<PhysicsDirectSpaceState3D>, but the generated trait requires Option<Gd<PhysicsDirectSpaceState3D>>."
+    }
+  ],
+  "diagnosis": {
+    "first_incompatible_surface": "PhysicsDirectBodyState2DExtension/3DExtension::_get_space_state return nullability",
+    "redot_api": "Both exact Redot virtual methods have an object return type with null meta; pinned gdext therefore generates Option<Gd<...>>.",
+    "upstream_source": "v0.35.2 selects Option only for its top-level api-4-4/api-4-5 features and selects Gd when no top-level API feature is enabled.",
+    "feature_route_verified": "Cargo fingerprints show godot-bindings/godot-codegen/godot-core/godot were built with api-custom-json; the failure is not caused by a missing JSON feature.",
+    "release_and_runtime_profiles": "Not attempted because the minimal debug compile gate failed for both dimensions."
+  },
+  "remediation_not_applied": {
+    "smallest_candidate": "Add a downstream-only redot-compat feature that selects the existing Option<Gd<...>> implementation for both dimensions without forwarding an upstream Godot API feature.",
+    "rejected_alternatives": [
+      "Mutating the exact Redot API JSON or its locked hash.",
+      "Enabling Rapier api-4-5 alongside godot/api-custom-json.",
+      "Enabling Rapier api-custom, which uses direct engine parsing and the wrong later API branches."
+    ],
+    "authority": "Not applied because the approved guardrail prohibits Rapier source edits after an unchanged-source P7-G0 failure until the owner accepts the bounded remediation path."
+  }
+}

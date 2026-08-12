@@ -1,0 +1,68 @@
+Redot Engine LTS v26.2.stable.official.4f5b14aba (2026-06-29 19:32:24 UTC) - https://redotengine.org
+
+PHYSICS ENGINE 2D: Rapier2D v0.35.2-redot.1
+[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
+[   0% ] first_scan_filesystem | Scanning file structure...
+[  16% ] first_scan_filesystem | Loading global class names...
+[  33% ] first_scan_filesystem | Verifying GDExtensions...
+[  50% ] first_scan_filesystem | Creating autoload scripts...
+[  66% ] first_scan_filesystem | Initializing plugins...
+[  83% ] first_scan_filesystem | Starting file scan...
+[ DONE ] first_scan_filesystem
+
+[   0% ] savepack | Started Packing (102 steps)
+[   1% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gdc
+[   4% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_area_2d.gdc
+[   8% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gdc
+[  12% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gdc
+[  16% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gdc
+[  20% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gdc
+[  24% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gdc
+[  27% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gdc
+[  31% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gdc
+[  34% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gdc
+[  38% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gdc
+[  42% ] savepack | Storing File: res://.godot/imported/Fluid2D.svg-af3237d9aa7357bf47435150f6228e4b.ctex
+[  42% ] savepack | Storing File: res://addons/godot-rapier2d/icons/Fluid2D.svg.import
+[  46% ] savepack | Storing File: res://.godot/imported/StateManager2D.svg-1a4e1b526e80995b692903b1eb5c9c70.ctex
+[  46% ] savepack | Storing File: res://addons/godot-rapier2d/icons/StateManager2D.svg.import
+[  50% ] savepack | Storing File: res://.godot/exported/133200997/export-def1d797b2920142e30a9807aab264b9-circle_mesh.res
+[  53% ] savepack | Storing File: res://addons/godot-rapier2d/faucet_2d.gdc
+[  57% ] savepack | Storing File: res://addons/godot-rapier2d/fluid_2d_circle.gdc
+[  61% ] savepack | Storing File: res://addons/godot-rapier2d/fluid_2d_rectangle.gdc
+[  65% ] savepack | Storing File: res://addons/godot-rapier2d/fluid_2d_renderer.gdc
+[  68% ] savepack | Storing File: res://addons/godot-rapier2d/fluid_2d_shader_renderer.gdc
+[  72% ] savepack | Storing File: res://addons/godot-rapier2d/godot-rapier2d.gdextension
+[  75% ] savepack | Storing File: res://.godot/imported/logo_square_2d.png-ee7cb55fd9c4d1815ce7e83cd5401198.ctex
+[  75% ] savepack | Storing File: res://addons/godot-rapier2d/logo_square_2d.png.import
+[  79% ] savepack | Storing File: res://.godot/imported/Radial2D.svg-4380d9841bddc115105cff2016be7c6a.ctex
+[  79% ] savepack | Storing File: res://addons/godot-rapier2d/Radial2D.svg.import
+[  83% ] savepack | Storing File: res://addons/godot-rapier2d/water_shader.gdshader
+[  87% ] savepack | Storing File: res://.godot/exported/133200997/export-ccd7f0480a6ead7600086f074d4f92dc-water_shader.res
+[  91% ] savepack | Storing File: res://main.gdc
+[  95% ] savepack | Storing File: res://.godot/exported/133200997/export-3070c538c03ee49b7677ff960a3f5195-main.scn
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/circle_mesh.tres.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/faucet_2d.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/fluid_2d_circle.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/fluid_2d_rectangle.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/fluid_2d_renderer.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/fluid_2d_shader_renderer.gd.remap
+[  95% ] savepack | Storing File: res://addons/godot-rapier2d/water_shader.tres.remap
+[  95% ] savepack | Storing File: res://main.gd.remap
+[  95% ] savepack | Storing File: res://main.tscn.remap
+[  95% ] savepack | Storing File: res://.godot/global_script_class_cache.cfg
+[  95% ] savepack | Storing File: res://.godot/uid_cache.bin
+[  95% ] savepack | Storing File: res://.godot/extension_list.cfg
+[  95% ] savepack | Storing File: res://project.binary
+[ DONE ] savepack

@@ -1,0 +1,169 @@
+{
+  "baseline": "<WORKSPACE>/docs\\gamedev\\evidence\\performance-windows\\performance-default.json",
+  "baseline_sha256": "575c669fb51b311582a45a14d5ef1254c0b1f4c1d7555713c67416292baeaf6c",
+  "candidate": "<WORKSPACE>/docs\\gamedev\\evidence\\performance-windows\\performance-rapier.json",
+  "candidate_sha256": "67a3774213b23f163adfc71e6321ec7089b0af1356d92abd1569ad08ccd1ae12",
+  "checks": [
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 2.259060088847323,
+      "pass": false,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 2.1497252747252746,
+      "pass": false,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 1.1842900302114803,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 2.2768166089965396,
+      "pass": false,
+      "scenario": "fluid-2048"
+    },
+    {
+      "limit": 16777216,
+      "metric": "per_run_static_memory_growth_bytes",
+      "observed": 32800,
+      "pass": true,
+      "scenario": "fluid-2048"
+    },
+    {
+      "limit": 1.932,
+      "metric": "physics_ms.median",
+      "observed": 0.18,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 3.472,
+      "metric": "physics_ms.p95",
+      "observed": 0.351,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 127660949,
+      "metric": "static_memory_bytes.maximum",
+      "observed": 22594366,
+      "pass": true,
+      "scenario": "bodies-small"
+    },
+    {
+      "limit": 5.072,
+      "metric": "physics_ms.median",
+      "observed": 0.544,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 6.44,
+      "metric": "physics_ms.p95",
+      "observed": 1.199,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 136338479,
+      "metric": "static_memory_bytes.maximum",
+      "observed": 24354930,
+      "pass": true,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 24.902,
+      "metric": "physics_ms.median",
+      "observed": 2.5525,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 32.836,
+      "metric": "physics_ms.p95",
+      "observed": 7.003,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 169636809,
+      "metric": "static_memory_bytes.maximum",
+      "observed": 31434554,
+      "pass": true,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 100.0,
+      "metric": "physics_ms.p95",
+      "observed": 9.179,
+      "pass": true,
+      "scenario": "fluid-2048"
+    },
+    {
+      "limit": 100.0,
+      "metric": "physics_ms.maximum",
+      "observed": 27.891,
+      "pass": true,
+      "scenario": "fluid-2048"
+    }
+  ],
+  "failures": [
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 2.259060088847323,
+      "pass": false,
+      "scenario": "bodies-high"
+    },
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 2.1497252747252746,
+      "pass": false,
+      "scenario": "bodies-medium"
+    },
+    {
+      "limit": 1.5,
+      "metric": "per_run_p95_spread_ratio",
+      "observed": 2.2768166089965396,
+      "pass": false,
+      "scenario": "fluid-2048"
+    }
+  ],
+  "guardrail": "<WORKSPACE>/tests\\performance_guardrail.json",
+  "guardrail_sha256": "24647adda45ba7171e71da3deb9700bcf1e1f6ec5bbcd4cefa8e53d748b0ac81",
+  "policy": "regression guardrail; improvement over the default backend is not required",
+  "schema_version": 1,
+  "status": "FAIL"
+}

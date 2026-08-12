@@ -225,12 +225,12 @@ impl IPhysicsDirectBodyState2DExtension for RapierDirectBodyState2D {
         self.implementation.integrate_forces();
     }
 
-    #[cfg(any(feature = "api-4-4", feature = "api-4-5"))]
+    #[cfg(any(feature = "api-4-4", feature = "api-4-5", feature = "redot-compat"))]
     fn get_space_state(&mut self) -> Option<Gd<PhysicsDirectSpaceState2D>> {
         Some(self.get_space_state_impl())
     }
 
-    #[cfg(not(any(feature = "api-4-4", feature = "api-4-5")))]
+    #[cfg(not(any(feature = "api-4-4", feature = "api-4-5", feature = "redot-compat")))]
     fn get_space_state(&mut self) -> Gd<PhysicsDirectSpaceState2D> {
         self.get_space_state_impl()
     }

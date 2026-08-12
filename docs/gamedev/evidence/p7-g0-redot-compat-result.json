@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "date": "2026-08-11",
+  "status": "PASS_WITH_AUTHORIZED_DOWNSTREAM_REMEDIATION",
+  "release_ready": false,
+  "identity": {
+    "upstream_tag": "v0.35.2",
+    "upstream_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+    "upstream_tree": "40db8bc1e0c0b04391c8458c518e6889713b851d",
+    "downstream_version": "0.35.2-redot.1",
+    "redot_version": "26.2.stable.official.4f5b14aba",
+    "redot_api_sha256": "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577",
+    "gdext_revision": "637cef73172bba23850131acd8583b0c72ebf0c7",
+    "rust_toolchain": "1.94.0"
+  },
+  "historical_unchanged_probe": {
+    "status": "FAIL",
+    "evidence": "p7-g0-unchanged-v0.35.2.json",
+    "failure": "The exact Redot JSON generated Option<Gd<PhysicsDirectSpaceState2D/3D>>, while unchanged v0.35.2 selected the non-optional return branch.",
+    "source_boundary_preserved": true,
+    "tracked_files": 637,
+    "tracked_payload_manifest_sha256": "7e150baf518b72e1b9d40657035be0932e6a3098d666cfedf8bfc93749907e3b"
+  },
+  "authorized_remediation": {
+    "owner_approved": true,
+    "scope": "Add an empty top-level redot-compat selector and use it only to select the two existing nullable _get_space_state branches.",
+    "production_source_files": [
+      "Cargo.toml",
+      "src/bodies/rapier_direct_body_state_2d.rs",
+      "src/bodies/rapier_direct_body_state_3d.rs"
+    ],
+    "forbidden_top_level_features": [
+      "api-4-5",
+      "api-custom"
+    ],
+    "required_dependency_feature": "godot/api-custom-json"
+  },
+  "builds": {
+    "minimal_2d_debug": "PASS",
+    "minimal_2d_release": "PASS",
+    "minimal_3d_debug": "PASS",
+    "minimal_3d_release": "PASS",
+    "full_2d_debug": "PASS",
+    "full_2d_release": "PASS",
+    "full_2d_clippy_deny_warnings": "PASS",
+    "full_2d_features": [
+      "single-dim2",
+      "redot-compat",
+      "serde-serialize",
+      "parallel",
+      "register-docs",
+      "godot/api-custom-json"
+    ]
+  },
+  "windows_runtime": {
+    "status": "PASS",
+    "platform": "windows-x86_64",
+    "import": "PASS",
+    "focused_smoke": "PASS",
+    "regression_scenes": 39,
+    "passed_monitors": 208,
+    "total_monitors": 210,
+    "expected_failures": 2,
+    "improvements": 6,
+    "regression_status_sentinel": "STATUS: SUCCESS"
+  },
+  "artifacts": {
+    "cargo_toml_sha256": "a7f8b73c31ff03a417a72ec87f447a97c5b3ed64613b5261bc67fd795b6b48c2",
+    "cargo_lock_sha256": "9c8d4ef7866aaf0261dbc3b83b2f7c09db7e50919d91388c49e113c915b87c88",
+    "registry_lock_preservation": "Unrelated registry packages retain the upstream lock, including num-integer 0.1.46; only the recorded gdext source is substituted.",
+    "windows_release_dll": {
+      "path": "bin2d/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "bytes": 9843200,
+      "sha256": "52a84c983d222af4268db6cd56a4932e6ffb0e44d6fbf3bf1f52ce2c9e6d76d8"
+    },
+    "windows_import_log_sha256": "54758ae4f9c5c871df9e12a66107fcf6a67ae3a354803cc8379974ee44fc6d0a",
+    "windows_smoke_log_sha256": "6330807a2d895810be5dd70e42c64fb9f63316813a36bb16b662a5c6404d14d2",
+    "windows_regression_log_sha256": "41180dbdc114b60eba5426fcf9c64f9e34b24985c32af9ac357720aae3f04803"
+  },
+  "remaining_release_gates": [
+    "Run the authored Linux x86-64 CI job and retain its build/runtime evidence.",
+    "Complete the stable-ID full applicable Rapier2D parity ledger, including fluids and serialization/restore.",
+    "Complete clean-install, export, exported-release, package, determinism, performance, and downstream-project checks on Windows and Linux.",
+    "Generate exact-feature SBOM, license, advisory, MPL source-availability, checksum, and attestation outputs.",
+    "Publish nothing until every stable-release gate passes and publication is explicitly authorized."
+  ]
+}

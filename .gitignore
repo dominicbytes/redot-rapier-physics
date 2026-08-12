@@ -6,6 +6,9 @@ bin3d/addons/godot-rapier3d/bin/*
 bin3d/.godot/**
 bin3d/samples/godot-rapier3d/addons/**
 target
+build/
+__pycache__/
+*.pyc
 
 !bin2d/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/Resources/Info.plist
 !bin2d/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/Info.plist

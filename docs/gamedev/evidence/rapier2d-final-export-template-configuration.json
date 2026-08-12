@@ -1,0 +1,10 @@
+{
+  "presets": {
+    "Linux x86-64 debug": "<WORKSPACE>/build/final-export-templates/templates/linux_debug.x86_64",
+    "Linux x86-64 release": "<WORKSPACE>/build/final-export-templates/templates/linux_release.x86_64",
+    "Windows x86-64 debug": "<WORKSPACE>/build/final-export-templates/templates/windows_debug_x86_64.exe",
+    "Windows x86-64 release": "<WORKSPACE>/build/final-export-templates/templates/windows_release_x86_64.exe"
+  },
+  "project": "<WORKSPACE>/build/final-export-project",
+  "status": "PASS"
+}

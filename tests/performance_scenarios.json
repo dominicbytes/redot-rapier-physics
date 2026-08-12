@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "fixed_fps": 60,
+  "profile": "release-native-in-editor-host",
+  "measurement": "wall-clock interval between consecutive physics-frame signals",
+  "runs_per_scenario": 3,
+  "sample_frames": 360,
+  "warmup_frames": 120,
+  "scenarios": [
+    {
+      "id": "bodies-small",
+      "kind": "bodies",
+      "count": 64,
+      "columns": 16,
+      "baseline": true
+    },
+    {
+      "id": "bodies-medium",
+      "kind": "bodies",
+      "count": 256,
+      "columns": 32,
+      "baseline": true
+    },
+    {
+      "id": "bodies-high",
+      "kind": "bodies",
+      "count": 1024,
+      "columns": 32,
+      "baseline": true
+    },
+    {
+      "id": "fluid-2048",
+      "kind": "fluid",
+      "count": 2048,
+      "columns": 64,
+      "baseline": false
+    }
+  ]
+}

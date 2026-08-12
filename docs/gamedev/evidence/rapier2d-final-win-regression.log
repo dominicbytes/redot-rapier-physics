@@ -1,0 +1,347 @@
+Redot Engine LTS v26.2.stable.official.4f5b14aba (2026-06-29 19:32:24 UTC) - https://redotengine.org
+
+PHYSICS ENGINE 2D: Rapier2D v0.35.2-redot.1
+ > MODE: REGRESSION (39 SCENES FOUND) - ENGINE: | 2D → Rapier2D
+
+     1. Area2D | testing the basic API
+		 > Checks the basic API for [Area2D]
+	             → Detect rigid body : ✓
+             → Don't detect disabled rigid body : ✓
+             → Detect rigid body with multiple shapes : ✓
+             → Detect kinematic body : ✓
+             → Detect static body : ✓
+             → Don't detect rigid body on collision layer 2 : ✓
+             → Detect monitorable area : ✓
+             → Don't detect unmonitorable area : ✓
+             → Don't detect rigid body when not monitoring : ✓
+             → Don't detect monitorable area when not monitoring : ✓
+             → Don't detect anything when not overlapping : ✓
+             → Detect added rigid body : ✓
+             → Don't detect removed rigid body : ✓
+             → Detect rigid body with one shape disabled : ✓
+             → Don't detect rigid body with all shapes disabled : ✓
+             → Don't detect rigid body moved outside area : ✓
+             → Detect rigid body moved inside area : ✓
+             → Don't detect anything for disabled area : ✓
+
+     2. Area2D | testing space override
+		 > Checks space override for [Area2D]
+	             → Rigid body in area with no gravity doesn't move : ✓
+             → Rigid body in area with custom gravity moves to the left : ✓
+             → Rigid body outside of area has default gravity applied : ✓
+             → Rigid body reacts to area gravity enabled while inside : ✓
+             → Rigid body reacts to area gravity disabled while inside : ✓
+
+     3. CharacterBody2D | testing slide on ceiling [shape: Rectangle]
+             → Slide enough to go through the platform : ✓
+             → Without sliding, the x position of the body will not change : ✓
+
+     4. CharacterBody2D | testing surface detection when the body constantly push against the surface
+             → Capsule detects collisions correctly : ✓
+             → Concave Polygon detects collisions correctly : ✓
+             → Convex Polygon detects collisions correctly : ✓
+             → Rectangle detects collisions correctly : ✓
+             → Circle detects collisions correctly : ✓
+
+     5. CharacterBody2D | far-origin wall push keeps zero delta
+             → Perpendicular wall push far from origin reports zero blocked delta : ✓
+
+     6. CharacterBody2D | testing [floor floor_snap_length] [shape: Capsule]
+             → Snapping works as expected (stick to the floor) : ✓
+             → Snapping has a different behaviour than without it : ✓
+             → Can jump when snapping is applied : ✓
+
+     7. CharacterBody2D | animatable body pushes stationary character
+             → Moving animatable body pushes zero-velocity character : ✓
+
+     8. CharacterBody2D | testing [floor_constant_speed], params: [speed:750, tolerance:1.5]
+             → speed is constant when ascending with Capsule | average=749.77 : ✓
+             → speed is constant when ascending with Concave Polygon | average=750.05 : ✓
+             → speed is constant when ascending with Convex Polygon | average=750.14 : ✓
+             → speed is constant when ascending with Rectangle | average=749.99 : ✓
+             → speed is constant when ascending with Circle | average=749.73 : ✓
+             → speed is constant when descenting with Capsule | average=750.20 : ✓
+             → speed is constant when descenting with Concave Polygon | average=750.30 : ✓
+             → speed is constant when descenting with Convex Polygon | average=750.80 : ✓
+             → speed is constant when descenting with Rectangle | average=750.30 : ✓
+             → speed is constant when descenting with Circle | average=750.00 : ✓
+
+     9. CollisionShape2D | testing [One Way Collision] with CharacterBody2D
+		 > Checks if [One Way Collision] works properly with CharacterBody2D.
+	Each platform is approached along its own one-way axis, so the contact is face-on for every
+	rotation. Coming from the side the one-way direction points away from must be blocked, and
+	coming from the opposite side must pass straight through.
+	             → Blocked from the side the one-way direction faces away from : ✓
+             → Passes through from the other side : ✓
+
+     10. CharacterBody2D | testing [floor_block_on_wall]
+             → The body is properly blocked when [floor_block_on_wall] is ON : ✓
+             → The body is not blocked when [floor_block_on_wall] is OFF : ✓
+
+     11. CollisionShape2D | testing [One Way Collision Margin]
+		 > Checks that [one_way_collision_margin] controls how far a body can enter a one-way shape before passing through.
+	             → Body past one-way margin can move through shape : ✓
+
+     12. CharacterBody2D | testing [floor_max_angle]
+             → If [floor_max_angle] is lower than the slope, the body can't climb : ✓
+             → If [floor_max_angle] is greater or equal than the slope, the body can climb : ✓
+
+     13. CharacterBody2D | testing [SeparationRayShape2D]
+             → The ray carries the body up stairs and holds it above the top step : ✓
+             → Without [slide_on_slope] the body stays put on a steep slope : ✓
+             → With [slide_on_slope] the body slides down a steep slope : ✓
+
+     14. DirectSpaceState2D | testing [intersect_ray] from [get_world_2d().direct_space_state]
+		 > Checks all the [PhysicsRayQueryParameters2D] of [intersect_ray]
+	             → Can collide with Body : ✓
+             → Can not collide with Body : ✓
+             → Can collide with Area : ✓
+             → Can not collide with Area : ✓
+             → Detects Hit from inside : ✓
+             → Can NOT detects Hit from inside : ✓
+             → Can exclude a Body by RID : ✓
+             → Can exclude an Area by RID : ✓
+             → Can exclude multiple RID : ✓
+             → Don't report collision in the wrong collision layer : ✓
+             → Report collision in good collision layer : ✓
+
+     15. DirectSpaceState2D | testing [intersect_point] from [get_world_2d().direct_space_state]
+		 > Checks all the [PhysicsPointQueryParameters2D] of [intersect_point]
+	             → Don't collide at 1px left from the body : ✓
+             → Can collide with Body at the left border : ✓
+             → Don't collide with unpickable body : ✓
+             → Can not collide with Body : ✓
+             → Can collide with Area : ✓
+             → Can not collide with Area : ✓
+             → Can exclude a Body by RID : ✓
+             → Can exclude an Area by RID : ✓
+             → Should not detect a collision outside the canvas : ✓
+             → Should not detect a collision inside the empty canvas : ✓
+             → Should detect one collision inside the canvas : ✓
+             → Can detect multiple collision : ✓
+             → Can limit multiple collision : ✓
+             → Don't report collision in the wrong collision layer : ✓
+             → Report collision in good collision layer : ✓
+
+     16. DirectSpaceState2D | testing [intersect_shape] from [get_world_2d().direct_space_state]
+		 > Checks all the [PhysicsShapeQueryParameters2D] of [intersect_shape]
+	             → Can collide with Body : ✓
+             → Can  not collide with Body : ✓
+             → Can collide with Area : ✓
+             → Can not collide with Area : ✓
+             → Can detects multiple collision : ✓
+             → Can limit result multiple collision : ✓
+             → Can exclude a Body by RID : ✓
+             → Can exclude an Area by RID : ✓
+             → Can exclude multiple RID : ✓
+             → Don't report collision in the wrong collision layer : ✓
+             → Report collision in good collision layer : ✓
+             → Can apply rotation to the shape : ✓
+
+{ "point": (1152.0, 274.0), "normal": (0.0, -1.0), "rid": RID(10451), "collider_id": 28653874342916, "shape": 0, "linear_velocity": (0.0, 0.0) }
+     17. DirectSpaceState2D | testing [cast_motion] from [get_world_2d().direct_space_state]
+		 > Checks all the [PhysicsShapeQueryParameters2D] of [cast_motion]
+	             → Can collide with Body : ✓
+             → Return [1,1] when shape is inside a Body : ✓
+             → Can not collide with Body : ✓
+             → Can collide with Area : ✓
+             → Can not collide with Area : ✓
+             → Can exclude a Body by RID : ✓
+             → Can exclude an Area by RID : ✓
+             → Can exclude multiple RID : ✓
+             → Don't report collision in the wrong collision layer : ✓
+             → Report collision in good collision layer : ✓
+             → Can apply rotation to the shape : ✓
+
+     18. DirectSpaceState2D | get_rest_info point velocity about center of mass
+		 > Checks that get_rest_info reports the contact-point velocity using the global
+	center of mass (transform * local_com), for a rotating body with a custom center of mass.
+	             → get_rest_info reports a collision with the body : ✓
+             → Reported point velocity matches the global center of mass formula : ✓
+             → Reported point velocity is not the pre-fix (origin + local_com) value : ✓
+
+     19. DirectSpaceState2D | testing [collide_shape] against a touching shape
+		 > Checks that [collide_shape] reports shapes that are exactly touching. The solver
+	settles bodies touching rather than overlapping, so a query that only accepts strict
+	penetration reports nothing.
+	             → Reports a shape that is exactly touching : ✓
+             → Reports an overlapping shape : ✓
+             → Reports a shape inside the query margin : ✓
+             → Does not report a separated shape : ✓
+
+     20. DirectSpaceState2D | testing [collide_shape] from [get_world_2d().direct_space_state]
+		 > Checks all the [PhysicsShapeQueryParameters2D] of [collide_shape]
+	             → Can collide with Body : ✓
+             → Return [1,1] when shape is inside a Body : ✓
+             → Can not collide with Body : ✓
+             → Can collide with Area : ✓
+             → Can not collide with Area : ✓
+             → Can exclude a Body by RID : ✓
+             → Can exclude an Area by RID : ✓
+             → Can exclude multiple RID : ✓
+             → Don't report collision in the wrong collision layer : ✓
+             → Report collision in good collision layer : ✓
+             → Can apply rotation to the shape : ✓
+
+     21. DirectSpaceState2D | testing [cast_motion] safe and unsafe fractions
+		 > Checks the [cast_motion] contract: it returns [safe, unsafe] where unsafe comes
+	strictly after safe, and the shape really does collide once advanced by unsafe. A grazing
+	cast is included because there the gap closes far slower than the motion travels.
+	             → Head-on cast reports a collision : ✓
+             → Head-on unsafe comes after safe : ✓
+             → Head-on shape actually collides at unsafe : ✓
+             → Grazing cast reports a collision : ✓
+             → Grazing unsafe comes after safe : ✓
+             → Grazing shape actually collides at unsafe : ✓
+
+     22. CollisionShape2D | testing [One Way Collision] with RigidBody2D
+		 > Checks if [One Way Collision] works properly with RigidBody2D.
+	Each platform is approached along its own one-way axis, so the contact is face-on for every
+	rotation. Coming from the side the one-way direction points away from must be blocked, and
+	coming from the opposite side must pass straight through.
+	             → Blocked from the side the one-way direction faces away from : ✓
+             → Passes through from the other side : ✓
+
+     23. Raycast2D | testing collision
+             → Testing Raycast collision with Capsule : ✓
+             → Testing Raycast collision with Concave Polygon : ✓
+             → Testing Raycast collision with Convex Polygon : ✓
+             → Testing Raycast collision with Rectangle : ✓
+             → Testing Raycast collision with Circle : ✓
+
+     24. CollisionShape2D | testing [One Way Collision] is ignored from the sides
+		 > Checks that a one-way shape is only solid along its one-way direction.
+	A body walking straight into the platform's side must pass through whether its centre sits
+	above or below the platform's centre, which is what Godot's physics does.
+	             → Walks through the side with a -5 px vertical offset : ✓
+             → Walks through the side with a +0 px vertical offset : ✓
+             → Walks through the side with a +5 px vertical offset : ✓
+
+     25. CollisionShape2D | testing [One Way Collision] with TileMapLayer tiles
+		 > Checks [One Way Collision] on TileMapLayer tiles.
+	A TileMapLayer merges every tile of a quadrant into a single body whose shapes all sit at the
+	body origin, so the one-way direction has to be resolved from the contact itself. The body must
+	land on the tiles from above and still jump up through them from below.
+	             → Lands on top of the one-way tiles : ✓
+             → Jumps up through the one-way tiles from below : ✓
+
+     26. RigidBody2D | testing Continuous Collision Detection (CCD)
+             → Rigid moving in x with CCD Ray does not pass through the wall : ✓ ❤️ (improvement)
+             → Rigid moving in x with CCD Cast shape does not pass through the wall : ✓ ❤️ (improvement)
+             → Rigid moving in y with CCD Ray does not pass through the wall : ✓
+             → Rigid moving in y with CCD Cast shape does not pass through the wall : ✓ ❤️ (improvement)
+             → Rigid moving in x with CCD detects collision : ✓
+             → Rigid moving in y with CCD detects collision : ✓
+
+     27. RigidBody2D | testing Continuous Collision Detection (CCD)
+             → Rigid moving in x with CCD Ray does not pass through the wall : ✓ ❤️ (improvement)
+             → Rigid moving in x with CCD Cast shape does not pass through the wall : ✓ ❤️ (improvement)
+             → Rigid moving in y with CCD Ray does not pass through the wall : ✓
+             → Rigid moving in y with CCD Cast shape does not pass through the wall : ✓ ❤️ (improvement)
+             → Rigid moving in x with CCD detects collision : ✓
+             → Rigid moving in y with CCD detects collision : ✓
+
+     28. RigidBody2D | testing the box stack stability
+             → The bodies are sleeping : ✓
+             → The bodies did not move horizontally more than 3.3 px : ✓
+             → The bodies are sorted vertically : ✓
+             → Only neighboring children overlap : ✓
+
+     29. RigidBody2D | testing if 550 rectangles can be handled before instablity
+             → Handle at least 550 bodies : ✓
+
+     30. RigidBody2D | testing the stability with a pyramid [tolerance (2.50, 2.50)]
+             → All body are sleep : ✓
+             → The top cube did not move : ✓
+
+     31. RigidBody2D | _input operations keep transform
+		 > Checks that RigidBody2D operations from _input keep non-zero initial transforms.             → Input event reached _input : ✓
+             → Spawned RigidBody2D keeps non-zero transform : ✓
+             → RigidBody2D impulse from _input keeps non-zero transform : ✓
+             → RigidBody2D re-enabled from _input keeps non-zero transform : ✓
+             → RigidBody2D reparented from _input keeps non-zero transform : ✓
+
+     32. RigidBody2D | testing the basic API
+		 > Checks the basic API for [RigidBody2D]
+	             → Position can be change properly : ✓
+             → Gravity is applied properly : ✓
+             → Gravity scale works : ✓
+             → Rotation works : ✓
+             → Lock_rotation works : ✓
+             → Can sleep works : ✓
+             → Layers and masks works : ✓
+             → Constant force is applied : ✓
+             → Constant force can be retrieved : ✓
+             → Constant force can be removed : ✓
+             → Constant force at specific position is applied : ✓
+             → Apply force at specific position is applied : ✓
+             → Force impulse is applied : ✓
+             → Linear velocity can be retrieved : ✓
+             → Force impulse with mass is applied : ✓
+             → Linear velocity can be retrieved from with mass : ✓
+             → Force impulse at specific position is applied : ✓
+             → Constant torque is applied : ✓
+             → Constant torque can be retrieved : ✓
+             → Constant torque can be removed : ✓
+             → The impulse torque is applied to the angular velocity : ✓
+             → The impulse torque makes the body rotate correctly : ✓
+             → Body can be freeze : ✓
+             → Body frozen as static stays still after contact and teleport : ✓
+             → Damping works : ✓
+             → Linear damping replace mode matches world default : ✓
+
+     33. RigidBody2D | _input reparent keeps transform
+		 > Checks that a RigidBody2D added under a launcher and reparented to root from _input keeps its transform.             → Launcher spawned a ball from _input : ✓
+             → Reparented RigidBody2D does not reset to origin : ✓
+             → Root-added RigidBody2D does not reset to origin : ✓
+             → RigidBody2D does not collide at origin after _input launch : ✓
+
+     34. RigidBody2D | parent scale does not stretch spawned scene
+		 > Checks that a RigidBody2D instantiated under a scaled parent does not keep that parent scale after physics sync.             → RigidBody2D server transform strips parent scale : ✓
+             → Sprite2D visual keeps its authored scale : ✓
+
+     35. RigidBody2D | center_of_mass semantics (#550)
+		 > Checks that PhysicsDirectBodyState2D.center_of_mass returns the center of mass
+	offset relative to the body origin, in global orientation (issue #550).
+	             → Direct body state is available : ✓
+             → center_of_mass_local is the local offset : ✓
+             → center_of_mass is the offset rotated into global orientation : ✓
+             → center_of_mass is not the absolute global position : ✓
+
+     36. RigidBody2D | testing CCD between moving bodies
+		 > Checks that Continuous Collision Detection works between two moving bodies, not
+	just against static geometry. Two fast rigid bodies are fired at each other; neither may
+	pass through the other.
+	             → Two bodies with CCD moving at each other do not pass through : ✗
+             → A body with CCD does not pass through a slower moving body : ✓
+             → CCD between moving bodies reports the collision : ✗
+
+     37. RigidBody2D | add_force_at_point torque about center of mass
+		 > Checks that a constant force applied at a point produces the correct torque
+	about the global center of mass, for a body with a custom center of mass and a rotation.
+	             → Force at the center of mass produces no rotation : ✓
+             → Force at the origin produces the torque about the center of mass : ✓
+             → Linear response is independent of the application point : ✓
+
+     38. RigidBody2D | testing [contact_monitor]
+             → Collisions are reported : ✓
+             → The body sleep : ✓
+             → No contact reported when [contacts_reported] is 0 : ✓
+
+     39. ShapeCast2D | testing detection against a resting body
+             → A zero-length ShapeCast2D detects a body it rests against : ✓
+
+
+    2 Monitor(s) expected to fail:
+        1. RigidBody2D | testing CCD between moving bodies > Two bodies with CCD moving at each other do not pass through
+        2. RigidBody2D | testing CCD between moving bodies > CCD between moving bodies reports the collision
+
+    6 Improvement(s):
+        1. RigidBody2D | testing Continuous Collision Detection (CCD) > Rigid moving in x with CCD Ray does not pass through the wall
+        2. RigidBody2D | testing Continuous Collision Detection (CCD) > Rigid moving in x with CCD Cast shape does not pass through the wall
+        3. RigidBody2D | testing Continuous Collision Detection (CCD) > Rigid moving in y with CCD Cast shape does not pass through the wall
+        4. RigidBody2D | testing Continuous Collision Detection (CCD) > Rigid moving in x with CCD Ray does not pass through the wall
+        5. RigidBody2D | testing Continuous Collision Detection (CCD) > Rigid moving in x with CCD Cast shape does not pass through the wall
+        6. RigidBody2D | testing Continuous Collision Detection (CCD) > Rigid moving in y with CCD Cast shape does not pass through the wall
+
+ > COMPLETED IN 2.26s | STATUS: SUCCESS (PASSED MONITORS: 208/210) | ❤️ 6 improvement(s)

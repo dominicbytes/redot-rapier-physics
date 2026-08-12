@@ -1,0 +1,88 @@
+cargo.exe :     Finished `test` profile [optimized + debuginfo] target(s) in 0.15s
+At line:4 char:1
++ & '<CARGO_HOME>\bin\cargo.exe' test --config compat/r ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Finished `t...get(s) in 0.15s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+     Running unittests src\lib.rs (target\debug\deps\godot_rapier-568c35654b778e9a.exe)
+
+running 76 tests
+test bodies::rapier_area::tests::monitor_event_lifetime_counts_contacts ... ok
+test bodies::rapier_area::tests::area_state_does_not_serialize_unhandled_events ... ok
+test bodies::rapier_area::tests::non_removed_exit_without_monitor_is_reported_as_missing ... ok
+test bodies::rapier_area::tests::stale_removed_exit_without_monitor_is_ignored ... ok
+test bodies::rapier_area::tests::monitored_objects_serialize_in_stable_collider_order ... ok
+test bodies::rapier_area::tests::unhandled_opposite_event_ignores_different_shape_pair ... ok
+test rapier_wrapper::physics_world::tests::removed_user_data_serializes_in_stable_handle_order ... ok
+test bodies::rapier_area::tests::unhandled_opposite_event_matches_recreated_collider_for_same_shape_pair ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::a_ray_buried_in_a_halfspace_does_not_push ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::prediction_extends_the_ray ... ok
+test bodies::rapier_area::tests::unhandled_events_preserve_multiple_local_shapes_for_same_other_collider ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::resting_position::ray_reaches_no_further_than_its_length_plus_the_margin ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::a_ray_buried_in_a_convex_shape_does_not_push ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::two_rays_never_collide ... ok
+test rapier_wrapper::shape::tests::convex_shape_accepts_unordered_point_cloud ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::pairs_without_a_ray_are_left_to_the_rest_of_the_chain ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::ray_does_not_reach_a_surface_past_its_tip ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::rays_are_never_swept ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::resting_position::a_sunk_body_is_pushed_back_up_by_the_penetration_depth ... ok
+test shapes::rapier_shape_base::tests::test_reset_aabb ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::resting_position::tip_exactly_on_the_surface_needs_no_recovery ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::slide_on_slope_recovery_follows_the_surface_normal ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::tip_past_the_surface_reports_penetration_along_the_ray ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::without_slide_on_slope_recovery_follows_the_ray_not_the_surface ... ok
+test rapier_wrapper::shape::tests::convex_shape_preserves_clockwise_convex_polyline_points ... ok
+test shapes::rapier_shape_base::tests::test_add_and_remove_owner ... ok
+test shapes::rapier_shape_base::tests::test_destroy_shape ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::resting_position::ray_origin_below_the_surface_stops_pushing ... ok
+test rapier_wrapper::separation_ray_dispatcher::tests::a_back_face_cannot_push_the_body_out ... ok
+test spaces::rapier_space_body_helper::tests::clamp_near_zero_blocked_travel_keeps_recovery_against_motion ... ok
+test spaces::rapier_space_body_helper::tests::clamp_near_zero_safe_motion_keeps_full_motion ... ok
+test rapier_wrapper::shape::tests::convex_shape_preserves_ccw_convex_polyline_points ... ok
+test shapes::rapier_shape_base::tests::test_new_rapier_shape_base ... ok
+test spaces::rapier_space_body_helper::tests::clamp_near_zero_blocked_travel_removes_tiny_forward_travel ... ok
+test spaces::rapier_space_body_helper::tests::clamp_near_zero_safe_motion_sets_sub_epsilon_travel_to_zero ... ok
+test spaces::rapier_space_body_helper::tests::clamp_near_zero_safe_motion_uses_margin_relative_tolerance ... ok
+test spaces::rapier_space_body_helper::tests::clamp_near_zero_safe_motion_keeps_meaningful_travel ... ok
+test spaces::rapier_space_body_helper::tests::contact_depth_filter_rejects_shallow_or_predictive_contacts ... ok
+test spaces::rapier_space_body_helper::tests::final_step_applies_collision_travel_remainder_and_fractions ... ok
+test spaces::rapier_space_body_helper::tests::final_step_applies_full_motion_without_collision ... ok
+test spaces::rapier_space_body_helper::tests::motion_blocking_filter_accepts_opposing_contact_normal ... ok
+test spaces::rapier_space_body_helper::tests::motion_blocking_filter_rejects_tangent_contact_normal ... ok
+test spaces::rapier_space_body_helper::tests::one_way_contact_accepts_contact_along_valid_direction ... ok
+test spaces::rapier_space_body_helper::tests::one_way_contact_rejects_contact_against_valid_direction ... ok
+test spaces::rapier_space_body_helper::tests::one_way_contact_rejects_contact_beyond_margin ... ok
+test spaces::rapier_space_body_helper::tests::one_way_contact_rejects_sideways_contact ... ok
+test spaces::rapier_space_body_helper::tests::one_way_valid_depth_ignores_test_body_motion ... ok
+test spaces::rapier_space_body_helper::tests::one_way_valid_depth_includes_platform_motion_against_one_way_direction ... ok
+test spaces::rapier_space_body_helper::tests::one_way_valid_direction_matches_godot_basis_xform ... ok
+test spaces::rapier_space_body_helper::tests::recover_motion_respects_min_contact_depth ... ok
+test spaces::rapier_space_body_helper::tests::recover_motion_uses_equal_priority_contacts ... ok
+test spaces::rapier_space_body_helper::tests::reset_body_motion_result_clears_2d_collision_state ... ok
+test spaces::rapier_space_body_helper::tests::rest_info_step_runs_for_cast_collision ... ok
+test spaces::rapier_space_body_helper::tests::rest_info_step_runs_for_recovery_collision_when_requested ... ok
+test spaces::rapier_space_body_helper::tests::rest_info_step_skips_recovery_when_not_requested ... ok
+test spaces::rapier_space_body_helper::tests::small_motion_step_finishes_without_collision ... ok
+test spaces::rapier_space_body_helper::tests::small_motion_step_keeps_regular_motion_for_later_steps ... ok
+test spaces::rapier_space_state::tests::test_body_add_and_remove_from_active_list ... ok
+test spaces::rapier_space_state::tests::test_area_add_and_reset_from_monitor_query_list ... ok
+test spaces::rapier_space_state::tests::test_area_add_and_remove_from_area_update_list ... ok
+test spaces::rapier_space_state::tests::test_add_removed_collider ... ok
+test spaces::rapier_space_state::tests::test_body_add_and_remove_from_area_update_list ... ok
+test spaces::rapier_space_state::tests::test_body_add_and_remove_from_force_integrate_query_list ... ok
+test spaces::rapier_space_state::tests::test_body_add_and_remove_from_state_query_list ... ok
+test spaces::rapier_space_state::tests::test_body_add_and_remove_from_gravity_update_list ... ok
+test spaces::rapier_space_state::tests::test_body_add_and_remove_reset_from_deactivated_state_sync_list ... ok
+test spaces::rapier_space_state::tests::test_body_add_and_remove_reset_from_mass_properties_update_list ... ok
+test spaces::rapier_space_state::tests::test_destroy ... ok
+test spaces::rapier_space_state::tests::test_rapier_space_state_new ... ok
+test spaces::rapier_space_state::tests::test_reset_space_if_empty ... ok
+test spaces::rapier_space_state::tests::test_set_and_get_active_objects ... ok
+test types::tests::test_transform_update ... ok
+test spaces::rapier_space_state::tests::test_reset_space_if_empty_drops_removed_colliders ... ok
+test spaces::rapier_space_state::tests::test_set_and_get_time_stepped ... ok
+test types::tests::test_transform_update_accuracy ... ok
+test types::tests::test_transform_update_does_not_panic ... ok
+
+test result: ok. 76 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s

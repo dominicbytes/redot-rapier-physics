@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "local automated validation of the unpublished Rapier2D stable candidate on Windows x86-64 and Linux x86-64",
+  "observed_date": "2026-08-12",
+  "publication_state": "unpublished",
+  "release_readiness": "BLOCKED_ON_EXTERNAL_PROMOTION_GATES",
+  "identities": {
+    "package_version": "0.35.2-redot.1",
+    "planned_tag": "v0.35.2-redot.1",
+    "upstream_plugin_tag": "v0.35.2",
+    "upstream_plugin_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+    "redot_version_output": "26.2.stable.official.4f5b14aba",
+    "redot_commit": "4f5b14abade2239104847d03d8f9056e4467cfcd",
+    "compatible_api": "4.5.2",
+    "precision": "single",
+    "cargo_lock_sha256": "9c8d4ef7866aaf0261dbc3b83b2f7c09db7e50919d91388c49e113c915b87c88"
+  },
+  "binding_prerequisite": {
+    "repository": "https://github.com/dominicbytes/redot-rust",
+    "pinned_commit": "18ad5c538c452b8640420366794354e3ed48f205",
+    "remote_main_observed": "18ad5c538c452b8640420366794354e3ed48f205",
+    "gdext_repository": "https://github.com/godot-rust/gdext",
+    "gdext_revision": "637cef73172bba23850131acd8583b0c72ebf0c7",
+    "dependency_feature": "godot/api-custom-json"
+  },
+  "toolchain": {
+    "rustc": "rustc 1.94.0 (4a4ef493e 2026-03-02)",
+    "cargo": "cargo 1.94.0 (85eff7c80 2026-01-15)",
+    "rust_image": "rust@sha256:365468470075493dc4583f47387001854321c5a8583ea9604b297e67f01c5a4f",
+    "linux_runtime_image": "redotsteam-linux-runtime@sha256:5255ec8a80a56834e07c9fc581e259fbf94d8ab4881de9673475480352b58f77",
+    "linux_strip": "GNU Binutils 2.40 --strip-debug"
+  },
+  "redot_artifacts": {
+    "windows_console_sha256": "5633d02a28a73514084df6a60ffe01fabdbbb9ac5e28fdfd590ed47277f51989",
+    "linux_editor_sha256": "11d299e0f01a63574e612c64718ca3037a65540139dec7b93a87650ee9aab2f3",
+    "windows_debug_template_sha256": "0e185666b2f3ff5ee2db8e4bcb61d940b9eadde92290b57f3a7544ba8045ac8f",
+    "windows_release_template_sha256": "723097ce13cc7c28202ce67337f167d15482ea57147be33ea1c5d7818a45b137",
+    "linux_debug_template_sha256": "b94effe58cb906290ed2e2ba5e7cc106391ae4440560e53515614479f826a4a9",
+    "linux_release_template_sha256": "93c364a8e89905c710e21bc87d521a540ee6a2b67004b78cb2067403481507fc"
+  },
+  "latest_stable_freshness": {
+    "status": "PASS",
+    "observed_date": "2026-08-12",
+    "plugin": {
+      "repository": "https://github.com/appsinacup/godot-rapier-physics",
+      "latest_stable_tag": "v0.35.2",
+      "commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+      "selected": true
+    },
+    "rapier": {
+      "repository": "https://github.com/dimforge/rapier",
+      "latest_stable_tag": "v0.35.1",
+      "rapier2d_lock_version": "0.35.1",
+      "selected": true
+    }
+  },
+  "package": {
+    "name": "redot-rapier-physics-2d-0.35.2-redot.1.zip",
+    "sha256": "af8ec56c054981c3c699f166efd91ae1685fda18a87d67762603e609d984b258",
+    "bytes": 23007445,
+    "file_count": 58,
+    "payload_manifest_sha256": "da117d671aa8f9a2a6e8eb4c79814c13d504287d00a37a601587a4e00380d91f",
+    "external_manifest_sha256": "a2bd862e22142093573344364b0c261120dfe38414dd426a1b088add5560ac28",
+    "repeat_build_sha256": "af8ec56c054981c3c699f166efd91ae1685fda18a87d67762603e609d984b258",
+    "deterministic_repeat": true,
+    "root": "addons/godot-rapier2d",
+    "contains_rapier3d": false,
+    "notices": [
+      "LICENSE",
+      "LICENSE-MPL-2.0.txt",
+      "THIRDPARTY.txt",
+      "THIRDPARTY-REDOT.txt"
+    ]
+  },
+  "native_artifacts": [
+    {
+      "platform": "windows-x86_64",
+      "kind": "editor",
+      "sha256": "6c68af419493c1f496f19337a5cba996a8fc21a55a370ea5d4b793a536dfd433",
+      "bytes": 12526592,
+      "register_docs": true
+    },
+    {
+      "platform": "windows-x86_64",
+      "kind": "debug",
+      "sha256": "b7b07ea0317548111e5e33775ec15a34ca4d208c8d6bd8a3098fc994c4597cca",
+      "bytes": 12448256,
+      "register_docs": false
+    },
+    {
+      "platform": "windows-x86_64",
+      "kind": "release",
+      "sha256": "b98fca1eaa3bb9f78b3ed5a3fe7bdaa6416d36c6afadb2163a7a2fe9ad2b1066",
+      "bytes": 9767424,
+      "register_docs": false
+    },
+    {
+      "platform": "linux-x86_64",
+      "kind": "editor",
+      "sha256": "729a6d525b59f0c6d73fd2a576dbd6c2eda7dddbe6b5efc87ce48e24f7265a1a",
+      "bytes": 15329824,
+      "register_docs": true,
+      "entry_symbol": "rapier_2d_init"
+    },
+    {
+      "platform": "linux-x86_64",
+      "kind": "debug",
+      "sha256": "7355917045d2c7c6a3827c9dba0cbf5f8007eba73fa95edd1249af70e2f909fb",
+      "bytes": 15249704,
+      "register_docs": false,
+      "entry_symbol": "rapier_2d_init"
+    },
+    {
+      "platform": "linux-x86_64",
+      "kind": "release",
+      "sha256": "574d162d613b13b47454f4569e1e6e0d1729338160efabc98f9e7bc28fda7734",
+      "bytes": 10018912,
+      "register_docs": false,
+      "entry_symbol": "rapier_2d_init"
+    }
+  ],
+  "clean_install": {
+    "windows-x86_64": {
+      "rapier_selected": "PASS",
+      "default_backend_unchanged": "PASS",
+      "class_registration": "RapierPhysicsServer2D, Fluid2D, StateManager2D",
+      "point_query": "PASS",
+      "log_review": "CLEAN"
+    },
+    "linux-x86_64": {
+      "rapier_selected": "PASS",
+      "default_backend_unchanged": "PASS",
+      "class_registration": "RapierPhysicsServer2D, Fluid2D, StateManager2D",
+      "point_query": "PASS",
+      "log_review": "CLEAN"
+    }
+  },
+  "exports": {
+    "windows-x86_64": {
+      "debug": {
+        "executable_sha256": "7e6deec620474534c6485a7a9c04c1620b0b9a37e05532915b056eeb9a4d0548",
+        "copied_library_matches_package": true,
+        "runtime": "PASS",
+        "log_review": "CLEAN"
+      },
+      "release": {
+        "executable_sha256": "bd83a187a189670bc65a5c5b23476f6808b0e4b6439d9b3791a8947caaeb3fb9",
+        "copied_library_matches_package": true,
+        "runtime": "PASS",
+        "log_review": "CLEAN"
+      }
+    },
+    "linux-x86_64": {
+      "debug": {
+        "executable_sha256": "3024a02ee2df3425ab63f4298ce3df4c175f779ed2ace65490b0f5dc35ccf054",
+        "copied_library_matches_package": true,
+        "runtime": "PASS",
+        "log_review": "CLEAN"
+      },
+      "release": {
+        "executable_sha256": "bfcf92255cc319cf23242d25012bbbfb5f6f992ab4a80e38f91c91362ad3f9c2",
+        "copied_library_matches_package": true,
+        "runtime": "PASS",
+        "log_review": "CLEAN"
+      }
+    }
+  },
+  "regression": {
+    "windows-x86_64": {
+      "status": "SUCCESS",
+      "scenes": 39,
+      "passed_monitors": 208,
+      "total_monitors": 210,
+      "expected_failures": 2,
+      "improvements": 6,
+      "log_review": "CLEAN"
+    },
+    "linux-x86_64": {
+      "status": "SUCCESS",
+      "scenes": 39,
+      "passed_monitors": 208,
+      "total_monitors": 210,
+      "expected_failures": 2,
+      "improvements": 6,
+      "log_review": "CLEAN"
+    }
+  },
+  "parity": {
+    "status": "PASS",
+    "upstream_runtime_source_files_compared": 96,
+    "upstream_addon_files_compared": 50,
+    "authorized_runtime_deltas": [
+      "src/bodies/rapier_direct_body_state_2d.rs",
+      "src/bodies/rapier_direct_body_state_3d.rs"
+    ],
+    "unexpected_runtime_deltas": 0,
+    "evidence": "rapier2d-upstream-parity.json"
+  },
+  "determinism": {
+    "status": "PASS",
+    "profile": "single-threaded single-precision 60 Hz, 26 bodies, 300 frames",
+    "windows_runs": 3,
+    "linux_runs": 3,
+    "replay_sha256": "9f1b106595ac6361a7676f6f488e9929e953430c5ac8eccce499ba722eb67928",
+    "final_state_sha256": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+    "evidence": "rapier2d-determinism-cross-platform.json"
+  },
+  "performance_guardrail": {
+    "policy": "guardrail, not an improvement claim",
+    "windows-x86_64": "PASS",
+    "linux-x86_64": "PASS",
+    "workloads": "64, 256, and 1024 bodies plus 2048 fluid particles; 120 warm-up frames; 360 samples; 3 runs",
+    "evidence": [
+      "rapier2d-performance-guardrail-windows.json",
+      "rapier2d-performance-guardrail-linux.json"
+    ]
+  },
+  "legal_and_supply_chain": {
+    "status": "PASS",
+    "exact_feature_packages": 87,
+    "unique_license_texts": 57,
+    "mpl_source_availability_packages": 9,
+    "sbom_format": "SPDX-2.3",
+    "dependency_resolution": "Cargo.lock plus exact editor/export feature profiles",
+    "evidence": [
+      "rapier2d-exact-feature-licenses.json",
+      "rapier2d-sbom.spdx.json"
+    ]
+  },
+  "local_automated_gate_summary": {
+    "status": "PASS",
+    "rust_unit_tests": "76/76",
+    "python_contract_tests": "24/24",
+    "redot_unit_and_feature_scenes": "PASS on Windows and Linux",
+    "workflow_syntax": "Prettier 3.6.2 and actionlint 1.7.12 PASS",
+    "public_ci_for_this_candidate": "NOT_RUN"
+  },
+  "open_release_gates": [
+    "obtain retained downstream-project confirmation or explicit owner waiver",
+    "run public pinned CI and retain durable evidence",
+    "obtain explicit owner authorization before creating the version tag, GitHub Release/assets, or Asset Library submission"
+  ]
+}

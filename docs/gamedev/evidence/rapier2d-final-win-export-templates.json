@@ -1,0 +1,10 @@
+{
+  "presets": {
+    "Linux x86-64 debug": "/templates/linux_debug.x86_64",
+    "Linux x86-64 release": "/templates/linux_release.x86_64",
+    "Windows x86-64 debug": "<REDOT_TEMPLATE_CACHE>/templates/windows_debug_x86_64.exe",
+    "Windows x86-64 release": "<REDOT_TEMPLATE_CACHE>/templates/windows_release_x86_64.exe"
+  },
+  "project": "<WORKSPACE>/build/redot-rapier2d-final-win-selected-20260812",
+  "status": "PASS"
+}

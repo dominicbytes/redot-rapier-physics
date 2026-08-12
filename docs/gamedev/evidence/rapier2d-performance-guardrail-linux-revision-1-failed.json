@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "status": "FAIL",
+  "policy": "regression guardrail; improvement over the default backend is not required",
+  "baseline_sha256": "ba7240d560533cd5d4ad31ac0568b5dc07ca20a9c0a11250fc5f271150c14281",
+  "candidate_sha256": "7faf7c9b7c4990cbf41074cb852aa0caaea1acccee606c562bf0fa03c8caa082",
+  "guardrail_sha256": "cc3f52e862665a81abb6db7e750d7537504c7e16cebc21b261475fe34ed6d6ec",
+  "failed_check": {
+    "scenario": "fluid-2048",
+    "metric": "physics_ms.p95",
+    "observed": 57.157,
+    "limit": 33.334
+  },
+  "retained_disposition": "Revision 1 was rejected as an accidental 30 FPS mandate for a Rapier-only feature without a default-backend baseline. It was replaced transparently by revision 2, which retains the pre-existing 100 ms absolute ceiling and adds repeatability and memory-growth checks."
+}

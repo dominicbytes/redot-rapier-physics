@@ -1,143 +1,45 @@
-<p align="center">
-<img src="https://github.com/appsinacup/godot-rapier-physics/blob/main/logo.jpg?raw=true"/>
-</p>
-<p align="center">Works on: Desktop, Mobile and Web</p>
-<p align="center">
-        <img src="https://github.com/appsinacup/godot-rapier-physics/actions/workflows/runner.yml/badge.svg?branch=main"
-            alt="Godot Rapier Build"></a>
-        <img src="https://img.shields.io/badge/Godot-4.7-%23478cbf?logo=godot-engine&logoColor=white" />
-</p>
+# Redot Rapier Physics
 
+Implementation workspace for the Redot 26.2 port of Godot Rapier Physics (program priority 7).
 
-<p align = "center">
-    <strong>
-        <a href="https://godot.rapier.rs">Documentation</a> | <a href="https://github.com/appsinacup/godot-rapier-physics/blob/main/CHANGELOG.md">Changelog</a> | <a href="https://discord.gg/v649emcpAu">Discord</a> | <a href="https://github.com/appsinacup/godot-rapier-physics/blob/main/CONTRIBUTING.md">Contributing</a> | <a href="https://github.com/appsinacup/godot-rapier-physics/blob/main/ARCHITECTURE.md">Architecture</a>
-    </strong>
-</p>
+## Current state
 
+- Preflight: complete as of 2026-08-10
+- Planning: owner-approved and closed on 2026-08-11
+- Implementation: the Rapier2D `0.35.2-redot.1` source candidate is complete and all local automated Windows/Linux gates pass; stable release remains blocked on the retained downstream-project/waiver decision, public CI, and explicit release authorization
+- MS-022 foundation: PASS locally; the infrastructure snapshot, exact engine/API lock, two-addon mapping, Rust adapter, and Windows/Linux matrix are adopted and tested
+- P7-G0 result: unchanged `v0.35.2` remains a retained FAIL at `_get_space_state` return nullability; the owner-authorized downstream-only `redot-compat` selector passes minimal 2D/3D debug and release compilation
+- Rapier2D result: Windows and Linux editor/debug/release builds, Clippy, 76 Rust unit tests, Redot unit/feature scenes, and the 39-scene regression suite pass; each platform reports 208/210 declared monitors, two inherited expected CCD failures, six improvements, and no unexplained engine/script errors
+- Package result: deterministic 58-file archive `redot-rapier-physics-2d-0.35.2-redot.1.zip`, SHA-256 `af8ec56c054981c3c699f166efd91ae1685fda18a87d67762603e609d984b258`; clean selected/default installs and official-template debug/release exports run successfully on both required platforms
+- Determinism/performance/legal result: six lockstep replays are byte-identical across Windows/Linux; both platform performance guardrails pass; exact-feature notices and an SPDX 2.3 SBOM cover 87 resolved packages
+- Platform status: Windows x86-64 and Linux x86-64 pass the complete local automated candidate matrix; a public run of the pinned workflow remains a promotion gate
+- Upstream source target: Godot Rapier Physics `v0.35.2` at `172c66f5a88bf1164c2b8cf2d775ed889edefd75`, verified on 2026-08-12 as the latest stable plugin release
+- Release-line pin: the owner fixed `v0.35.2` for this candidate; a newer upstream version is evaluated in a later planned update instead of reopening this release line
+- Physics dependency lock: stable `rapier2d` and `rapier3d` `0.35.1`; the selected plugin lock matches the latest stable Rapier tag as of 2026-08-12
+- Source repository: public fork `dominicbytes/godot-rapier-physics`, branch `redot-26.2`, based on exact upstream `v0.35.2`
+- Rust compatibility prerequisite: `dominicbytes/redot-rust` at `18ad5c538c452b8640420366794354e3ed48f205`
+- Redot target: Redot 26.2 stable, compatible Godot API 4.5.2, single precision
+- Redot support policy: each plugin release certifies one exact Redot engine/API identity; the first planned release targets Redot 26.2/API 4.5.2, and later Redot versions require separately validated downstream tags
+- Goal: add explicit Rapier alternatives without replacing Redot's default physics backends
+- Product structure: one source repository with two addon slots; Rapier2D releases first, and Rapier3D ships only if it adds a material user-facing capability beyond Redot Jolt
+- Package identity: publish `Redot Rapier Physics 2D` and, only after approval, `Redot Rapier Physics 3D`; use artifact slugs `redot-rapier-physics-2d` and `redot-rapier-physics-3d` while preserving `addons/godot-rapier2d` and `addons/godot-rapier3d` internally
+- Versioning: one lockstep `v<upstream-version>-redot.<revision>` tag, beginning with `v0.35.2-redot.1`; Rapier2D releases alone until Rapier3D qualifies, then both public packages advance together
+- Rollback boundary: rollback/replay is useful supporting value but cannot justify Rapier3D alone; a rollback-only result becomes a separate future plugin candidate
+- Required foundation: `../redot-porting-infrastructure`, adapted at this repository root for Rust/Cargo and two addon packages
+- Rapier2D release policy: full applicable feature parity with the pinned upstream 2D plugin; no intentional feature trickle after the first public release
+- First-release platforms: Windows x86-64 and Linux x86-64; macOS and other targets are deferred variants
+- Determinism guarantee: exact Windows/Linux replay-hash equality for a pinned single-threaded deterministic profile; parallel builds are tested separately without that claim
+- Performance policy: use a release-blocking guardrail for crashes, leaks, unbounded growth, instability, and material unexplained regressions; do not require Rapier2D to beat Redot's default backend
+- Distribution: publish through both GitHub Releases and the Redot Asset Library. GitHub is the canonical release, attestation, and support record; each Asset Library entry uses an immutable package-only commit from the same repository and must match the corresponding GitHub asset's installed-file manifest exactly
+- Installable contents: keep each dimension package lean with only the runtime addon, README, and complete legal notices; publish examples, parity fixtures, and test projects as separate GitHub release assets
+- Release posture: publish no public beta or release candidate; after every required gate passes, make the first public GitHub package a stable release and submit only that stable payload to the Redot Asset Library
+- Private stable validation: before publication, retain real downstream install, backend-selection, representative runtime, export, and exported-release launch confirmation for the exact candidate package on both Windows and Linux; an explicit owner waiver is allowed only when a suitable downstream tester or project is unavailable and never bypasses automated gates
+- Maintenance cadence: monitor every official upstream stable plugin and Rapier crate release and begin evaluation promptly, but promise no fixed publication deadline; publish an update only after the complete applicable compatibility and release matrix passes, and always identify the currently evaluated and pinned stable versions
+- Support window: provide routine maintenance only for the newest published Redot release line; older plugin lines remain downloadable and documented but receive no routine fixes
+- Routine release rhythm: open a plugin update cycle for each planned stable Redot release, expected roughly quarterly; queue routine Rapier/plugin dependency adoption and accepted repository work for that cycle, then publish only after the full gates pass
+- Maintainer intake: the owner reviews pull requests and issues raised on the repository between Redot release cycles and records their disposition; review does not itself promise acceptance, response time, or an immediate release
+- Emergency patch exception: permit an out-of-cycle release on the current supported line only for a confirmed security defect, data-loss defect, or release-blocking crash; keep the change narrowly scoped, run the full applicable release gates, and exclude features and routine dependency upgrades
 
------
+The unchanged-source compatibility gate identified one bounded Redot/gdext nullability mismatch. The approved remediation keeps the exact custom API JSON through dependency feature `godot/api-custom-json`, adds no Rapier top-level Godot API feature, and selects only the existing nullable return implementation. The full local Windows/Linux implementation and release-candidate matrix now passes. The owner authorized the public fork and source push on 2026-08-12; no version tag, GitHub Release, downloadable asset, or Asset Library submission is authorized yet.
 
-<p align = "center">
-<b>2D and 3D physics engine</b>
-<i>for the Godot game engine.</i>
-with better <b>stability</b>, <b>performance</b>, <b>liquids</b>, <b>determinism</b>, <b>state serialization</b> and <b>no ghost collisions</b>.
-</p>
-
------
-
-Godot Rapier Physics is a **2D and 3D** physics drop-in replacement for the [Godot game engine](https://github.com/godotengine/godot) through [rapier](https://github.com/dimforge/rapier) physics engine [salva](https://github.com/dimforge/salva) fluids simulation library.
-
-
-# Features
-
-Stability|No Vibrations
--|-
-![](docs/rapier-vid.gif)|![](docs/stability-comparison.gif)
-
-Fluids 2D| Fluids 3D
--|-
-![](docs/fluid_shader.gif)|![](docs/water_3d.gif)
-
-Body Skin| Inverse Kinematics
--|-
-![](docs/body_skin.gif)|![](docs/ik2.gif)
-
-No Ghost Collisions|Improved Stacking
--|-
-![](docs/ghost_collisions.gif)|![](docs/stacking.png)
-
-**Serialization**|**Deserialization**
--|-
-Save Physics State|Load Physics State
-
-**Locally Deterministic**|**Cross Platform Deterministic**
--|-
-Exact simulation every time (on same platform)|Exact simulation on multiple platforms
-
-# Installation
-
-- Automatic (Recommended): Download the plugin from the official [Godot Asset Store](https://store.godotengine.org) using the `Asset Store` tab in Godot:
-    - [Rapier Physics 2D](https://store.godotengine.org/asset/appsinacup/rapier-physics-2d-fast-version-with-parallel-simd-solver/)
-    - [Rapier Physics 3D](https://store.godotengine.org/asset/appsinacup/rapier-physics-3d-fast-version-with-parallel-simd-solver/)
-
-    Note: There is a single build per dimension. It runs the parallel SIMD solver and is cross platform deterministic.
-
-- Manual: Download the [latest github release](https://github.com/appsinacup/godot-rapier-physics/releases/latest) and move only the `addons` folder into your project `addons` folder.
-
-After installing, go to `Advanced Settings` -> `Physics` -> `2D` or `3D`. Change `Physics Engine` to `Rapier2D` or `Rapier3D`.
-
-# Rust dependency
-
-See [godot-rust/ExtensionLibrary](https://godot-rust.github.io/docs/gdext/master/godot/init/trait.ExtensionLibrary.html#using-other-gdextension-libraries-as-dependencies).
-
-```toml
-[dependencies]
-godot-rapier = { git = "https://github.com/appsinacup/godot-rapier-physics.git", tag = "v0.35.2", features = ["single-dim2"] }
-```
-
-Feature sets matching the shipped addon builds:
-
-| Build | Features |
-| - | - |
-| 2D | `single-dim2`, `serde-serialize`, `parallel`, `experimental-threads`, `register-docs`, `api-4-7` |
-| 3D | `single-dim3`, `serde-serialize`, `parallel`, `experimental-threads`, `register-docs`, `api-4-7` |
-
-Use exactly one Godot API feature: `api-4-4`, `api-4-5`, `api-4-6`, or `api-4-7`.
-
-SIMD and cross-platform determinism are not features you opt into: SIMD is always compiled (with a scalar fallback on targets that lack it) and `enhanced-determinism` is enabled on the Rapier dependencies for every build. `parallel` stays optional since web builds cannot use it.
-
-For web/Emscripten builds, add one web feature: `experimental-wasm` for threaded web builds, or `experimental-wasm-nothreads` for no-thread web builds. `experimental-wasm-nothreads` includes `experimental-wasm`. CI builds web with `wasm32-unknown-emscripten`, `release-wasm`, and `-Zbuild-std`.
-
-When depending on another GDExtension crate, set `GDRUST_MAIN_EXTENSION` to your extension's `ExtensionLibrary` type and explicitly forward Godot Rapier's init stages from your extension. Godot only runs one main `ExtensionLibrary`, so the user's extension must register the Rapier server and classes too:
-
-```rust
-use godot::prelude::*;
-use godot_rapier::RapierPhysics3DExtensionLibrary;
-
-struct MyExtension;
-
-#[gdextension]
-unsafe impl ExtensionLibrary for MyExtension {
-    fn min_level() -> InitLevel {
-        InitLevel::Servers
-    }
-
-    fn on_stage_init(level: InitStage) {
-        RapierPhysics3DExtensionLibrary::on_stage_init(level);
-    }
-
-    fn on_stage_deinit(level: InitStage) {
-        RapierPhysics3DExtensionLibrary::on_stage_deinit(level);
-    }
-}
-```
-
-For 2D projects, use `RapierPhysics2DExtensionLibrary`.
-
-Do not load the standalone Godot Rapier addon in the same Godot project when bundling it through another Rust GDExtension, because Godot classes can be registered twice.
-
-# Youtube Videos
-
-GamesFromScratch:
-
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/rJ91iNMtF1Q/0.jpg)](https://www.youtube.com/watch?v=rJ91iNMtF1Q)
-
-# Showcase
-
-Got a game or app you built with this addon? We showcase them on [godot.rapier.rs/showcase](https://godot.rapier.rs/showcase). Submit your entry [here](https://github.com/appsinacup/godot-rapier-physics-docs/issues/new).
-
-# Implementation Progress
-
-The 2D part is pretty stable, though there are some issues, the 3D part is still missing some things. See the [Implementation Progress](https://godot.rapier.rs/docs/progress/) to get an idea of what status it is in and what features it has.
-
-# Limitations
-
-- Double builds need to be manually built.
-- No support for asymmetric collisions (eg. object 1 hitting object 2 but object 2 not hitting object 1). This is the exact check rapier does: `(A.layer & B.mask) != 0 || (B.layer & A.mask) != 0`
-
-# Module build
-
-In order to build it as a module, go to:
-- [Godot Rapier Physics Module 2D](https://github.com/appsinacup/godot-rapier-physics-module-2d)
-- [Godot Rapier Physics Module 3D](https://github.com/appsinacup/godot-rapier-physics-module-3d)
+See `docs/gamedev/rapier2d-parity-ledger.md`, `docs/gamedev/evidence/rapier2d-desktop-package-validation.json`, `UPSTREAM_LOCK.md`, and `BLOCKERS.md`.

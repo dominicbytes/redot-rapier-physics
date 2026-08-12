@@ -1,0 +1,185 @@
+{
+  "checkpoint_sha256": {
+    "120": "ebe89f650f8fa5d90b4b1f4cc1e39bdf203de499a51a066faee5a8e9febc980c",
+    "180": "a694718fcb95627c85aef0b76c208d4b6f8baf40a150418cec6b181cfd41c059",
+    "240": "753501d83115ef3e08dc200ca98ac6c4d2155b1a29df43eaced9b9981a9a9a6a",
+    "300": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+    "60": "aef66e65dd1703d5f865824b270781b32e6cb9486724c3040bd970bcfd5ed01b"
+  },
+  "final_state_sha256": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+  "platforms": [
+    "Linux-x86_64",
+    "Windows-x86_64"
+  ],
+  "profile": {
+    "body_count": 26,
+    "physics_ticks_per_second": 60,
+    "precision": "single",
+    "redot_separate_thread": false,
+    "seed": 0,
+    "simulation_frames": 300,
+    "solver_parallel": false
+  },
+  "protocol": "redot-rapier2d-determinism-v1",
+  "replay_sha256": "9f1b106595ac6361a7676f6f488e9929e953430c5ac8eccce499ba722eb67928",
+  "run_count": 6,
+  "runs": [
+    {
+      "checkpoint_sha256": {
+        "120": "ebe89f650f8fa5d90b4b1f4cc1e39bdf203de499a51a066faee5a8e9febc980c",
+        "180": "a694718fcb95627c85aef0b76c208d4b6f8baf40a150418cec6b181cfd41c059",
+        "240": "753501d83115ef3e08dc200ca98ac6c4d2155b1a29df43eaced9b9981a9a9a6a",
+        "300": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+        "60": "aef66e65dd1703d5f865824b270781b32e6cb9486724c3040bd970bcfd5ed01b"
+      },
+      "final_state_sha256": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+      "frame_count": 300,
+      "observed": {
+        "arch": "x86_64",
+        "os": "Windows"
+      },
+      "path": "<WORKSPACE>/docs\\gamedev\\evidence\\rapier2d-determinism-windows-run-1.json",
+      "profile": {
+        "body_count": 26,
+        "physics_ticks_per_second": 60,
+        "precision": "single",
+        "redot_separate_thread": false,
+        "seed": 0,
+        "simulation_frames": 300,
+        "solver_parallel": false
+      },
+      "replay_sha256": "9f1b106595ac6361a7676f6f488e9929e953430c5ac8eccce499ba722eb67928"
+    },
+    {
+      "checkpoint_sha256": {
+        "120": "ebe89f650f8fa5d90b4b1f4cc1e39bdf203de499a51a066faee5a8e9febc980c",
+        "180": "a694718fcb95627c85aef0b76c208d4b6f8baf40a150418cec6b181cfd41c059",
+        "240": "753501d83115ef3e08dc200ca98ac6c4d2155b1a29df43eaced9b9981a9a9a6a",
+        "300": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+        "60": "aef66e65dd1703d5f865824b270781b32e6cb9486724c3040bd970bcfd5ed01b"
+      },
+      "final_state_sha256": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+      "frame_count": 300,
+      "observed": {
+        "arch": "x86_64",
+        "os": "Windows"
+      },
+      "path": "<WORKSPACE>/docs\\gamedev\\evidence\\rapier2d-determinism-windows-run-2.json",
+      "profile": {
+        "body_count": 26,
+        "physics_ticks_per_second": 60,
+        "precision": "single",
+        "redot_separate_thread": false,
+        "seed": 0,
+        "simulation_frames": 300,
+        "solver_parallel": false
+      },
+      "replay_sha256": "9f1b106595ac6361a7676f6f488e9929e953430c5ac8eccce499ba722eb67928"
+    },
+    {
+      "checkpoint_sha256": {
+        "120": "ebe89f650f8fa5d90b4b1f4cc1e39bdf203de499a51a066faee5a8e9febc980c",
+        "180": "a694718fcb95627c85aef0b76c208d4b6f8baf40a150418cec6b181cfd41c059",
+        "240": "753501d83115ef3e08dc200ca98ac6c4d2155b1a29df43eaced9b9981a9a9a6a",
+        "300": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+        "60": "aef66e65dd1703d5f865824b270781b32e6cb9486724c3040bd970bcfd5ed01b"
+      },
+      "final_state_sha256": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+      "frame_count": 300,
+      "observed": {
+        "arch": "x86_64",
+        "os": "Windows"
+      },
+      "path": "<WORKSPACE>/docs\\gamedev\\evidence\\rapier2d-determinism-windows-run-3.json",
+      "profile": {
+        "body_count": 26,
+        "physics_ticks_per_second": 60,
+        "precision": "single",
+        "redot_separate_thread": false,
+        "seed": 0,
+        "simulation_frames": 300,
+        "solver_parallel": false
+      },
+      "replay_sha256": "9f1b106595ac6361a7676f6f488e9929e953430c5ac8eccce499ba722eb67928"
+    },
+    {
+      "checkpoint_sha256": {
+        "120": "ebe89f650f8fa5d90b4b1f4cc1e39bdf203de499a51a066faee5a8e9febc980c",
+        "180": "a694718fcb95627c85aef0b76c208d4b6f8baf40a150418cec6b181cfd41c059",
+        "240": "753501d83115ef3e08dc200ca98ac6c4d2155b1a29df43eaced9b9981a9a9a6a",
+        "300": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+        "60": "aef66e65dd1703d5f865824b270781b32e6cb9486724c3040bd970bcfd5ed01b"
+      },
+      "final_state_sha256": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+      "frame_count": 300,
+      "observed": {
+        "arch": "x86_64",
+        "os": "Linux"
+      },
+      "path": "<WORKSPACE>/docs\\gamedev\\evidence\\rapier2d-determinism-linux-run-1.json",
+      "profile": {
+        "body_count": 26,
+        "physics_ticks_per_second": 60,
+        "precision": "single",
+        "redot_separate_thread": false,
+        "seed": 0,
+        "simulation_frames": 300,
+        "solver_parallel": false
+      },
+      "replay_sha256": "9f1b106595ac6361a7676f6f488e9929e953430c5ac8eccce499ba722eb67928"
+    },
+    {
+      "checkpoint_sha256": {
+        "120": "ebe89f650f8fa5d90b4b1f4cc1e39bdf203de499a51a066faee5a8e9febc980c",
+        "180": "a694718fcb95627c85aef0b76c208d4b6f8baf40a150418cec6b181cfd41c059",
+        "240": "753501d83115ef3e08dc200ca98ac6c4d2155b1a29df43eaced9b9981a9a9a6a",
+        "300": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+        "60": "aef66e65dd1703d5f865824b270781b32e6cb9486724c3040bd970bcfd5ed01b"
+      },
+      "final_state_sha256": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+      "frame_count": 300,
+      "observed": {
+        "arch": "x86_64",
+        "os": "Linux"
+      },
+      "path": "<WORKSPACE>/docs\\gamedev\\evidence\\rapier2d-determinism-linux-run-2.json",
+      "profile": {
+        "body_count": 26,
+        "physics_ticks_per_second": 60,
+        "precision": "single",
+        "redot_separate_thread": false,
+        "seed": 0,
+        "simulation_frames": 300,
+        "solver_parallel": false
+      },
+      "replay_sha256": "9f1b106595ac6361a7676f6f488e9929e953430c5ac8eccce499ba722eb67928"
+    },
+    {
+      "checkpoint_sha256": {
+        "120": "ebe89f650f8fa5d90b4b1f4cc1e39bdf203de499a51a066faee5a8e9febc980c",
+        "180": "a694718fcb95627c85aef0b76c208d4b6f8baf40a150418cec6b181cfd41c059",
+        "240": "753501d83115ef3e08dc200ca98ac6c4d2155b1a29df43eaced9b9981a9a9a6a",
+        "300": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+        "60": "aef66e65dd1703d5f865824b270781b32e6cb9486724c3040bd970bcfd5ed01b"
+      },
+      "final_state_sha256": "866214a3a6138c8e490f3c92a40847cbfe74412adc324fdd402c735e7acaab8a",
+      "frame_count": 300,
+      "observed": {
+        "arch": "x86_64",
+        "os": "Linux"
+      },
+      "path": "<WORKSPACE>/docs\\gamedev\\evidence\\rapier2d-determinism-linux-run-3.json",
+      "profile": {
+        "body_count": 26,
+        "physics_ticks_per_second": 60,
+        "precision": "single",
+        "redot_separate_thread": false,
+        "seed": 0,
+        "simulation_frames": 300,
+        "solver_parallel": false
+      },
+      "replay_sha256": "9f1b106595ac6361a7676f6f488e9929e953430c5ac8eccce499ba722eb67928"
+    }
+  ],
+  "status": "PASS"
+}

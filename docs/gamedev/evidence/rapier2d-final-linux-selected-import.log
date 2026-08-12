@@ -1,0 +1,59 @@
+Redot Engine LTS v26.2.stable.official.4f5b14aba (2026-06-29 19:32:24 UTC) - https://redotengine.org
+
+[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
+[   0% ] first_scan_filesystem | Scanning file structure...
+[  16% ] first_scan_filesystem | Loading global class names...
+[  33% ] first_scan_filesystem | Verifying GDExtensions...
+PHYSICS ENGINE 2D: Rapier2D v0.35.2-redot.1
+[  50% ] first_scan_filesystem | Creating autoload scripts...
+[  66% ] first_scan_filesystem | Initializing plugins...
+[  83% ] first_scan_filesystem | Starting file scan...
+[ DONE ] first_scan_filesystem
+
+[   0% ] update_scripts_classes | Started Registering global classes... (17 steps)
+[   0% ] update_scripts_classes | RapierAnimatableBody2D
+[   5% ] update_scripts_classes | RapierArea2D
+[  11% ] update_scripts_classes | RapierCharacterBody2D
+[  16% ] update_scripts_classes | RapierDampedSpringJoint2D
+[  22% ] update_scripts_classes | RapierFixedJoint2D
+[  27% ] update_scripts_classes | RapierGrooveJoint2D
+[  33% ] update_scripts_classes | RapierPhysicalBone2D
+[  38% ] update_scripts_classes | RapierPinJoint2D
+[  44% ] update_scripts_classes | RapierRigidBody2D
+[  50% ] update_scripts_classes | RapierRopeJoint2D
+[  55% ] update_scripts_classes | RapierStaticBody2D
+[  61% ] update_scripts_classes | Faucet2D
+[  66% ] update_scripts_classes |
+[  72% ] update_scripts_classes |
+[  77% ] update_scripts_classes | Fluid2DRenderer
+[  83% ] update_scripts_classes | Fluid2DShaderRenderer
+[  88% ] update_scripts_classes |
+[ DONE ] update_scripts_classes
+
+[   0% ] _update_scan_actions | Started Scanning actions... (4 steps)
+[   0% ] _update_scan_actions | Fluid2D.svg
+[  20% ] _update_scan_actions | StateManager2D.svg
+[  40% ] _update_scan_actions | logo_square_2d.png
+[  60% ] _update_scan_actions | Radial2D.svg
+[ DONE ] _update_scan_actions
+
+[   0% ] reimport | Started (Re)Importing Assets (4 steps)
+[   0% ] reimport | Preparing files to reimport...
+[  20% ] reimport | Preparing files to reimport...
+[  40% ] reimport | Preparing files to reimport...
+[  60% ] reimport | Preparing files to reimport...
+[   0% ] reimport | Executing pre-reimport operations...
+[   0% ] reimport | Fluid2D.svg
+[  20% ] reimport | StateManager2D.svg
+[  40% ] reimport | logo_square_2d.png
+[  60% ] reimport | Radial2D.svg
+[  80% ] reimport | Finalizing Asset Import...
+[ DONE ] reimport
+
+[   0% ] reimport | Started (Re)Importing Assets (4 steps)
+[   0% ] reimport | Executing post-reimport operations...
+[ DONE ] reimport
+
+[   0% ] loading_editor_layout | Started Loading editor (5 steps)
+[   0% ] loading_editor_layout | Loading editor layout...
+[ DONE ] loading_editor_layout

@@ -1,6 +1,6 @@
 [package]
 name = "godot-rapier"
-version = "0.35.2"
+version = "0.35.2-redot.1"
 edition = "2024"
 license = "MIT"
 rust-version = "1.94"
@@ -22,6 +22,7 @@ api-4-5 = ["godot/api-4-5"]
 api-4-6 = ["godot/api-4-6"]
 api-4-7 = ["godot/api-4-7"]
 api-custom = ["godot/api-custom"]
+redot-compat = []
 register-docs = ["godot/register-docs"]
 serde-serialize = ["serde", "hashbrown/serde", "bincode", "serde_json", "godot/serde", "rapier2d?/serde-serialize", "rapier2d-f64?/serde-serialize", "rapier3d?/serde-serialize", "rapier3d-f64?/serde-serialize" ]
 parallel =["rapier2d?/parallel", "rapier2d-f64?/parallel", "rapier3d?/parallel", "rapier3d-f64?/parallel", "salva2d?/parallel", "salva3d?/parallel", "num_cpus", "dep:libc"]
