@@ -95,6 +95,11 @@ def run(args: list[str], env: dict[str, str]) -> str:
     return result.stdout
 
 
+def cargo_executable_path(path: Path) -> Path:
+    """Make Cargo absolute without resolving rustup's command shim symlink."""
+    return path.absolute()
+
+
 def profiles(porting: dict[str, Any]) -> dict[str, list[str]]:
     addon = next(item for item in porting["addons"] if item["dimension"] == "2d")
     editor = list(addon["cargo_features"]) + list(addon["dependency_features"])
@@ -544,7 +549,7 @@ def main() -> int:
     if cargo_value is None or not cargo_value.is_file():
         raise SystemExit("Cargo executable not found; pass --cargo")
     try:
-        outputs = build_outputs(cargo_value.resolve(), api.resolve(), args.offline)
+        outputs = build_outputs(cargo_executable_path(cargo_value), api.resolve(), args.offline)
         apply_outputs(outputs, args.check)
     except (OSError, ValueError, KeyError, json.JSONDecodeError, MetadataError) as exc:
         print(f"distribution metadata: FAIL: {exc}", file=sys.stderr)
