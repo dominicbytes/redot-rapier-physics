@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "redot": {
+    "version": "26.2",
+    "compatibility_version": "4.5.2",
+    "status": "stable",
+    "tag": "redot-26.2-stable",
+    "commit": "4f5b14abade2239104847d03d8f9056e4467cfcd",
+    "version_output": "26.2.stable.official.4f5b14aba",
+    "precision": "single",
+    "release_url": "https://github.com/Redot-Engine/redot-engine/releases/tag/redot-26.2-stable",
+    "assets": {
+      "windows-x86_64": {
+        "filename": "Redot_v26.2-stable_windows_win64.zip",
+        "url": "https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_windows_win64.zip",
+        "sha256": "4644c7591bbe8019b861deb0ccdb64fd4f59a88514abf7c788cf176c259855af"
+      },
+      "linux-x86_64": {
+        "filename": "Redot_v26.2-stable_linux_x64.zip",
+        "url": "https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_linux_x64.zip",
+        "sha256": "f474d890806c41af15513cf5a8600243e241882e11b68dbb95660e3465b5b1e4"
+      },
+      "export-templates": {
+        "filename": "Redot_v26.2-stable_export_templates.tpz",
+        "url": "https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_export_templates.tpz",
+        "sha256": "fa8c648bd9a9d911daffbcc4e1786d0248794571a7e4ed954444197c809079ea"
+      }
+    }
+  },
+  "api": {
+    "snapshot": "../api/redot-26.2/4f5b14aba-single-windows-x86_64/extension_api.json",
+    "sha256": "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577",
+    "interface_header": "../api/redot-26.2/4f5b14aba-single-windows-x86_64/gdextension_interface.h",
+    "interface_sha256": "4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320",
+    "environment_variable": "GDRUST_GODOT_API_JSON"
+  },
+  "rust": {
+    "toolchain": "1.94.0",
+    "host": "x86_64-pc-windows-msvc"
+  },
+  "bindings": {
+    "mode": "redot-rust-cargo",
+    "compatibility_repository": "https://github.com/dominicbytes/redot-rust",
+    "compatibility_commit": "18ad5c538c452b8640420366794354e3ed48f205",
+    "gdext_repository": "https://github.com/godot-rust/gdext",
+    "gdext_revision": "637cef73172bba23850131acd8583b0c72ebf0c7",
+    "gdext_crate_version": "0.5.5",
+    "dependency_feature": "godot/api-custom-json"
+  },
+  "infrastructure": {
+    "source_hint": "../redot-porting-infrastructure",
+    "snapshot_manifest": "docs/gamedev/evidence/redot-porting-infrastructure.snapshot.json",
+    "snapshot_manifest_sha256": "ec5f2e8fe2fe65b94a17d577043aad16b70652bf23a09930e34001710b2ddf54"
+  }
+}

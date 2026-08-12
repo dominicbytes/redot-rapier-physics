@@ -1,0 +1,102 @@
+{
+  "schema_version": 2,
+  "product": {
+    "repository": "https://github.com/dominicbytes/redot-rapier-physics",
+    "release_version": "0.35.2-redot.1",
+    "release_tag": "v0.35.2-redot.1",
+    "publication_state": "unpublished-candidate"
+  },
+  "upstream": {
+    "repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+    "tag": "v0.35.2",
+    "version": "0.35.2",
+    "commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+    "tree": "40db8bc1e0c0b04391c8458c518e6889713b851d",
+    "tracked_file_count": 637,
+    "tracked_payload_manifest_sha256": "7e150baf518b72e1b9d40657035be0932e6a3098d666cfedf8bfc93749907e3b"
+  },
+  "certified_redot": [
+    {
+      "version": "26.2",
+      "status": "stable",
+      "tag": "redot-26.2-stable",
+      "commit": "4f5b14abade2239104847d03d8f9056e4467cfcd",
+      "compatibility_version": "4.5.2",
+      "precision": "single",
+      "api_snapshot": "../api/redot-26.2/4f5b14aba-single-windows-x86_64/extension_api.json",
+      "api_sha256": "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577",
+      "interface_header": "../api/redot-26.2/4f5b14aba-single-windows-x86_64/gdextension_interface.h",
+      "interface_sha256": "4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320"
+    }
+  ],
+  "addons": [
+    {
+      "dimension": "2d",
+      "display_name": "Redot Rapier Physics 2D",
+      "slug": "redot-rapier-physics-2d",
+      "internal_path": "addons/godot-rapier2d",
+      "source_path": "bin2d/addons/godot-rapier2d",
+      "descriptor": "bin2d/addons/godot-rapier2d/godot-rapier2d.gdextension",
+      "entry_symbol": "rapier_2d_init",
+      "cargo_features": [
+        "single-dim2",
+        "redot-compat",
+        "serde-serialize",
+        "parallel",
+        "register-docs"
+      ],
+      "export_excluded_features": [
+        "register-docs"
+      ],
+      "dependency_features": [
+        "godot/api-custom-json"
+      ],
+      "compatibility_probe": true,
+      "product_enabled": true,
+      "package_enabled": true
+    },
+    {
+      "dimension": "3d",
+      "display_name": "Redot Rapier Physics 3D",
+      "slug": "redot-rapier-physics-3d",
+      "internal_path": "addons/godot-rapier3d",
+      "source_path": "bin3d/addons/godot-rapier3d",
+      "descriptor": "bin3d/addons/godot-rapier3d/godot-rapier3d.gdextension",
+      "entry_symbol": "rapier_3d_init",
+      "cargo_features": [
+        "single-dim3",
+        "redot-compat"
+      ],
+      "export_excluded_features": [],
+      "dependency_features": [
+        "godot/api-custom-json"
+      ],
+      "compatibility_probe": true,
+      "product_enabled": false,
+      "package_enabled": false
+    }
+  ],
+  "platforms": [
+    {
+      "id": "windows-x86_64",
+      "os": "windows",
+      "arch": "x86_64",
+      "status": "required",
+      "required": true
+    },
+    {
+      "id": "linux-x86_64",
+      "os": "linux",
+      "arch": "x86_64",
+      "status": "required",
+      "required": true
+    },
+    {
+      "id": "macos-universal",
+      "os": "macos",
+      "arch": "universal",
+      "status": "deferred",
+      "required": false
+    }
+  ]
+}

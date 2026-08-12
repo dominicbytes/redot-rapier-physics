@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "revision": 6,
+  "policy": "regression guardrail; improvement over the default backend is not required",
+  "revision_note": "Revision 1's 33.334 ms fluid p95 was retired after the Linux pilot because it imposed an unrequested 30 FPS target on a Rapier-only capability with no default-backend baseline. Revision 2 retained the 100 ms ceiling and added spread/memory checks. Revisions 3-4 controlled and recorded CPU affinity. Revision 5 replaced Redot's block-updated headless TIME_PHYSICS_PROCESS monitor with direct wall-clock physics-frame intervals. Revision 6 replaces the scale-unstable p95 spread ratio with a p95 range capped at one configured 60 Hz physics tick (16.667 ms); all workloads, body-regression limits, the 100 ms fluid ceiling, and the memory-growth limit remain unchanged.",
+  "frozen_on": "2026-08-12",
+  "scenario_contract_sha256": "715870cb2898ee4e2776c08b28a39c991aa83943bd8074ec2768c85cf8e812eb",
+  "fixture_manifest_sha256": "df7c046c51673e705bf1731988448e5559696efc7995d6cb0356e3211e0433fe",
+  "runner_sha256": "3bd97d5276c5dc4eec470078d95fdff5f93f6aa4572e8d4d4cc8e8afe60d4bd0",
+  "aggregation": "three runs; wall-clock intervals between consecutive physics-frame signals; pooled frame samples; nearest-rank p95; median; maximum static-memory monitor",
+  "environment_controls": {
+    "windows_local": "paired baseline/candidate on the same native Windows host with process affinity 0-15",
+    "linux_local": "paired baseline/candidate in redot-limboai-ubuntu-runtime@sha256:4989e204b631af5f177f32284f3ff2ef2b97c350fa657532fc9e01bed3b443f4 with Docker cpuset 0-15",
+    "ci": "paired baseline/candidate in one native operating-system job; comparison rejects environment identity or affinity drift"
+  },
+  "stability": {
+    "per_run_p95_range_ms_max": 16.667,
+    "per_run_memory_growth_bytes_max": 16777216
+  },
+  "frozen_after_baseline": {
+    "platform": "windows-x86_64",
+    "redot": "26.2.stable.official.4f5b14aba",
+    "baseline_report": "docs/gamedev/evidence/performance-windows/performance-default.json",
+    "baseline_report_sha256": "06e04090c06e35a3312fb27bfb84bb66adf731a77cb50f86b5ad83ef033fc5f8"
+  },
+  "body_scenarios": {
+    "bodies-small": {
+      "median_ratio_max": 4.0,
+      "median_additive_ms": 1.0,
+      "p95_ratio_max": 4.0,
+      "p95_additive_ms": 2.0,
+      "memory_ratio_max": 2.5,
+      "memory_additive_bytes": 67108864
+    },
+    "bodies-medium": {
+      "median_ratio_max": 4.0,
+      "median_additive_ms": 1.5,
+      "p95_ratio_max": 4.0,
+      "p95_additive_ms": 2.0,
+      "memory_ratio_max": 2.5,
+      "memory_additive_bytes": 67108864
+    },
+    "bodies-high": {
+      "median_ratio_max": 4.0,
+      "median_additive_ms": 2.0,
+      "p95_ratio_max": 4.0,
+      "p95_additive_ms": 5.0,
+      "memory_ratio_max": 2.5,
+      "memory_additive_bytes": 67108864
+    }
+  },
+  "fluid_scenario": {
+    "id": "fluid-2048",
+    "p95_ms_max": 100.0,
+    "maximum_ms_max": 100.0
+  }
+}

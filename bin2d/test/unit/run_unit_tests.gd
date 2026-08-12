@@ -11,5 +11,10 @@ extends Node
 # printed) or logs an error to stderr. CI therefore fails the run if EITHER the sentinel is
 # missing OR an assertion/script error appears in the log.
 func _ready() -> void:
+	# Let child _ready() calls unwind and the physics server flush one step before
+	# shutdown. Quitting during scene-tree initialization leaves transient test
+	# objects registered in ObjectDB and masks an otherwise clean test result.
+	await get_tree().process_frame
+	await get_tree().physics_frame
 	print("UNIT TESTS STATUS: SUCCESS")
 	get_tree().quit(0)

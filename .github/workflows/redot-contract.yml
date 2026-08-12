@@ -1,0 +1,469 @@
+name: Redot Rapier2D contract
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - redot-26.2
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: "1"
+  RUSTUP_TOOLCHAIN: "1.94.0"
+  RAPIER2D_EXPORT_FEATURES: single-dim2,redot-compat,serde-serialize,parallel,godot/api-custom-json
+  RAPIER2D_EDITOR_FEATURES: single-dim2,redot-compat,serde-serialize,parallel,register-docs,godot/api-custom-json
+  RAPIER2D_DETERMINISM_FEATURES: single-dim2,redot-compat,serde-serialize,register-docs,godot/api-custom-json
+
+jobs:
+  windows-x86-64:
+    name: Windows x86-64
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install the locked Rust toolchain
+        shell: pwsh
+        run: |
+          rustup toolchain install 1.94.0 --profile minimal
+          rustup component add clippy rustfmt --toolchain 1.94.0
+          rustup default 1.94.0
+
+      - name: Download and verify Redot 26.2
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build/redot | Out-Null
+          $archive = "build/redot/Redot_v26.2-stable_windows_win64.zip"
+          curl.exe --fail --location --output $archive "https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_windows_win64.zip"
+          $actual = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
+          if ($actual -ne "4644c7591bbe8019b861deb0ccdb64fd4f59a88514abf7c788cf176c259855af") {
+            throw "Redot Windows archive hash mismatch: $actual"
+          }
+          Expand-Archive -LiteralPath $archive -DestinationPath build/redot/editor
+          $console = (Get-ChildItem build/redot/editor -Recurse -Filter "redot.windows.editor.x86_64.console.exe" | Select-Object -First 1).FullName
+          if (-not $console) { throw "Redot Windows console launcher not found" }
+          "REDOT_BIN=$console" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Reproduce and verify the locked API
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build/api | Out-Null
+          Push-Location build/api
+          & $env:REDOT_BIN --headless --dump-extension-api
+          if ($LASTEXITCODE -ne 0) { throw "Redot API dump failed" }
+          & $env:REDOT_BIN --headless --dump-gdextension-interface
+          if ($LASTEXITCODE -ne 0) { throw "Redot interface dump failed" }
+          Pop-Location
+          $apiHash = (Get-FileHash -Algorithm SHA256 build/api/extension_api.json).Hash.ToLowerInvariant()
+          $interfaceHash = (Get-FileHash -Algorithm SHA256 build/api/gdextension_interface.h).Hash.ToLowerInvariant()
+          if ($apiHash -ne "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577") {
+            throw "Redot API hash mismatch: $apiHash"
+          }
+          if ($interfaceHash -ne "4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320") {
+            throw "Redot interface hash mismatch: $interfaceHash"
+          }
+          $api = (Resolve-Path build/api/extension_api.json).Path
+          "GDRUST_GODOT_API_JSON=$api" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Validate the portable contract
+        shell: pwsh
+        run: |
+          python scripts/redot_porting.py validate --skip-local-files
+          python -m unittest discover -s tests -p "test_*.py"
+          python scripts/verify_2d_parity.py --report reports/ci/windows/parity.json
+
+      - name: Lint, test, and build Rapier2D profiles
+        shell: pwsh
+        run: |
+          cargo fmt --all -- --check
+          New-Item -ItemType Directory -Force build/native | Out-Null
+          cargo clippy --config compat/rapier-cargo-config.toml --locked --no-default-features --features $env:RAPIER2D_EDITOR_FEATURES -- -D warnings
+          cargo test --config compat/rapier-cargo-config.toml --locked --no-default-features --features $env:RAPIER2D_EDITOR_FEATURES
+          cargo --config compat/rapier-cargo-config.toml build --locked --no-default-features --features $env:RAPIER2D_EDITOR_FEATURES
+          Copy-Item -LiteralPath target/debug/godot_rapier.dll -Destination build/native/windows-editor.dll -Force
+          cargo --config compat/rapier-cargo-config.toml build --locked --no-default-features --features $env:RAPIER2D_EXPORT_FEATURES
+          Copy-Item -LiteralPath target/debug/godot_rapier.dll -Destination build/native/windows-debug.dll -Force
+          cargo --config compat/rapier-cargo-config.toml build --locked --release --no-default-features --features $env:RAPIER2D_EXPORT_FEATURES
+          Copy-Item -LiteralPath target/release/godot_rapier.dll -Destination build/native/windows-release.dll -Force
+          cargo --config compat/rapier-cargo-config.toml build --locked --target-dir target/deterministic --no-default-features --features $env:RAPIER2D_DETERMINISM_FEATURES
+          Copy-Item -LiteralPath target/deterministic/debug/godot_rapier.dll -Destination build/native/windows-deterministic.dll -Force
+
+      - name: Stage and run Redot import, smoke, unit, feature, and regression suites
+        shell: pwsh
+        run: |
+          $addonBin = "bin2d/addons/godot-rapier2d/bin"
+          New-Item -ItemType Directory -Force $addonBin | Out-Null
+          Copy-Item -LiteralPath build/native/windows-editor.dll -Destination "$addonBin/libgodot_rapier.windows.editor.x86_64-pc-windows-msvc.dll" -Force
+          Copy-Item -LiteralPath build/native/windows-debug.dll -Destination "$addonBin/libgodot_rapier.windows.debug.x86_64-pc-windows-msvc.dll" -Force
+          Copy-Item -LiteralPath build/native/windows-release.dll -Destination "$addonBin/libgodot_rapier.windows.release.x86_64-pc-windows-msvc.dll" -Force
+          New-Item -ItemType Directory -Force reports/ci/windows | Out-Null
+          $evidence = (Resolve-Path reports/ci/windows).Path
+          & $env:REDOT_BIN --headless --path bin2d --import --quit-after 300 --log-file "$evidence/import.log"
+          if ($LASTEXITCODE -ne 0) { throw "Redot import failed" }
+          & $env:REDOT_BIN --headless --fixed-fps 60 --path bin2d --scene res://test/redot/compatibility_smoke.tscn --quit-after 600 --log-file "$evidence/smoke.log"
+          if ($LASTEXITCODE -ne 0) { throw "Rapier2D smoke failed" }
+          & $env:REDOT_BIN --headless --fixed-fps 60 --path bin2d --quit-after 30000 --log-file "$evidence/regression.log"
+          if ($LASTEXITCODE -ne 0) { throw "Rapier2D regression failed" }
+          & $env:REDOT_BIN --headless --fixed-fps 60 --path bin2d --scene res://test/unit/run_unit_tests.tscn --quit-after 1200 --log-file "$evidence/unit.log"
+          if ($LASTEXITCODE -ne 0) { throw "Rapier2D unit scene failed" }
+          & $env:REDOT_BIN --headless --fixed-fps 60 --path bin2d --scene res://test/redot/feature_parity_smoke.tscn --quit-after 1200 --log-file "$evidence/feature-parity.log"
+          if ($LASTEXITCODE -ne 0) { throw "Rapier2D feature parity smoke failed" }
+          if (-not (Select-String -Quiet -LiteralPath "$evidence/smoke.log" -Pattern "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS")) {
+            throw "Rapier2D smoke sentinel missing"
+          }
+          if (-not (Select-String -Quiet -LiteralPath "$evidence/regression.log" -Pattern "STATUS: SUCCESS")) {
+            throw "Rapier2D regression success sentinel missing"
+          }
+          if (-not (Select-String -Quiet -LiteralPath "$evidence/unit.log" -Pattern "UNIT TESTS STATUS: SUCCESS")) {
+            throw "Rapier2D unit success sentinel missing"
+          }
+          if (-not (Select-String -Quiet -LiteralPath "$evidence/feature-parity.log" -Pattern "REDOT RAPIER2D FEATURE PARITY: SUCCESS")) {
+            throw "Rapier2D feature parity sentinel missing"
+          }
+          Get-FileHash -Algorithm SHA256 "$addonBin/libgodot_rapier.windows.*.x86_64-pc-windows-msvc.dll" | ConvertTo-Json | Out-File "$evidence/binary-sha256.json" -Encoding utf8
+
+      - name: Prove the Windows deterministic profile
+        shell: pwsh
+        run: |
+          $addonBin = "bin2d/addons/godot-rapier2d/bin"
+          $evidence = (Resolve-Path reports/ci/windows).Path
+          $determinism = Join-Path $evidence "determinism"
+          New-Item -ItemType Directory -Force $determinism | Out-Null
+          Copy-Item -LiteralPath build/native/windows-deterministic.dll -Destination "$addonBin/libgodot_rapier.windows.editor.x86_64-pc-windows-msvc.dll" -Force
+          for ($run = 1; $run -le 3; $run++) {
+            $output = Join-Path $determinism "run-$run.json"
+            $log = Join-Path $determinism "run-$run.log"
+            & $env:REDOT_BIN --headless --fixed-fps 60 --path bin2d --scene res://tests/determinism/determinism_test.tscn --quit-after 1200 --log-file $log -- "--rapier-determinism-output=$output"
+            if ($LASTEXITCODE -ne 0) { throw "Determinism run $run failed" }
+          }
+          python scripts/compare_determinism.py "$determinism/run-1.json" "$determinism/run-2.json" "$determinism/run-3.json" --report "$determinism/comparison.json"
+          Copy-Item -LiteralPath build/native/windows-editor.dll -Destination "$addonBin/libgodot_rapier.windows.editor.x86_64-pc-windows-msvc.dll" -Force
+
+      - name: Run the Windows performance guardrail
+        shell: pwsh
+        run: |
+          $evidence = (Resolve-Path reports/ci/windows).Path
+          $performance = Join-Path $evidence "performance"
+          python scripts/performance_guardrail.py run --backend default --redot-bin $env:REDOT_BIN --output-dir $performance
+          python scripts/performance_guardrail.py run --backend rapier --redot-bin $env:REDOT_BIN --output-dir $performance
+          python scripts/performance_guardrail.py compare --baseline "$performance/performance-default.json" --candidate "$performance/performance-rapier.json" --output "$performance/comparison.json"
+
+      - name: Upload Windows evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: rapier2d-windows-evidence
+          path: |
+            build/api
+            build/native
+            reports/ci/windows
+          if-no-files-found: warn
+          retention-days: 90
+
+  linux-x86-64:
+    name: Linux x86-64
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install the locked Rust toolchain
+        run: |
+          rustup toolchain install 1.94.0 --profile minimal
+          rustup component add clippy rustfmt --toolchain 1.94.0
+          rustup default 1.94.0
+
+      - name: Download and verify Redot 26.2
+        run: |
+          mkdir -p build/redot/editor
+          archive="build/redot/Redot_v26.2-stable_linux_x64.zip"
+          curl --fail --location --output "$archive" "https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_linux_x64.zip"
+          echo "f474d890806c41af15513cf5a8600243e241882e11b68dbb95660e3465b5b1e4  $archive" | sha256sum --check --strict
+          unzip -q "$archive" -d build/redot/editor
+          redot_bin="$(find build/redot/editor -type f -name 'redot.linuxbsd.editor.x86_64' -print -quit)"
+          test -n "$redot_bin"
+          chmod +x "$redot_bin"
+          echo "REDOT_BIN=$GITHUB_WORKSPACE/$redot_bin" >> "$GITHUB_ENV"
+
+      - name: Reproduce and verify the locked API
+        run: |
+          mkdir -p build/api
+          (cd build/api && "$REDOT_BIN" --headless --dump-extension-api)
+          (cd build/api && "$REDOT_BIN" --headless --dump-gdextension-interface)
+          echo "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577  build/api/extension_api.json" | sha256sum --check --strict
+          echo "4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320  build/api/gdextension_interface.h" | sha256sum --check --strict
+          echo "GDRUST_GODOT_API_JSON=$GITHUB_WORKSPACE/build/api/extension_api.json" >> "$GITHUB_ENV"
+
+      - name: Validate the portable contract
+        run: |
+          python3 scripts/redot_porting.py validate --skip-local-files
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 scripts/verify_2d_parity.py --report reports/ci/linux/parity.json
+
+      - name: Lint, test, and build Rapier2D profiles
+        run: |
+          cargo fmt --all -- --check
+          mkdir -p build/native
+          cargo clippy --config compat/rapier-cargo-config.toml --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES" -- -D warnings
+          cargo test --config compat/rapier-cargo-config.toml --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES"
+          cargo --config compat/rapier-cargo-config.toml build --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES"
+          cp target/debug/libgodot_rapier.so build/native/linux-editor.so
+          cargo --config compat/rapier-cargo-config.toml build --locked --no-default-features --features "$RAPIER2D_EXPORT_FEATURES"
+          cp target/debug/libgodot_rapier.so build/native/linux-debug.so
+          cargo --config compat/rapier-cargo-config.toml build --locked --release --no-default-features --features "$RAPIER2D_EXPORT_FEATURES"
+          cp target/release/libgodot_rapier.so build/native/linux-release.so
+          cargo --config compat/rapier-cargo-config.toml build --locked --target-dir target/deterministic --no-default-features --features "$RAPIER2D_DETERMINISM_FEATURES"
+          cp target/deterministic/debug/libgodot_rapier.so build/native/linux-deterministic.so
+          strip --strip-debug build/native/linux-editor.so build/native/linux-debug.so build/native/linux-release.so
+
+      - name: Stage and run Redot import, smoke, unit, feature, and regression suites
+        run: |
+          addon_bin="bin2d/addons/godot-rapier2d/bin"
+          mkdir -p "$addon_bin" reports/ci/linux
+          cp build/native/linux-editor.so "$addon_bin/libgodot_rapier.linux.editor.x86_64-unknown-linux-gnu.so"
+          cp build/native/linux-debug.so "$addon_bin/libgodot_rapier.linux.debug.x86_64-unknown-linux-gnu.so"
+          cp build/native/linux-release.so "$addon_bin/libgodot_rapier.linux.release.x86_64-unknown-linux-gnu.so"
+          "$REDOT_BIN" --headless --path bin2d --import --quit-after 300 --log-file "$GITHUB_WORKSPACE/reports/ci/linux/import.log"
+          "$REDOT_BIN" --headless --fixed-fps 60 --path bin2d --scene res://test/redot/compatibility_smoke.tscn --quit-after 600 --log-file "$GITHUB_WORKSPACE/reports/ci/linux/smoke.log"
+          "$REDOT_BIN" --headless --fixed-fps 60 --path bin2d --quit-after 30000 --log-file "$GITHUB_WORKSPACE/reports/ci/linux/regression.log"
+          "$REDOT_BIN" --headless --fixed-fps 60 --path bin2d --scene res://test/unit/run_unit_tests.tscn --quit-after 1200 --log-file "$GITHUB_WORKSPACE/reports/ci/linux/unit.log"
+          "$REDOT_BIN" --headless --fixed-fps 60 --path bin2d --scene res://test/redot/feature_parity_smoke.tscn --quit-after 1200 --log-file "$GITHUB_WORKSPACE/reports/ci/linux/feature-parity.log"
+          grep -Fq "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS" reports/ci/linux/smoke.log
+          grep -Fq "STATUS: SUCCESS" reports/ci/linux/regression.log
+          grep -Fq "UNIT TESTS STATUS: SUCCESS" reports/ci/linux/unit.log
+          grep -Fq "REDOT RAPIER2D FEATURE PARITY: SUCCESS" reports/ci/linux/feature-parity.log
+          sha256sum "$addon_bin"/libgodot_rapier.linux.*.x86_64-unknown-linux-gnu.so > reports/ci/linux/binary.sha256
+
+      - name: Prove the Linux deterministic profile
+        run: |
+          addon_bin="bin2d/addons/godot-rapier2d/bin"
+          determinism="reports/ci/linux/determinism"
+          mkdir -p "$determinism"
+          cp build/native/linux-deterministic.so "$addon_bin/libgodot_rapier.linux.editor.x86_64-unknown-linux-gnu.so"
+          for run in 1 2 3; do
+            output="$GITHUB_WORKSPACE/$determinism/run-$run.json"
+            "$REDOT_BIN" --headless --fixed-fps 60 --path bin2d --scene res://tests/determinism/determinism_test.tscn --quit-after 1200 --log-file "$GITHUB_WORKSPACE/$determinism/run-$run.log" -- "--rapier-determinism-output=$output"
+          done
+          python3 scripts/compare_determinism.py "$determinism/run-1.json" "$determinism/run-2.json" "$determinism/run-3.json" --report "$determinism/comparison.json"
+          cp build/native/linux-editor.so "$addon_bin/libgodot_rapier.linux.editor.x86_64-unknown-linux-gnu.so"
+
+      - name: Run the Linux performance guardrail
+        run: |
+          performance="reports/ci/linux/performance"
+          python3 scripts/performance_guardrail.py run --backend default --redot-bin "$REDOT_BIN" --output-dir "$performance"
+          python3 scripts/performance_guardrail.py run --backend rapier --redot-bin "$REDOT_BIN" --output-dir "$performance"
+          python3 scripts/performance_guardrail.py compare --baseline "$performance/performance-default.json" --candidate "$performance/performance-rapier.json" --output "$performance/comparison.json"
+
+      - name: Upload Linux evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: rapier2d-linux-evidence
+          path: |
+            build/api
+            build/native
+            reports/ci/linux
+          if-no-files-found: warn
+          retention-days: 90
+
+  package:
+    name: Deterministic desktop package
+    needs:
+      - windows-x86-64
+      - linux-x86-64
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install the locked Rust toolchain
+        run: |
+          rustup toolchain install 1.94.0 --profile minimal
+          rustup default 1.94.0
+
+      - name: Download Windows native artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: rapier2d-windows-evidence
+          path: build/from-windows
+
+      - name: Download Linux native artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: rapier2d-linux-evidence
+          path: build/from-linux
+
+      - name: Stage the exact six-profile payload
+        run: |
+          addon_bin="bin2d/addons/godot-rapier2d/bin"
+          mkdir -p "$addon_bin" reports/ci/package build/package-a build/package-b
+          cp build/from-windows/build/native/windows-editor.dll "$addon_bin/libgodot_rapier.windows.editor.x86_64-pc-windows-msvc.dll"
+          cp build/from-windows/build/native/windows-debug.dll "$addon_bin/libgodot_rapier.windows.debug.x86_64-pc-windows-msvc.dll"
+          cp build/from-windows/build/native/windows-release.dll "$addon_bin/libgodot_rapier.windows.release.x86_64-pc-windows-msvc.dll"
+          cp build/from-linux/build/native/linux-editor.so "$addon_bin/libgodot_rapier.linux.editor.x86_64-unknown-linux-gnu.so"
+          cp build/from-linux/build/native/linux-debug.so "$addon_bin/libgodot_rapier.linux.debug.x86_64-unknown-linux-gnu.so"
+          cp build/from-linux/build/native/linux-release.so "$addon_bin/libgodot_rapier.linux.release.x86_64-unknown-linux-gnu.so"
+
+      - name: Verify legal metadata, parity, determinism, and packaging
+        run: |
+          export GDRUST_GODOT_API_JSON="$GITHUB_WORKSPACE/build/from-linux/build/api/extension_api.json"
+          python3 scripts/generate_distribution_metadata.py --cargo "$(command -v cargo)" --api "$GDRUST_GODOT_API_JSON" --check
+          python3 scripts/redot_porting.py package --output-dir build/package-a --report reports/ci/package/package-a.json
+          python3 scripts/redot_porting.py package --output-dir build/package-b --report reports/ci/package/package-b.json
+          archive="redot-rapier-physics-2d-0.35.2-redot.1.zip"
+          cmp "build/package-a/$archive" "build/package-b/$archive"
+          python3 scripts/redot_porting.py verify-package --archive "build/package-a/$archive" --report reports/ci/package/verification.json
+          python3 scripts/verify_2d_parity.py --archive "build/package-a/$archive" --report reports/ci/package/parity.json
+          python3 scripts/compare_determinism.py \
+            build/from-windows/reports/ci/windows/determinism/run-1.json \
+            build/from-windows/reports/ci/windows/determinism/run-2.json \
+            build/from-windows/reports/ci/windows/determinism/run-3.json \
+            build/from-linux/reports/ci/linux/determinism/run-1.json \
+            build/from-linux/reports/ci/linux/determinism/run-2.json \
+            build/from-linux/reports/ci/linux/determinism/run-3.json \
+            --report reports/ci/package/determinism-cross-platform.json
+          sha256sum "build/package-a/$archive" > reports/ci/package/archive.sha256
+
+      - name: Upload the unpublished package candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: redot-rapier2d-unpublished-candidate
+          path: |
+            build/package-a/*.zip
+            build/package-a/*.json
+            reports/ci/package
+            docs/gamedev/evidence/rapier2d-exact-feature-licenses.json
+            docs/gamedev/evidence/rapier2d-sbom.spdx.json
+          if-no-files-found: error
+          retention-days: 90
+
+  clean-install:
+    name: Clean install (${{ matrix.os }})
+    needs: package
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            platform: windows
+            archive_url: https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_windows_win64.zip
+            archive_sha256: 4644c7591bbe8019b861deb0ccdb64fd4f59a88514abf7c788cf176c259855af
+          - os: ubuntu-24.04
+            platform: linux
+            archive_url: https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_linux_x64.zip
+            archive_sha256: f474d890806c41af15513cf5a8600243e241882e11b68dbb95660e3465b5b1e4
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Download package candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: redot-rapier2d-unpublished-candidate
+          path: build/candidate
+
+      - name: Download and verify Redot
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build/redot | Out-Null
+          $archive = "build/redot/editor.zip"
+          curl.exe --fail --location --output $archive '${{ matrix.archive_url }}'
+          $actual = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
+          if ($actual -ne '${{ matrix.archive_sha256 }}') { throw "Redot archive hash mismatch: $actual" }
+          Expand-Archive -LiteralPath $archive -DestinationPath build/redot/editor
+          if ('${{ matrix.platform }}' -eq 'windows') {
+            $redot = (Get-ChildItem build/redot/editor -Recurse -Filter 'redot.windows.editor.x86_64.console.exe' | Select-Object -First 1).FullName
+          } else {
+            $redot = (Get-ChildItem build/redot/editor -Recurse -Filter 'redot.linuxbsd.editor.x86_64' | Select-Object -First 1).FullName
+            chmod +x $redot
+          }
+          "REDOT_BIN=$redot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Materialize and run selected/default controls
+        shell: pwsh
+        run: |
+          $package = (Get-ChildItem build/candidate -Recurse -Filter 'redot-rapier-physics-2d-*.zip' | Select-Object -First 1).FullName
+          python scripts/redot_porting.py materialize-clean-install --archive $package --fixture tests/fixtures/rapier2d-clean-install --project-config tests/fixtures/rapier2d-clean-install/project.godot --output build/clean-selected
+          python scripts/redot_porting.py materialize-clean-install --archive $package --fixture tests/fixtures/rapier2d-clean-install --project-config tests/fixtures/rapier2d-clean-install/project.default.godot --output build/clean-default
+          New-Item -ItemType Directory -Force reports/ci/clean-${{ matrix.platform }} | Out-Null
+          & $env:REDOT_BIN --headless --path build/clean-selected --import --quit-after 300 --log-file reports/ci/clean-${{ matrix.platform }}/selected-import.log
+          & $env:REDOT_BIN --headless --fixed-fps 60 --path build/clean-selected --scene res://main.tscn --quit-after 600 --log-file reports/ci/clean-${{ matrix.platform }}/selected.log -- "--rapier-result=$((Resolve-Path reports/ci/clean-${{ matrix.platform }}).Path)/selected.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Selected clean install failed' }
+          & $env:REDOT_BIN --headless --path build/clean-default --import --quit-after 300 --log-file reports/ci/clean-${{ matrix.platform }}/default-import.log
+          & $env:REDOT_BIN --headless --fixed-fps 60 --path build/clean-default --scene res://main.tscn --quit-after 600 --log-file reports/ci/clean-${{ matrix.platform }}/default.log -- "--rapier-result=$((Resolve-Path reports/ci/clean-${{ matrix.platform }}).Path)/default.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Default clean install control failed' }
+
+      - name: Upload clean-install evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: rapier2d-clean-install-${{ matrix.platform }}
+          path: reports/ci/clean-${{ matrix.platform }}
+          if-no-files-found: warn
+          retention-days: 90
+
+  full-export-gate:
+    name: Full debug/release export gate
+    if: github.event_name == 'workflow_dispatch'
+    needs: package
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Download package candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: redot-rapier2d-unpublished-candidate
+          path: build/candidate
+
+      - name: Download and verify Redot editor and export templates
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build/redot/editor,build/templates | Out-Null
+          curl.exe --fail --location --output build/redot/editor.zip 'https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_windows_win64.zip'
+          curl.exe --fail --location --output build/redot/templates.tpz 'https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_export_templates.tpz'
+          if ((Get-FileHash -Algorithm SHA256 build/redot/editor.zip).Hash.ToLowerInvariant() -ne '4644c7591bbe8019b861deb0ccdb64fd4f59a88514abf7c788cf176c259855af') { throw 'Editor hash mismatch' }
+          if ((Get-FileHash -Algorithm SHA256 build/redot/templates.tpz).Hash.ToLowerInvariant() -ne 'fa8c648bd9a9d911daffbcc4e1786d0248794571a7e4ed954444197c809079ea') { throw 'Template hash mismatch' }
+          Expand-Archive -LiteralPath build/redot/editor.zip -DestinationPath build/redot/editor
+          tar -xf build/redot/templates.tpz -C build/templates
+          $redot = (Get-ChildItem build/redot/editor -Recurse -Filter 'redot.windows.editor.x86_64.console.exe' | Select-Object -First 1).FullName
+          "REDOT_BIN=$redot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Export and run all supported debug/release products
+        shell: pwsh
+        run: |
+          $package = (Get-ChildItem build/candidate -Recurse -Filter 'redot-rapier-physics-2d-*.zip' | Select-Object -First 1).FullName
+          python scripts/redot_porting.py materialize-clean-install --archive $package --fixture tests/fixtures/rapier2d-clean-install --project-config tests/fixtures/rapier2d-clean-install/project.godot --output build/export-project
+          python scripts/redot_porting.py configure-export-templates --project build/export-project --windows-debug-template build/templates/templates/windows_debug_x86_64.exe --windows-release-template build/templates/templates/windows_release_x86_64.exe --linux-debug-template build/templates/templates/linux_debug.x86_64 --linux-release-template build/templates/templates/linux_release.x86_64
+          New-Item -ItemType Directory -Force build/exports,reports/ci/full-export | Out-Null
+          & $env:REDOT_BIN --headless --path build/export-project --import --quit-after 300 --log-file reports/ci/full-export/import.log
+          & $env:REDOT_BIN --headless --path build/export-project --export-debug 'Windows x86-64' build/exports/windows-debug.exe --quit-after 300 --log-file reports/ci/full-export/windows-debug-export.log
+          & $env:REDOT_BIN --headless --path build/export-project --export-release 'Windows x86-64' build/exports/windows-release.exe --quit-after 300 --log-file reports/ci/full-export/windows-release-export.log
+          & $env:REDOT_BIN --headless --path build/export-project --export-debug 'Linux x86-64' build/exports/linux-debug.x86_64 --quit-after 300 --log-file reports/ci/full-export/linux-debug-export.log
+          & $env:REDOT_BIN --headless --path build/export-project --export-release 'Linux x86-64' build/exports/linux-release.x86_64 --quit-after 300 --log-file reports/ci/full-export/linux-release-export.log
+          & build/exports/windows-debug.exe --headless --quit-after 600 -- "--rapier-result=$((Resolve-Path reports/ci/full-export).Path)/windows-debug.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Windows debug export runtime failed' }
+          & build/exports/windows-release.exe --headless --quit-after 600 -- "--rapier-result=$((Resolve-Path reports/ci/full-export).Path)/windows-release.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Windows release export runtime failed' }
+          docker run --rm --entrypoint /bin/sh --mount "type=bind,source=$((Resolve-Path build/exports).Path),target=/exports" --mount "type=bind,source=$((Resolve-Path reports/ci/full-export).Path),target=/reports" redotsteam-linux-runtime@sha256:5255ec8a80a56834e07c9fc581e259fbf94d8ab4881de9673475480352b58f77 -lc "chmod +x /exports/linux-debug.x86_64 /exports/linux-release.x86_64 && /exports/linux-debug.x86_64 --headless --quit-after 600 -- --rapier-result=/reports/linux-debug.json && /exports/linux-release.x86_64 --headless --quit-after 600 -- --rapier-result=/reports/linux-release.json"
+
+      - name: Upload full-export evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: rapier2d-full-export-evidence
+          path: reports/ci/full-export
+          if-no-files-found: warn
+          retention-days: 90

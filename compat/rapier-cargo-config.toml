@@ -1,0 +1,7 @@
+# The Redot consumer contract is validated by dominicbytes/redot-rust at
+# commit 18ad5c538c452b8640420366794354e3ed48f205. This patch replaces only
+# the crates.io facade package; its workspace dependencies resolve from the
+# same pinned gdext revision.
+
+[patch.crates-io]
+godot = { git = "https://github.com/godot-rust/gdext", rev = "637cef73172bba23850131acd8583b0c72ebf0c7" }

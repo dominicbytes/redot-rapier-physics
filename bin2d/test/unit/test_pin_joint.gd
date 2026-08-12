@@ -16,6 +16,21 @@ func _ready():
 	PhysicsServer2D.body_set_space(body_b_with_space2, new_space2)
 	test_pin_joint_empty()
 	print("Pin joint tests passed.")
+	_free_fixture_rids(new_space1, new_space2)
+
+
+func _free_fixture_rids(space1: RID, space2: RID) -> void:
+	for body in [
+		body_a,
+		body_b,
+		body_a_with_space1,
+		body_b_with_space1,
+		body_a_with_space2,
+		body_b_with_space2,
+	]:
+		PhysicsServer2D.free_rid(body)
+	PhysicsServer2D.free_rid(space1)
+	PhysicsServer2D.free_rid(space2)
 
 func test_pin_joint_empty():
 	PhysicsServer2D.joint_make_pin(RID(), Vector2.ZERO, RID(), RID())
@@ -39,9 +54,9 @@ func test_pin_joint_empty():
 	assert(motor_velocity == 0.0)
 	var softness = PhysicsServer2D.pin_joint_get_param(RID(), PhysicsServer2D.PinJointParam.PIN_JOINT_SOFTNESS)
 	assert(softness == 0.0)
-	
+
 	PhysicsServer2D.pin_joint_set_flag(RID(), PhysicsServer2D.PinJointFlag.PIN_JOINT_FLAG_ANGULAR_LIMIT_ENABLED, true)
 	PhysicsServer2D.pin_joint_set_param(RID(), PhysicsServer2D.PinJointParam.PIN_JOINT_LIMIT_LOWER, 1.2)
-	
-	
+
+
 	print("Pin joint empty tests passed.")
