@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "revision": 7,
+  "revision": 8,
   "policy": "regression guardrail; improvement over the default backend is not required",
-  "revision_note": "Revision 1's 33.334 ms fluid p95 was retired after the Linux pilot because it imposed an unrequested 30 FPS target on a Rapier-only capability with no default-backend baseline. Revision 2 retained the 100 ms ceiling and added spread/memory checks. Revisions 3-4 controlled and recorded CPU affinity. Revision 5 replaced Redot's block-updated headless TIME_PHYSICS_PROCESS monitor with direct wall-clock physics-frame intervals. Revision 6 replaces the scale-unstable p95 spread ratio with a p95 range capped at one configured 60 Hz physics tick (16.667 ms). Revision 7 records only the host platform's release-library hash so single-platform CI jobs can run without fabricating a foreign binary; workloads and numerical thresholds remain unchanged.",
+  "revision_note": "Revision 1's 33.334 ms fluid p95 was retired after the Linux pilot because it imposed an unrequested 30 FPS target on a Rapier-only capability with no default-backend baseline. Revision 2 retained the 100 ms ceiling and added spread/memory checks. Revisions 3-4 controlled and recorded CPU affinity. Revision 5 replaced Redot's block-updated headless TIME_PHYSICS_PROCESS monitor with direct wall-clock physics-frame intervals. Revision 6 replaces the scale-unstable p95 spread ratio with a p95 range capped at one configured 60 Hz physics tick (16.667 ms). Revision 7 records only the host platform's release-library hash so single-platform CI jobs can run without fabricating a foreign binary. Revision 8 canonicalizes text-contract line endings before hashing so Windows CRLF and Linux LF checkouts prove the same source; workloads and numerical thresholds remain unchanged.",
   "frozen_on": "2026-08-12",
   "scenario_contract_sha256": "715870cb2898ee4e2776c08b28a39c991aa83943bd8074ec2768c85cf8e812eb",
   "fixture_manifest_sha256": "df7c046c51673e705bf1731988448e5559696efc7995d6cb0356e3211e0433fe",
-  "runner_sha256": "a4fbce87298c3216d8c0f40455f5735d28389c6da63826c0a2ab6adb5dfbe100",
+  "runner_sha256": "a4852c8f694a26adf52d27b178bcca20288e1cacc88859f8ef599d1d99840213",
   "aggregation": "three runs; wall-clock intervals between consecutive physics-frame signals; pooled frame samples; nearest-rank p95; median; maximum static-memory monitor",
   "environment_controls": {
     "windows_local": "paired baseline/candidate on the same native Windows host with process affinity 0-15",

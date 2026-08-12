@@ -36,12 +36,17 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def sha256_text_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def fixture_manifest_sha256() -> str:
     digest = hashlib.sha256()
     for path in sorted(item for item in FIXTURE.rglob("*") if item.is_file()):
         relative = path.relative_to(FIXTURE).as_posix()
         digest.update(relative.encode("utf-8") + b"\0")
-        digest.update(hashlib.sha256(path.read_bytes()).digest())
+        normalized = path.read_bytes().replace(b"\r\n", b"\n")
+        digest.update(hashlib.sha256(normalized).digest())
     return digest.hexdigest()
 
 
@@ -226,9 +231,9 @@ def run_backend(redot: Path, backend: str, output: Path) -> dict[str, Any]:
         "status": "PASS",
         "backend": backend,
         "scenario_contract": str(SCENARIOS.relative_to(ROOT)).replace("\\", "/"),
-        "scenario_contract_sha256": sha256_file(SCENARIOS),
+        "scenario_contract_sha256": sha256_text_file(SCENARIOS),
         "fixture_manifest_sha256": fixture_manifest_sha256(),
-        "runner_sha256": sha256_file(Path(__file__)),
+        "runner_sha256": sha256_text_file(Path(__file__)),
         "environment": execution_environment(redot, native_hashes),
         "scenarios": {
             scenario_id: {

@@ -35,6 +35,29 @@ def sample_summary(value: float) -> dict:
 
 
 class PerformanceGuardrailTests(unittest.TestCase):
+    def test_text_hash_is_independent_of_checkout_line_endings(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_name:
+            lf = Path(temp_name) / "lf.txt"
+            crlf = Path(temp_name) / "crlf.txt"
+            lf.write_bytes(b"first\nsecond\n")
+            crlf.write_bytes(b"first\r\nsecond\r\n")
+            self.assertEqual(
+                PERFORMANCE.sha256_text_file(lf),
+                PERFORMANCE.sha256_text_file(crlf),
+            )
+
+    def test_fixture_manifest_is_independent_of_checkout_line_endings(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_name:
+            fixture = Path(temp_name) / "fixture"
+            fixture.mkdir()
+            source = fixture / "main.gd"
+            with mock.patch.object(PERFORMANCE, "FIXTURE", fixture):
+                source.write_bytes(b"extends Node\n")
+                lf_hash = PERFORMANCE.fixture_manifest_sha256()
+                source.write_bytes(b"extends Node\r\n")
+                crlf_hash = PERFORMANCE.fixture_manifest_sha256()
+            self.assertEqual(lf_hash, crlf_hash)
+
     def test_release_descriptor_hashes_only_the_host_library(self) -> None:
         cases = (
             (
