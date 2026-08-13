@@ -149,12 +149,7 @@
         }
       ],
       "name": "autocfg",
-      "profiles": [
-        "linux-x86_64/editor",
-        "linux-x86_64/export",
-        "windows-x86_64/editor",
-        "windows-x86_64/export"
-      ],
+      "profiles": [],
       "repository": "https://github.com/cuviper/autocfg",
       "source": "registry+https://github.com/rust-lang/crates.io-index",
       "version": "1.5.1"
@@ -477,12 +472,7 @@
         }
       ],
       "name": "gdextension-api",
-      "profiles": [
-        "linux-x86_64/editor",
-        "linux-x86_64/export",
-        "windows-x86_64/editor",
-        "windows-x86_64/export"
-      ],
+      "profiles": [],
       "repository": "https://github.com/godot-rust/gdext",
       "source": "git+https://github.com/godot-rust/godot4-prebuilt?branch=release-v0.5#3a0f8c3db2157974b18e14acb1d082ea4b6dcf5c",
       "version": "0.5.1"
@@ -609,12 +599,7 @@
         }
       ],
       "name": "godot-bindings",
-      "profiles": [
-        "linux-x86_64/editor",
-        "linux-x86_64/export",
-        "windows-x86_64/editor",
-        "windows-x86_64/export"
-      ],
+      "profiles": [],
       "repository": "https://github.com/godot-rust/gdext",
       "source": "git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7",
       "version": "0.5.5"
@@ -649,12 +634,7 @@
         }
       ],
       "name": "godot-codegen",
-      "profiles": [
-        "linux-x86_64/editor",
-        "linux-x86_64/export",
-        "windows-x86_64/editor",
-        "windows-x86_64/export"
-      ],
+      "profiles": [],
       "repository": "https://github.com/godot-rust/gdext",
       "source": "git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7",
       "version": "0.5.5"
@@ -801,12 +781,7 @@
         }
       ],
       "name": "heck",
-      "profiles": [
-        "linux-x86_64/editor",
-        "linux-x86_64/export",
-        "windows-x86_64/editor",
-        "windows-x86_64/export"
-      ],
+      "profiles": [],
       "repository": "https://github.com/withoutboats/heck",
       "source": "registry+https://github.com/rust-lang/crates.io-index",
       "version": "0.5.0"
@@ -1095,12 +1070,7 @@
         }
       ],
       "name": "nanoserde",
-      "profiles": [
-        "linux-x86_64/editor",
-        "linux-x86_64/export",
-        "windows-x86_64/editor",
-        "windows-x86_64/export"
-      ],
+      "profiles": [],
       "repository": "https://github.com/not-fl3/nanoserde",
       "source": "registry+https://github.com/rust-lang/crates.io-index",
       "version": "0.2.1"
@@ -1115,12 +1085,7 @@
         }
       ],
       "name": "nanoserde-derive",
-      "profiles": [
-        "linux-x86_64/editor",
-        "linux-x86_64/export",
-        "windows-x86_64/editor",
-        "windows-x86_64/export"
-      ],
+      "profiles": [],
       "repository": null,
       "source": "registry+https://github.com/rust-lang/crates.io-index",
       "version": "0.2.1"
@@ -2005,12 +1970,7 @@
         }
       ],
       "name": "which",
-      "profiles": [
-        "linux-x86_64/editor",
-        "linux-x86_64/export",
-        "windows-x86_64/editor",
-        "windows-x86_64/export"
-      ],
+      "profiles": [],
       "repository": "https://github.com/harryfei/which-rs.git",
       "source": "registry+https://github.com/rust-lang/crates.io-index",
       "version": "8.0.5"
@@ -2069,6 +2029,7 @@
     "repository": "https://github.com/dominicbytes/redot-rapier-physics",
     "version": "0.35.2-redot.1"
   },
+  "profile_membership_scope": "normal dependencies; exact inventory also includes build dependencies",
   "profiles": {
     "linux-x86_64/editor": {
       "features": [
@@ -2079,12 +2040,11 @@
         "register-docs",
         "godot/api-custom-json"
       ],
-      "package_count": 87,
+      "package_count": 79,
       "packages": [
         "allocator-api2@0.2.21",
         "approx@0.5.1",
         "arrayvec@0.7.8",
-        "autocfg@1.5.1",
         "bincode@1.3.3",
         "bitflags@2.13.1",
         "bytemuck@1.25.2",
@@ -2098,22 +2058,18 @@
         "equivalent@1.0.2",
         "fnv@1.0.7",
         "foldhash@0.2.0",
-        "gdextension-api@0.5.1",
         "generational-arena@0.2.9",
         "glam@0.32.1",
         "glam@0.33.3",
         "glamx@0.3.0",
         "godot@0.5.5",
-        "godot-bindings@0.5.5",
         "godot-cell@0.5.5",
-        "godot-codegen@0.5.5",
         "godot-core@0.5.5",
         "godot-ffi@0.5.5",
         "godot-macros@0.5.5",
         "godot-rapier@0.35.2-redot.1",
         "hashbrown@0.16.1",
         "hashbrown@0.17.1",
-        "heck@0.5.0",
         "indexmap@2.14.0",
         "itertools@0.14.0",
         "itoa@1.0.18",
@@ -2126,8 +2082,6 @@
         "memchr@2.8.3",
         "nalgebra@0.35.0",
         "nalgebra-macros@0.3.0",
-        "nanoserde@0.2.1",
-        "nanoserde-derive@0.2.1",
         "num-complex@0.4.6",
         "num-derive@0.4.2",
         "num-integer@0.1.46",
@@ -2165,7 +2119,6 @@
         "unicode-id@0.3.6",
         "unicode-ident@1.0.24",
         "venial@0.6.1",
-        "which@8.0.5",
         "wide@1.6.1",
         "zmij@1.0.23"
       ],
@@ -2179,12 +2132,11 @@
         "parallel",
         "godot/api-custom-json"
       ],
-      "package_count": 84,
+      "package_count": 76,
       "packages": [
         "allocator-api2@0.2.21",
         "approx@0.5.1",
         "arrayvec@0.7.8",
-        "autocfg@1.5.1",
         "bincode@1.3.3",
         "bitflags@2.13.1",
         "bytemuck@1.25.2",
@@ -2198,22 +2150,18 @@
         "equivalent@1.0.2",
         "fnv@1.0.7",
         "foldhash@0.2.0",
-        "gdextension-api@0.5.1",
         "generational-arena@0.2.9",
         "glam@0.32.1",
         "glam@0.33.3",
         "glamx@0.3.0",
         "godot@0.5.5",
-        "godot-bindings@0.5.5",
         "godot-cell@0.5.5",
-        "godot-codegen@0.5.5",
         "godot-core@0.5.5",
         "godot-ffi@0.5.5",
         "godot-macros@0.5.5",
         "godot-rapier@0.35.2-redot.1",
         "hashbrown@0.16.1",
         "hashbrown@0.17.1",
-        "heck@0.5.0",
         "indexmap@2.14.0",
         "itertools@0.14.0",
         "itoa@1.0.18",
@@ -2224,8 +2172,6 @@
         "memchr@2.8.3",
         "nalgebra@0.35.0",
         "nalgebra-macros@0.3.0",
-        "nanoserde@0.2.1",
-        "nanoserde-derive@0.2.1",
         "num-complex@0.4.6",
         "num-derive@0.4.2",
         "num-integer@0.1.46",
@@ -2262,7 +2208,6 @@
         "typenum@1.20.1",
         "unicode-ident@1.0.24",
         "venial@0.6.1",
-        "which@8.0.5",
         "wide@1.6.1",
         "zmij@1.0.23"
       ],
@@ -2277,12 +2222,11 @@
         "register-docs",
         "godot/api-custom-json"
       ],
-      "package_count": 86,
+      "package_count": 78,
       "packages": [
         "allocator-api2@0.2.21",
         "approx@0.5.1",
         "arrayvec@0.7.8",
-        "autocfg@1.5.1",
         "bincode@1.3.3",
         "bitflags@2.13.1",
         "bytemuck@1.25.2",
@@ -2296,22 +2240,18 @@
         "equivalent@1.0.2",
         "fnv@1.0.7",
         "foldhash@0.2.0",
-        "gdextension-api@0.5.1",
         "generational-arena@0.2.9",
         "glam@0.32.1",
         "glam@0.33.3",
         "glamx@0.3.0",
         "godot@0.5.5",
-        "godot-bindings@0.5.5",
         "godot-cell@0.5.5",
-        "godot-codegen@0.5.5",
         "godot-core@0.5.5",
         "godot-ffi@0.5.5",
         "godot-macros@0.5.5",
         "godot-rapier@0.35.2-redot.1",
         "hashbrown@0.16.1",
         "hashbrown@0.17.1",
-        "heck@0.5.0",
         "indexmap@2.14.0",
         "itertools@0.14.0",
         "itoa@1.0.18",
@@ -2323,8 +2263,6 @@
         "memchr@2.8.3",
         "nalgebra@0.35.0",
         "nalgebra-macros@0.3.0",
-        "nanoserde@0.2.1",
-        "nanoserde-derive@0.2.1",
         "num-complex@0.4.6",
         "num-derive@0.4.2",
         "num-integer@0.1.46",
@@ -2362,7 +2300,6 @@
         "unicode-id@0.3.6",
         "unicode-ident@1.0.24",
         "venial@0.6.1",
-        "which@8.0.5",
         "wide@1.6.1",
         "zmij@1.0.23"
       ],
@@ -2376,12 +2313,11 @@
         "parallel",
         "godot/api-custom-json"
       ],
-      "package_count": 83,
+      "package_count": 75,
       "packages": [
         "allocator-api2@0.2.21",
         "approx@0.5.1",
         "arrayvec@0.7.8",
-        "autocfg@1.5.1",
         "bincode@1.3.3",
         "bitflags@2.13.1",
         "bytemuck@1.25.2",
@@ -2395,22 +2331,18 @@
         "equivalent@1.0.2",
         "fnv@1.0.7",
         "foldhash@0.2.0",
-        "gdextension-api@0.5.1",
         "generational-arena@0.2.9",
         "glam@0.32.1",
         "glam@0.33.3",
         "glamx@0.3.0",
         "godot@0.5.5",
-        "godot-bindings@0.5.5",
         "godot-cell@0.5.5",
-        "godot-codegen@0.5.5",
         "godot-core@0.5.5",
         "godot-ffi@0.5.5",
         "godot-macros@0.5.5",
         "godot-rapier@0.35.2-redot.1",
         "hashbrown@0.16.1",
         "hashbrown@0.17.1",
-        "heck@0.5.0",
         "indexmap@2.14.0",
         "itertools@0.14.0",
         "itoa@1.0.18",
@@ -2420,8 +2352,6 @@
         "memchr@2.8.3",
         "nalgebra@0.35.0",
         "nalgebra-macros@0.3.0",
-        "nanoserde@0.2.1",
-        "nanoserde-derive@0.2.1",
         "num-complex@0.4.6",
         "num-derive@0.4.2",
         "num-integer@0.1.46",
@@ -2458,7 +2388,6 @@
         "typenum@1.20.1",
         "unicode-ident@1.0.24",
         "venial@0.6.1",
-        "which@8.0.5",
         "wide@1.6.1",
         "zmij@1.0.23"
       ],

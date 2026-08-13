@@ -138,11 +138,16 @@ def cargo_graph(
     api: Path,
     profile_features: dict[str, list[str]],
     offline: bool,
-) -> tuple[dict[str, set[tuple[str, str]]], dict[tuple[str, str], dict[str, Any]]]:
+) -> tuple[
+    dict[str, set[tuple[str, str]]],
+    dict[str, set[tuple[str, str]]],
+    dict[tuple[str, str], dict[str, Any]],
+]:
     env = dict(os.environ)
     env["GDRUST_GODOT_API_JSON"] = str(api.resolve())
     env["RUSTUP_TOOLCHAIN"] = "1.94.0"
     memberships: dict[str, set[tuple[str, str]]] = {}
+    runtime_memberships: dict[str, set[tuple[str, str]]] = {}
     metadata_packages: dict[tuple[str, str], dict[str, Any]] = {}
     for platform_name, target in TARGETS.items():
         for profile_name, feature_list in profile_features.items():
@@ -159,6 +164,18 @@ def cargo_graph(
             ]
             memberships[profile_id] = parse_tree(run(tree_args, env))
 
+            runtime_tree_args = command(cargo, "tree", target, feature_list, offline)
+            runtime_tree_args += [
+                "--edges",
+                "normal",
+                "--prefix",
+                "none",
+                "--no-dedupe",
+                "--format",
+                "{p}\t{l}\t{r}",
+            ]
+            runtime_memberships[profile_id] = parse_tree(run(runtime_tree_args, env))
+
             metadata_args = command(cargo, "metadata", target, feature_list, offline)
             metadata_args += ["--format-version", "1"]
             metadata = json.loads(run(metadata_args, env))
@@ -172,7 +189,9 @@ def cargo_graph(
     missing = sorted(active - set(metadata_packages))
     if missing:
         raise MetadataError(f"cargo metadata omitted active packages: {missing}")
-    return memberships, {key: metadata_packages[key] for key in active}
+    return memberships, runtime_memberships, {
+        key: metadata_packages[key] for key in active
+    }
 
 
 def lock_records() -> dict[tuple[str, str, str | None], dict[str, Any]]:
@@ -303,7 +322,9 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
     porting = json.loads(PORTING.read_text(encoding="utf-8"))
     redot_lock = json.loads(REDOT_LOCK.read_text(encoding="utf-8"))
     profile_features = profiles(porting)
-    memberships, packages_by_key = cargo_graph(cargo, api, profile_features, offline)
+    memberships, runtime_memberships, packages_by_key = cargo_graph(
+        cargo, api, profile_features, offline
+    )
     lock = lock_records()
     root_repository = porting["product"]["repository"]
 
@@ -350,7 +371,9 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
             group["packages"].add(f"{key[0]} {key[1]}")
             license_files.append({"filename": candidate.name, "sha256": digest})
         member_profiles = sorted(
-            profile_id for profile_id, members in memberships.items() if key in members
+            profile_id
+            for profile_id, members in runtime_memberships.items()
+            if key in members
         )
         source = source_location(package, root_repository)
         checksum = registry_checksum(package, lock)
@@ -420,7 +443,7 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
             "package_count": len(members),
             "packages": [f"{name}@{version}" for name, version in sorted(members)],
         }
-        for profile_id, members in sorted(memberships.items())
+        for profile_id, members in sorted(runtime_memberships.items())
     }
     license_report = {
         "schema_version": 1,
@@ -440,6 +463,7 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
             "rust_toolchain": redot_lock["rust"]["toolchain"],
         },
         "profiles": profile_report,
+        "profile_membership_scope": "normal dependencies; exact inventory also includes build dependencies",
         "exact_package_count": len(package_records),
         "license_text_count": len(text_groups),
         "mpl_source_availability": sorted(mpl_records, key=lambda item: (item["name"], item["version"])),
