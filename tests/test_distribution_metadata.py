@@ -49,6 +49,10 @@ class DistributionMetadataTests(unittest.TestCase):
         spdx = json.loads(METADATA.SPDX_REPORT.read_text(encoding="utf-8"))
         self.assertEqual(licenses["status"], "PASS")
         self.assertEqual(len(licenses["packages"]), 87)
+        self.assertEqual(
+            licenses["profile_membership_scope"],
+            "normal dependencies; exact inventory also includes build dependencies",
+        )
         self.assertEqual(spdx["spdxVersion"], "SPDX-2.3")
         self.assertEqual(len(spdx["packages"]), 87)
         self.assertTrue(METADATA.NOTICE.read_text(encoding="utf-8").startswith(
