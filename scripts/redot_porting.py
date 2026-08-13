@@ -791,7 +791,9 @@ def cargo_build(
 
 
 def package_addon(root: Path, dimension: str, output_dir: Path) -> dict[str, Any]:
-    contract = validate_contract(root, verify_local_files=True)
+    # A standalone checkout carries the self-authenticating infrastructure
+    # snapshot, but not the original sibling development directory.
+    contract = validate_contract(root, verify_local_files=False)
     porting = _load_json(root / "porting.json")
     addon = next(
         (item for item in porting["addons"] if item["dimension"] == dimension),
