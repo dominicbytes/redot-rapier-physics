@@ -54,6 +54,12 @@ def sha256_file(path: Path) -> str:
     return sha256(path.read_bytes())
 
 
+def normalize_license_text(content: bytes) -> bytes:
+    """Canonicalize equivalent license copies across Cargo source layouts."""
+    normalized = content.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return b"\n".join(line.rstrip(b" \t") for line in normalized.split(b"\n"))
+
+
 def json_bytes(value: Any) -> bytes:
     return (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8")
 
@@ -216,7 +222,7 @@ def standard_license_candidate(
         for path in license_candidates(candidate_package):
             text = path.read_text(encoding="utf-8", errors="replace")
             if marker in text:
-                matches.append((sha256(path.read_bytes().replace(b"\r\n", b"\n")), path.name, path))
+                matches.append((sha256(normalize_license_text(path.read_bytes())), path.name, path))
     return min(matches, key=lambda item: (item[0], item[1]))[2] if matches else None
 
 
@@ -334,7 +340,7 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
                 candidates.append(apache)
         license_files = []
         for candidate in candidates:
-            content = candidate.read_bytes().replace(b"\r\n", b"\n")
+            content = normalize_license_text(candidate.read_bytes())
             digest = sha256(content)
             group = text_groups.setdefault(
                 digest,

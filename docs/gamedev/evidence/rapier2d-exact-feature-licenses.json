@@ -473,7 +473,7 @@
       "license_files": [
         {
           "filename": "License.txt",
-          "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
         }
       ],
       "name": "gdextension-api",
@@ -585,7 +585,7 @@
       "license_files": [
         {
           "filename": "License.txt",
-          "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
         }
       ],
       "name": "godot",
@@ -605,7 +605,7 @@
       "license_files": [
         {
           "filename": "License.txt",
-          "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
         }
       ],
       "name": "godot-bindings",
@@ -625,7 +625,7 @@
       "license_files": [
         {
           "filename": "License.txt",
-          "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
         }
       ],
       "name": "godot-cell",
@@ -645,7 +645,7 @@
       "license_files": [
         {
           "filename": "License.txt",
-          "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
         }
       ],
       "name": "godot-codegen",
@@ -665,7 +665,7 @@
       "license_files": [
         {
           "filename": "License.txt",
-          "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
         }
       ],
       "name": "godot-core",
@@ -685,7 +685,7 @@
       "license_files": [
         {
           "filename": "License.txt",
-          "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
         }
       ],
       "name": "godot-ffi",
@@ -705,7 +705,7 @@
       "license_files": [
         {
           "filename": "License.txt",
-          "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
         }
       ],
       "name": "godot-macros",
