@@ -18,6 +18,14 @@ SPEC.loader.exec_module(METADATA)
 
 
 class DistributionMetadataTests(unittest.TestCase):
+    def test_license_text_normalization_ignores_platform_whitespace(self) -> None:
+        unix = b"line one\nline two\n"
+        windows_with_trailing_space = b"line one\r\nline two \t\r\n"
+        self.assertEqual(
+            METADATA.normalize_license_text(unix),
+            METADATA.normalize_license_text(windows_with_trailing_space),
+        )
+
     def test_cargo_shim_symlink_is_not_resolved_to_rustup(self) -> None:
         cargo = mock.Mock(spec=Path)
         absolute = Path("cargo-shim-absolute")
