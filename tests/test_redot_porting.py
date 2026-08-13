@@ -7,6 +7,7 @@ import re
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +24,26 @@ def load(name: str) -> dict:
 
 
 class ContractTests(unittest.TestCase):
+    def test_packaging_uses_vendored_infrastructure_provenance(self) -> None:
+        contract = {"required_platforms": ["linux-x86_64", "windows-x86_64"]}
+        with tempfile.TemporaryDirectory(dir=ROOT / "build") as temp_name:
+            with (
+                mock.patch.object(PORTING, "validate_contract", return_value=contract) as validate,
+                mock.patch.object(PORTING, "collect_package_payload", return_value=[]),
+                mock.patch.object(
+                    PORTING,
+                    "verify_package_archive",
+                    return_value={
+                        "status": "PASS",
+                        "payload_manifest_sha256": "0" * 64,
+                        "archive_sha256": "1" * 64,
+                        "archive_bytes": 22,
+                    },
+                ),
+            ):
+                PORTING.package_addon(ROOT, "2d", Path(temp_name))
+        validate.assert_called_once_with(ROOT, verify_local_files=False)
+
     def setUp(self) -> None:
         self.porting = load("porting.json")
         self.lock = load("redot.lock.json")
