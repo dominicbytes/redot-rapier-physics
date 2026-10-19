@@ -452,8 +452,20 @@ impl PhysicsEngine {
                 collider.set_shape(new_shape);
                 if collider.parent().is_some() {
                     collider.set_position_wrt_parent(shape_info.transform);
+                    if let Some(parent) = collider.parent()
+                        && let Some(body) = physics_world.physics_objects.rigid_body_set.get(parent)
+                    {
+                        collider.set_position(*body.position() * shape_info.transform);
+                    }
                 } else {
                     collider.set_position(shape_info.transform);
+                }
+                if collider.is_enabled() {
+                    physics_world.physics_objects.broad_phase.set_aabb(
+                        &IntegrationParameters::default(),
+                        collider_handle,
+                        collider.compute_aabb(),
+                    );
                 }
             }
         }

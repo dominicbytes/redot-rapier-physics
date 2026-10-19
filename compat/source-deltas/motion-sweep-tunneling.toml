@@ -1,0 +1,5 @@
+id = "motion-sweep-tunneling"
+summary = "Find thin obstacles crossed before the final motion pose."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/spaces/rapier_space_body_helper.rs", "src/rapier_wrapper/query.rs"]

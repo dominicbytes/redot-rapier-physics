@@ -1,0 +1,5 @@
+id = "query-pose-refresh"
+summary = "Refresh moved static and first-target kinematic collider poses for immediate queries."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/bodies/rapier_body.rs", "src/bodies/rapier_collision_object_base.rs", "src/rapier_wrapper/body.rs", "src/rapier_wrapper/collider.rs"]

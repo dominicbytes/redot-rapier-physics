@@ -382,6 +382,42 @@ impl PhysicsEngine {
     }
 
     #[cfg(feature = "dim2")]
+    pub fn swept_shape_contact_normal(
+        &self,
+        shape_info1: ShapeInfo,
+        shape_info2: ShapeInfo,
+        motion: Vector,
+    ) -> Option<Vector> {
+        use rapier::parry::shape::SupportMap;
+        struct SweptShape<'a> {
+            shape: &'a dyn SupportMap,
+            motion: Vector,
+        }
+        impl SupportMap for SweptShape<'_> {
+            fn local_support_point(&self, direction: Vector) -> Vector {
+                let point = self.shape.local_support_point(direction);
+                if direction.dot(self.motion) > 0.0 {
+                    point + self.motion
+                } else {
+                    point
+                }
+            }
+        }
+        let shape1 = scale_shape(self.get_shape(shape_info1.handle)?, shape_info1);
+        let shape2 = scale_shape(self.get_shape(shape_info2.handle)?, shape_info2);
+        let swept = SweptShape {
+            shape: shape1.as_support_map()?,
+            motion: shape_info1.transform.rotation.inverse() * motion,
+        };
+        let contact = rapier::parry::query::details::contact_support_map_support_map(
+            &shape_info1.transform.inv_mul(&shape_info2.transform),
+            &swept,
+            shape2.as_support_map()?,
+            contact_prediction(0.0),
+        )?;
+        Some(shape_info1.transform.rotation * contact.normal1)
+    }
+
     pub fn shape_collide(
         &self,
         shape_vel1: Vector,
