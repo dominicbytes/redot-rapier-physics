@@ -29,6 +29,10 @@ This ledger answers the first-release requirement that Rapier2D retain every app
 | RP2D-021 | Distribution notices and exact-feature dependency record | PASS | 87-package exact-feature license report, SPDX 2.3 SBOM, MIT/MPL notices, and source-availability record included |
 | RP2D-022 | Upstream `profiling` feature | N/A | Development instrumentation is not enabled in upstream release profiles and is not a user-facing 2D product capability. It remains available for developer builds rather than becoming a deferred release feature. |
 
+## Point-query pickability difference
+
+By default, Rapier2D `intersect_point` skips bodies with `input_pickable = false`, unlike gameplay point queries in the built-in server. The extension API does not expose the flag that distinguishes Viewport mouse picking from gameplay point queries, so the default preserves mouse-picking behavior. Setting `physics/rapier/queries/point_query_honors_pickable = false` makes gameplay point queries match the built-in server, at the cost of mouse picking delivering input events to non-pickable bodies.
+
 ## Verification
 
 Run `python scripts/verify_2d_parity.py --report build/reports/parity.json` to verify the source and addon parity contract against the pinned upstream commit. Runtime, determinism, performance, install, and export results are retained locally or as CI artifacts; historical working records are not part of the source distribution.
