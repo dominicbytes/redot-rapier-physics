@@ -23,6 +23,9 @@ AUTHORIZED_SOURCE_DELTAS = {
     "src/bodies/rapier_direct_body_state_2d.rs",
     "src/bodies/rapier_direct_body_state_3d.rs",
 }
+SOURCE_DELTA_DIR = Path("compat/source-deltas")
+SOURCE_DELTA_ORIGINS = {"inherited-upstream", "redot-port"}
+SOURCE_DELTA_FIELDS = {"id", "summary", "origin", "upstream", "files"}
 EXPECTED_LIBRARIES = {
     "windows.editor.x86_64": "bin/libgodot_rapier.windows.editor.x86_64-pc-windows-msvc.dll",
     "windows.debug.x86_64": "bin/libgodot_rapier.windows.debug.x86_64-pc-windows-msvc.dll",
@@ -87,8 +90,35 @@ def _compat_expected(upstream: bytes, path: str) -> bytes:
     return expected
 
 
-def _compare_runtime_source(repo: Path, commit: str) -> tuple[int, str]:
+def _load_source_deltas(repo: Path, upstream_paths: set[str]) -> list[dict[str, Any]]:
+    """Load the recorded runtime fixes that are allowed to differ from upstream."""
+    records = []
+    for record_path in sorted((repo / SOURCE_DELTA_DIR).glob("*.toml")):
+        name = (SOURCE_DELTA_DIR / record_path.name).as_posix()
+        record = tomllib.loads(record_path.read_text(encoding="utf-8"))
+        if set(record) != SOURCE_DELTA_FIELDS:
+            raise ParityError(f"source delta record must define exactly {sorted(SOURCE_DELTA_FIELDS)}: {name}")
+        if record["id"] != record_path.stem:
+            raise ParityError(f"source delta id must match its file name: {name}")
+        if record["origin"] not in SOURCE_DELTA_ORIGINS:
+            raise ParityError(f"source delta origin must be one of {sorted(SOURCE_DELTA_ORIGINS)}: {name}")
+        if not str(record["summary"]).strip() or not str(record["upstream"]).strip():
+            raise ParityError(f"source delta summary and upstream status are required: {name}")
+        files = record["files"]
+        if not isinstance(files, list) or not files:
+            raise ParityError(f"source delta must list at least one file: {name}")
+        for path in files:
+            if path not in upstream_paths:
+                raise ParityError(f"source delta names a file outside the upstream runtime source: {path}")
+        records.append(record)
+    return records
+
+
+def _compare_runtime_source(repo: Path, commit: str) -> tuple[int, str, list[dict[str, Any]]]:
     paths = _tree_paths(repo, commit, "src")
+    deltas = _load_source_deltas(repo, set(paths))
+    delta_files = {path for record in deltas for path in record["files"]}
+    changed_delta_files = set()
     digest = hashlib.sha256()
     for path in paths:
         current_path = repo / path
@@ -101,10 +131,25 @@ def _compare_runtime_source(repo: Path, commit: str) -> tuple[int, str]:
             if path in AUTHORIZED_SOURCE_DELTAS
             else upstream
         )
-        if current != expected:
+        if path in delta_files:
+            if current != expected:
+                changed_delta_files.add(path)
+        elif current != expected:
             raise ParityError(f"unauthorized runtime source delta: {path}")
         digest.update(path.encode("utf-8") + b"\0" + hashlib.sha256(current).digest())
-    return len(paths), digest.hexdigest()
+    stale = sorted(delta_files - changed_delta_files)
+    if stale:
+        raise ParityError(f"source delta records name unchanged files: {stale}")
+    summary = [
+        {
+            "id": record["id"],
+            "origin": record["origin"],
+            "upstream": record["upstream"],
+            "files": sorted(record["files"]),
+        }
+        for record in deltas
+    ]
+    return len(paths), digest.hexdigest(), summary
 
 
 def _compare_addon_source(repo: Path, commit: str) -> int:
@@ -209,7 +254,7 @@ def verify(repo: Path, archive: Path | None) -> dict[str, Any]:
     config = json.loads((repo / "porting.json").read_text(encoding="utf-8"))
     commit = config["upstream"]["commit"]
     release_version = config["product"]["release_version"]
-    source_count, source_digest = _compare_runtime_source(repo, commit)
+    source_count, source_digest, source_deltas = _compare_runtime_source(repo, commit)
     addon_count = _compare_addon_source(repo, commit)
     _compare_cargo_contract(repo, commit, release_version)
     _check_descriptor(repo, release_version)
@@ -222,6 +267,7 @@ def verify(repo: Path, archive: Path | None) -> dict[str, Any]:
         "runtime_source_manifest_sha256": source_digest,
         "upstream_addon_files_compared": addon_count,
         "authorized_runtime_deltas": sorted(AUTHORIZED_SOURCE_DELTAS),
+        "source_delta_records": source_deltas,
         "editor_features": sorted(EDITOR_FEATURES),
         "export_features": sorted(EXPORT_FEATURES),
         "dependency_features": sorted(DEPENDENCY_FEATURES),

@@ -292,3 +292,12 @@
 - Repository boundary: keep `origin` on the `dominicbytes` fork and `upstream` on `appsinacup`; make `redot-26.2` the fork's default branch so visitors and the pinned workflow see the Redot implementation.
 - Publication boundary: this authorizes source hosting and public CI only. It does not authorize `v0.35.2-redot.1`, a GitHub Release or attached candidate archive, a package-only Asset Library commit, or an Asset Library submission.
 - Hygiene: exclude transient `build/`, Cargo targets, editor caches, Python bytecode, and machine-local paths from the public source commit while retaining the compact validation evidence and legal/SBOM records.
+
+## ADR-0307: Allow recorded fixes to inherited upstream runtime defects
+
+- Date: 2026-10-19
+- Status: accepted
+- Context: a review of the `redot-26.2` line found crashes and incorrect physics behavior in upstream v0.35.2 runtime code, including a null dereference in `body_test_motion` and stale references held across script callbacks. The strict source parity gate rejected every change under `src/`, so none of them could be fixed in this fork.
+- Decision: the owner allows fixes to upstream runtime files when each fix is recorded in `compat/source-deltas/<id>.toml` with a summary, its origin, its upstream status, and the exact files it changes. `scripts/verify_2d_parity.py` accepts differences only in recorded files, rejects records whose files no longer differ, and lists every record in its report. Unrecorded files must still match upstream exactly.
+- Upstream: each inherited fix should also be offered to `appsinacup/godot-rapier-physics`; the record's `upstream` field tracks that status. Records are removed when the release line adopts an upstream version that contains the fix.
+- Consequences: ADR-0077 parity still applies to every upstream capability; recorded fixes may only correct behavior, never remove a capability. Each fix needs a regression test that fails before and passes after the change on every certified Redot engine.
