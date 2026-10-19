@@ -1,0 +1,5 @@
+id = "world-boundary-readback"
+summary = "Preserve the configured world boundary normal and signed distance on readback."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/shapes/rapier_world_boundary_shape.rs", "src/rapier_wrapper/shape.rs"]

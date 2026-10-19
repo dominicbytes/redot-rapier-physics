@@ -9,12 +9,23 @@ use crate::rapier_wrapper::prelude::*;
 use crate::servers::rapier_physics_singleton::PhysicsShapes;
 use crate::servers::rapier_physics_singleton::RapierId;
 use crate::shapes::rapier_shape::IRapierShape;
-use crate::shapes::rapier_shape::impl_rapier_shape_create;
 use crate::shapes::rapier_shape_base::RapierShapeBase;
+use crate::types::*;
 pub struct RapierWorldBoundaryShape {
+    normal: Vector,
+    distance: real,
     base: RapierShapeBase,
 }
-impl_rapier_shape_create!(RapierWorldBoundaryShape, RapierWorldBoundaryShape);
+impl RapierWorldBoundaryShape {
+    pub fn create(id: RapierId, rid: Rid, physics_shapes: &mut PhysicsShapes) {
+        let shape = Self {
+            normal: Vector::ZERO,
+            distance: 0.0,
+            base: RapierShapeBase::new(id, rid),
+        };
+        physics_shapes.insert(rid, RapierShape::RapierWorldBoundaryShape(shape));
+    }
+}
 impl IRapierShape for RapierWorldBoundaryShape {
     fn get_base(&self) -> &RapierShapeBase {
         &self.base
@@ -65,6 +76,8 @@ impl IRapierShape for RapierWorldBoundaryShape {
             );
             return;
         }
+        self.normal = normal;
+        self.distance = d;
         physics_engine.shape_create_halfspace(rapier_normal, d, self.base.get_id());
         self.base.reset_aabb(physics_engine);
     }
@@ -87,23 +100,23 @@ impl IRapierShape for RapierWorldBoundaryShape {
             );
             return;
         }
+        self.normal = normal;
+        self.distance = d;
         physics_engine.shape_create_halfspace(rapier_normal, d, self.base.get_id());
         self.base.reset_aabb(physics_engine);
     }
 
     #[cfg(feature = "dim2")]
-    fn get_data(&self, physics_engine: &PhysicsEngine) -> Variant {
-        let (normal, d) = physics_engine.shape_get_halfspace(self.base.get_id());
+    fn get_data(&self, _physics_engine: &PhysicsEngine) -> Variant {
         let mut arr = Array::<Variant>::new();
-        arr.push(&vector_to_godot(normal).to_variant());
-        arr.push(&d.to_variant());
+        arr.push(&self.normal.to_variant());
+        arr.push(&self.distance.to_variant());
         arr.to_variant()
     }
 
     #[cfg(feature = "dim3")]
-    fn get_data(&self, physics_engine: &PhysicsEngine) -> Variant {
-        let (normal, d) = physics_engine.shape_get_halfspace(self.base.get_id());
-        let plane = Plane::new(vector_to_godot(normal), d);
+    fn get_data(&self, _physics_engine: &PhysicsEngine) -> Variant {
+        let plane = Plane::new(self.normal, self.distance);
         plane.to_variant()
     }
 }
