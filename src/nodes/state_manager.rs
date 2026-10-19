@@ -22,6 +22,7 @@ use crate::servers::rapier_physics_singleton::insert_id_rid;
 use crate::servers::rapier_physics_singleton::physics_data;
 use crate::servers::rapier_physics_singleton::remove_id_rid;
 use crate::servers::try_rapier_physics_server;
+use crate::spaces::rapier_space::RapierSpace;
 use crate::spaces::rapier_space::SpaceExport;
 use crate::spaces::rapier_space::SpaceImport;
 use crate::types::SerializationFormat;
@@ -449,7 +450,12 @@ impl StateManager {
                 area.close_stale_contacts(space, &stale_intersections);
             }
         }
-        space.flush();
+        RapierSpace::flush(&space_rid);
+        // Look the space up again: a callback may have freed it.
+        let Some(space) = physics_data.spaces.get_mut(&space_rid) else {
+            godot_error!("The space was freed while its state was being loaded!");
+            return;
+        };
 
         // 3) Load the physics objects of the space
         // This has to be done before reloading the space. When importing from different scenes, the space could change it's id, but the in_space field of the physics objects is only updated in 5). This assumes, that when loading the physics information for a space, the objects in the space dont change the space they are living in.
@@ -472,7 +478,12 @@ impl StateManager {
         // Zero-step to update our contact graphs. Then flush to broadcast any relevant event signals.
         // NOTE: This has been commented out to avoid incrementing the physics state's internal tick counter. This has been done to try to address bugs in determinism after state load.
         //RapierPhysicsServer::space_step(space_rid, 0.0);
-        space.flush();
+        RapierSpace::flush(&space_rid);
+        // Look the space up again: a callback may have freed it.
+        let Some(space) = physics_data.spaces.get_mut(&space_rid) else {
+            godot_error!("The space was freed while its state was being loaded!");
+            return;
+        };
 
         // 5) Now we start loading all the objects' states.
         // We can do this by first iterating through all the physics objects in the scene tree; whenever we find an object
@@ -596,7 +607,7 @@ impl StateManager {
             }
         }
         // Flush space queries one last time, to emit the newly opened events and sync body states.
-        space.flush();
+        RapierSpace::flush(&space_rid);
         RapierPhysicsServer::set_global_id(loaded_state.physics_server_id);
     }
 

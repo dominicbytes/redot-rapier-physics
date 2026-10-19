@@ -1,0 +1,11 @@
+id = "callback-space-lifetime"
+summary = "Hold no reference into the space or body maps while query callbacks run, so callbacks can create or free spaces and bodies."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = [
+    "src/nodes/state_manager.rs",
+    "src/servers/rapier_physics_server_2d.rs",
+    "src/servers/rapier_physics_server_3d.rs",
+    "src/servers/rapier_physics_server_impl.rs",
+    "src/spaces/rapier_space.rs",
+]

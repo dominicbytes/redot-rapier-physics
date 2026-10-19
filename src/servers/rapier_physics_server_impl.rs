@@ -2706,10 +2706,7 @@ impl RapierPhysicsServerImpl {
     }
 
     pub(super) fn space_flush_queries(space: &Rid) {
-        let physics_data = physics_data();
-        if let Some(space) = physics_data.spaces.get_mut(space) {
-            space.flush();
-        }
+        RapierSpace::flush(space);
     }
 
     pub(super) fn get_id(&self, rid: Rid) -> u64 {

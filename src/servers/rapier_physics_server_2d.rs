@@ -725,7 +725,9 @@ impl IPhysicsServer2DExtension for RapierPhysicsServer2D {
         self.implementation.flushing_queries = true;
         let physics_data = physics_data();
         let guard = self.base_mut();
-        for space in physics_data.active_spaces.values() {
+        // Iterate over a copy: callbacks can create, activate or free spaces.
+        let active_spaces: Vec<Rid> = physics_data.active_spaces.values().copied().collect();
+        for space in &active_spaces {
             RapierPhysicsServerImpl::space_flush_queries(space);
         }
         drop(guard);
