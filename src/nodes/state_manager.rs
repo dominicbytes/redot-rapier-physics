@@ -445,6 +445,23 @@ impl StateManager {
     }
 
     fn load_state_internal(&mut self, space_rid: Rid, mut loaded_state: RawImportState) {
+        let valid_contacts = |state: &ObjectImportState| match state {
+            ObjectImportState::Body(body) => body.has_valid_contacts(),
+            _ => true,
+        };
+        if loaded_state.physics_objects_state.values().any(|object| {
+            !valid_contacts(&object.state)
+                || object
+                    .shape_owners
+                    .values()
+                    .flatten()
+                    .any(|state| !valid_contacts(state))
+        }) {
+            godot_error!(
+                "Invalid snapshot: body contact count exceeds stored contacts or is negative."
+            );
+            return;
+        }
         let physics_data = physics_data();
 
         let Some(space) = physics_data.spaces.get_mut(&space_rid) else {

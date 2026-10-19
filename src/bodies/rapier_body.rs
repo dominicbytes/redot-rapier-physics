@@ -144,6 +144,13 @@ pub struct BodyImport {
     base_state: RapierCollisionObjectBaseState,
 }
 #[cfg(feature = "serde-serialize")]
+impl BodyImport {
+    pub fn has_valid_contacts(&self) -> bool {
+        self.body_state.contact_count >= 0
+            && self.body_state.contact_count as usize <= self.body_state.contacts.len()
+    }
+}
+#[cfg(feature = "serde-serialize")]
 impl ImportToExport for BodyImport {
     type Export<'a> = BodyExport<'a>;
 
@@ -1086,7 +1093,10 @@ impl RapierBody {
         if contact_idx < 0 || contact_idx >= self.state.contact_count {
             return 0.0;
         }
-        self.state.contacts[contact_idx as usize].tangent_impulse
+        self.state
+            .contacts
+            .get(contact_idx as usize)
+            .map_or(0.0, |contact| contact.tangent_impulse)
     }
 
     pub fn reset_contact_count(&mut self) {
@@ -2384,6 +2394,12 @@ impl ExportableObject for RapierBody {
     fn import_state(&mut self, _: &mut PhysicsEngine, data: ObjectImportState) {
         match data {
             bodies::exportable_object::ObjectImportState::Body(body_import) => {
+                if !body_import.has_valid_contacts() {
+                    godot_error!(
+                        "Invalid body snapshot: contact count exceeds stored contacts or is negative."
+                    );
+                    return;
+                }
                 self.state = body_import.body_state;
                 self.base.state = body_import.base_state;
             }

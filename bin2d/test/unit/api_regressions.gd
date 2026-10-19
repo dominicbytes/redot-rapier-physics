@@ -27,6 +27,7 @@ func _ready() -> void:
 	force_integration_argument.queue_free()
 	_run_expected_errors("res://test/unit/test_fluid_array_lengths.gd", "Points and velocities must have the same length.", 4)
 	assert(await preload("res://test/unit/test_snapshot_body_parameters.gd").new().run(self), "Regression test did not complete")
+	_run_expected_errors("res://test/unit/test_snapshot_contact_validation.gd", "Invalid snapshot: body contact count exceeds stored contacts or is negative.", 2)
 	# Wait for scene tests that run across physics frames.
 	for test in get_tree().get_nodes_in_group(&"async_unit_tests"):
 		while not test.done:
