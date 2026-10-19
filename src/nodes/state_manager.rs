@@ -15,6 +15,7 @@ use crate::bodies::exportable_object::ExportableObject;
 use crate::bodies::exportable_object::ImportToExport;
 use crate::bodies::exportable_object::ObjectExportState;
 use crate::bodies::exportable_object::ObjectImportState;
+use crate::bodies::rapier_body::BodyParameters;
 use crate::bodies::rapier_collision_object::IRapierCollisionObject;
 use crate::bodies::rapier_collision_object::RapierCollisionObject;
 use crate::servers::RapierPhysicsServer;
@@ -82,6 +83,7 @@ struct RawExportState<'a> {
     rapier_space: SpaceExport<'a>,
     physics_server_id: i64,
     physics_objects_state: BTreeMap<String, CollatedObjectExportState<'a>>,
+    body_parameters: BTreeMap<String, BodyParameters>,
 }
 impl<'a> RawExportState<'a> {
     fn from_import_state(import_state: &'a RawImportState) -> Self {
@@ -94,6 +96,7 @@ impl<'a> RawExportState<'a> {
             rapier_space: import_state.rapier_space.as_export(),
             physics_server_id: import_state.physics_server_id,
             physics_objects_state: phys_objs,
+            body_parameters: import_state.body_parameters.clone(),
         }
     }
 }
@@ -103,6 +106,8 @@ struct RawImportState {
     rapier_space: SpaceImport,
     physics_server_id: i64,
     physics_objects_state: BTreeMap<String, CollatedObjectImportState>,
+    #[serde(default)]
+    body_parameters: BTreeMap<String, BodyParameters>,
 }
 impl RawImportState {
     // Destroys (takes ownership of) the export object.
@@ -111,6 +116,7 @@ impl RawImportState {
             root_node: export_state.root_node.clone(),
             rapier_space: *export_state.rapier_space.into_import(), // Unbox the space state (boxed to keep down enum size)
             physics_server_id: export_state.physics_server_id,
+            body_parameters: export_state.body_parameters,
             physics_objects_state: {
                 let mut phys_objs = BTreeMap::new();
                 for (key, val) in export_state.physics_objects_state {
@@ -118,6 +124,37 @@ impl RawImportState {
                 }
                 phys_objs
             },
+        }
+    }
+}
+// Binary serde structs are positional; defaults alone cannot read an older layout.
+#[derive(serde::Deserialize)]
+struct LegacyRawImportState {
+    root_node: String,
+    rapier_space: SpaceImport,
+    physics_server_id: i64,
+    physics_objects_state: BTreeMap<String, CollatedObjectImportState>,
+}
+impl RawImportState {
+    fn from_binary(bytes: &[u8]) -> Result<Self, bincode::Error> {
+        match bincode::deserialize(bytes) {
+            Ok(state) => Ok(state),
+            Err(error) => {
+                let mut cursor = std::io::Cursor::new(bytes);
+                if let Ok(legacy) =
+                    bincode::deserialize_from::<_, LegacyRawImportState>(&mut cursor)
+                    && cursor.position() == bytes.len() as u64
+                {
+                    return Ok(Self {
+                        root_node: legacy.root_node,
+                        rapier_space: legacy.rapier_space,
+                        physics_server_id: legacy.physics_server_id,
+                        physics_objects_state: legacy.physics_objects_state,
+                        body_parameters: BTreeMap::new(),
+                    });
+                }
+                Err(error)
+            }
         }
     }
 }
@@ -322,7 +359,7 @@ impl StateManager {
                         return;
                     }
                 };
-                match bincode::deserialize(pba.as_slice()) {
+                match RawImportState::from_binary(pba.as_slice()) {
                     Ok(s) => s,
                     Err(err) => {
                         godot_error!("Failed to deserialize state from binary: {}", err);
@@ -598,12 +635,18 @@ impl StateManager {
             }
             if let Some(area) = collision_object.get_mut_area() {
                 area.open_new_contacts(space, &new_intersections);
-            } else if let Some(body) = collision_object.get_mut_body()
-                && body.get_state_sync_callback().is_some()
-            {
-                space
-                    .get_mut_state()
-                    .body_add_to_state_query_list(body.get_base().get_id());
+            } else if let Some(body) = collision_object.get_mut_body() {
+                body.restore_parameters(
+                    loaded_state
+                        .body_parameters
+                        .get(&body.get_base().get_id().to_string()),
+                    &physics_data.physics_engine,
+                );
+                if body.get_state_sync_callback().is_some() {
+                    space
+                        .get_mut_state()
+                        .body_add_to_state_query_list(body.get_base().get_id());
+                }
             }
         }
         // Flush space queries one last time, to emit the newly opened events and sync body states.
@@ -712,11 +755,27 @@ impl StateManager {
                 return None;
             };
             // So now we have our whole composed raw state, ready to serialize to json or binary.
+            let physics_data = physics_data();
+            let body_parameters = physics_data
+                .collision_objects
+                .values()
+                .filter_map(|object| {
+                    let body = object.get_body()?;
+                    if body.get_base().get_space(&physics_data.ids) != in_space {
+                        return None;
+                    }
+                    Some((
+                        body.get_base().get_id().to_string(),
+                        body.snapshot_parameters(),
+                    ))
+                })
+                .collect();
             let raw_state = RawExportState {
                 root_node: root_nodepath,
                 rapier_space: space_state,
                 physics_server_id: physics_server_index,
                 physics_objects_state: object_states,
+                body_parameters,
             };
             return Some(raw_state);
         }
