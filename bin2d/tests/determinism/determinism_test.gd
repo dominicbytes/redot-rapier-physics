@@ -28,6 +28,12 @@ func _ready() -> void:
 		get_tree().quit(1)
 		return
 
+	if not ClassDB.class_exists("RapierPhysicsServer2D") or not PhysicsServer2D.is_class("RapierPhysicsServer2D"):
+		print("DETERMINISM_TEST: ERROR - active PhysicsServer2D is not Rapier")
+		print("DETERMINISM_TEST: STATUS=FAILED")
+		get_tree().quit(1)
+		return
+
 	# Use fixed physics settings to ensure reproducibility
 	Engine.physics_ticks_per_second = 60
 	Engine.max_physics_steps_per_frame = 1
@@ -324,6 +330,7 @@ func _finish() -> void:
 		"observed": {
 			"os": OS.get_name(),
 			"arch": Engine.get_architecture_name(),
+			"backend": PhysicsServer2D.get_class(),
 		},
 		"frames": frame_records,
 	}

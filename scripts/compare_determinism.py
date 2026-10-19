@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -33,7 +34,7 @@ def inspect_replay(path: Path) -> dict[str, Any]:
         replay = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise ReplayError(f"cannot load {path}: {exc}") from exc
-    if replay.get("protocol") != PROTOCOL:
+    if not isinstance(replay, dict) or replay.get("protocol") != PROTOCOL:
         raise ReplayError(f"unexpected protocol in {path}")
     profile = replay.get("profile")
     frames = replay.get("frames")
@@ -50,8 +51,25 @@ def inspect_replay(path: Path) -> dict[str, Any]:
         raise ReplayError(f"solver_parallel must be false in {path}")
     if profile.get("redot_separate_thread") is not False:
         raise ReplayError(f"Redot separate-thread physics must be false in {path}")
-    if any(not isinstance(frame, list) for frame in frames):
-        raise ReplayError(f"invalid frame payload in {path}")
+    if (profile.get("precision") != "single" or profile.get("physics_ticks_per_second") != 60
+            or profile.get("simulation_frames") != 300 or profile.get("seed") != 0):
+        raise ReplayError(f"unsupported replay profile in {path}")
+    count = profile.get("body_count")
+    if type(count) is not int or count <= 0:
+        raise ReplayError(f"invalid body count in {path}")
+    for key in ("os", "arch"):
+        if not isinstance(observed.get(key), str) or not observed[key].strip():
+            raise ReplayError(f"missing platform identity in {path}")
+    if observed.get("backend") != "RapierPhysicsServer2D":
+        raise ReplayError(f"missing Rapier backend identity in {path}")
+    for frame in frames:
+        if not isinstance(frame, list) or len(frame) != count:
+            raise ReplayError(f"body count mismatch in {path}")
+        for body in frame:
+            if not isinstance(body, list) or len(body) != 9:
+                raise ReplayError(f"invalid body component count in {path}")
+            if any(not isinstance(value, str) or not re.fullmatch(r"[0-9a-fA-F]{16}", value) for value in body):
+                raise ReplayError(f"invalid hexadecimal component in {path}")
 
     canonical = {"protocol": PROTOCOL, "profile": profile, "frames": frames}
     return {

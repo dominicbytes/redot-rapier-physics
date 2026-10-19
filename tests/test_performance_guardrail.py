@@ -98,6 +98,37 @@ class PerformanceGuardrailTests(unittest.TestCase):
             self.assertEqual(affinity, sorted(set(affinity)))
             self.assertGreater(len(affinity), 0)
 
+    def test_engine_errors_are_rejected_even_with_success_output(self) -> None:
+        for diagnostic in ("SCRIPT ERROR: broken callback", "Parse Error", "ERROR: runtime failure",
+                           "Assertion failed", "GDExtension initialization returned an error",
+                           "thread 'worker' panicked at failure"):
+            for source in ("console", "log"):
+                with self.subTest(diagnostic=diagnostic, source=source), tempfile.TemporaryDirectory() as temporary:
+                    log = Path(temporary) / "engine.log"
+                    log.write_text(diagnostic if source == "log" else "", encoding="utf-8")
+                    console = PERFORMANCE.SENTINEL + "\n" + (diagnostic if source == "console" else "")
+                    with self.assertRaises(PERFORMANCE.PerformanceError):
+                        PERFORMANCE.require_clean_output(console, log)
+
+    def test_backend_rejects_successful_process_with_script_error(self) -> None:
+        import subprocess
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            fixture = root / "fixture"
+            fixture.mkdir()
+            (fixture / "project.default.godot").write_text("config_version=5", encoding="utf-8")
+            addon = root / "addon"
+            addon.mkdir()
+            config = root / "scenarios.json"
+            config.write_text(json.dumps(dict(scenarios=[], runs_per_scenario=1)), encoding="utf-8")
+            completed = subprocess.CompletedProcess([], 0, PERFORMANCE.SENTINEL + "\nSCRIPT ERROR: failing import")
+            with mock.patch.multiple(PERFORMANCE, FIXTURE=fixture, ADDON=addon, SCENARIOS=config), \
+                    mock.patch.object(PERFORMANCE, "patch_descriptor_for_release", return_value={}), \
+                    mock.patch.object(PERFORMANCE, "execution_environment", return_value={}), \
+                    mock.patch.object(PERFORMANCE.subprocess, "run", return_value=completed):
+                with self.assertRaises(PERFORMANCE.PerformanceError):
+                    PERFORMANCE.run_backend(Path("engine"), "default", root / "output")
+
     def reports(self) -> tuple[dict, dict, dict]:
         environment = {
             "redot_version": "26.2.stable.official.4f5b14aba",

@@ -6,7 +6,7 @@
   "frozen_on": "2026-08-12",
   "scenario_contract_sha256": "715870cb2898ee4e2776c08b28a39c991aa83943bd8074ec2768c85cf8e812eb",
   "fixture_manifest_sha256": "df7c046c51673e705bf1731988448e5559696efc7995d6cb0356e3211e0433fe",
-  "runner_sha256": "a4852c8f694a26adf52d27b178bcca20288e1cacc88859f8ef599d1d99840213",
+  "runner_sha256": "8f32a871a82a0b15beeda1fc6b6c508b2ffb9a27d75f9206dc19eb29a7f0f4a1",
   "aggregation": "three runs; wall-clock intervals between consecutive physics-frame signals; pooled frame samples; nearest-rank p95; median; maximum static-memory monitor",
   "environment_controls": {
     "windows_local": "paired baseline/candidate on the same native Windows host with process affinity 0-15",

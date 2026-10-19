@@ -1,20 +1,23 @@
 extends Node
 
-# CI entry point for the res://test/unit unit tests.
-#
-# The unit-test scripts (test_body.gd, test_space.gd, the joint tests, ...) run their
-# assertions synchronously inside their own _ready(). Node _ready() propagates bottom-up,
-# so by the time this root node's _ready() runs, every unit-test script beneath it has
-# already executed all of its assertions.
-#
-# A failed assert() either terminates the process (so the SUCCESS sentinel below is never
-# printed) or logs an error to stderr. CI therefore fails the run if EITHER the sentinel is
-# missing OR an assertion/script error appears in the log.
+# Isolate the inherited synchronous assertions so a failed child callback cannot
+# resume this wrapper and print SUCCESS. Capture stderr as well as stdout.
 func _ready() -> void:
-	# Let child _ready() calls unwind and the physics server flush one step before
-	# shutdown. Quitting during scene-tree initialization leaves transient test
-	# objects registered in ObjectDB and masks an otherwise clean test result.
-	await get_tree().process_frame
-	await get_tree().physics_frame
+	var output: Array = []
+	var status := OS.execute(OS.get_executable_path(), PackedStringArray([
+		"--headless", "--audio-driver", "Dummy", "--fixed-fps", "60",
+		"--path", ProjectSettings.globalize_path("res://"),
+		"--scene", "res://test/unit/api_tests.tscn", "--quit-after", "1200",
+	]), output, true)
+	var text := "\n".join(output)
+	print(text)
+	for diagnostic in ["SCRIPT ERROR", "Parse Error", "Assertion failed", "ERROR:",
+			"GDExtension initialization", "Failed to load", "panicked at"]:
+		if diagnostic.to_lower() in text.to_lower():
+			status = 1
+	if status != 0:
+		print("UNIT TESTS STATUS: FAILED")
+		get_tree().quit(1)
+		return
 	print("UNIT TESTS STATUS: SUCCESS")
 	get_tree().quit(0)

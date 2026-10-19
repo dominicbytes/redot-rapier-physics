@@ -18,6 +18,10 @@ func _run_smoke() -> void:
 		_fail("Expected Rapier2D backend, got %s" % backend)
 		return
 
+	if not ClassDB.class_exists("RapierPhysicsServer2D") or not PhysicsServer2D.is_class("RapierPhysicsServer2D"):
+		_fail("Active PhysicsServer2D is not the Rapier implementation")
+		return
+
 	var body := StaticBody2D.new()
 	body.input_pickable = true
 	var collision_shape := CollisionShape2D.new()

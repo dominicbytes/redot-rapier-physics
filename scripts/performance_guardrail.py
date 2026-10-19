@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 import ctypes
 import hashlib
 import json
@@ -160,6 +161,12 @@ def execution_environment(redot: Path, native_hashes: dict[str, str]) -> dict[st
     }
 
 
+def require_clean_output(console: str, log: Path) -> None:
+    text = console + "\n" + (log.read_text(encoding="utf-8", errors="replace") if log.is_file() else "")
+    if re.search(r"SCRIPT ERROR|Parse Error|Assertion failed|^ERROR:|GDExtension.*(?:error|fail)|Failed to (?:load|initialize)|panicked at|thread .+ panicked|fatal runtime error", text, re.IGNORECASE | re.MULTILINE):
+        raise PerformanceError("engine diagnostics contain an error")
+
+
 def run_backend(redot: Path, backend: str, output: Path) -> dict[str, Any]:
     if backend not in {"default", "rapier"}:
         raise PerformanceError(f"unsupported backend: {backend}")
@@ -182,6 +189,7 @@ def run_backend(redot: Path, backend: str, output: Path) -> dict[str, Any]:
             cwd=ROOT, check=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
             text=True, encoding="utf-8", errors="replace", timeout=120,
         )
+        require_clean_output(imported.stdout, import_log)
         if imported.returncode:
             raise PerformanceError(
                 f"{backend} fixture import exited {imported.returncode}\n{imported.stdout[-4000:]}"
@@ -212,6 +220,7 @@ def run_backend(redot: Path, backend: str, output: Path) -> dict[str, Any]:
                     errors="replace", timeout=120,
                 )
                 console = completed.stdout
+                require_clean_output(console, log_path)
                 if completed.returncode:
                     raise PerformanceError(f"{stem} exited {completed.returncode}\n{console[-4000:]}")
                 if not result_path.is_file():
