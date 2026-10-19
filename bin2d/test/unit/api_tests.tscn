@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cc2ig1s2mncgp"]
+[gd_scene load_steps=10 format=3 uid="uid://cc2ig1s2mncgp"]
 
 [ext_resource type="Script" path="res://test/unit/test_body.gd" id="1_qwomm"]
 [ext_resource type="Script" path="res://test/unit/test_joint_base.gd" id="2_yboo1"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://test/unit/test_separation_ray.gd" id="6_sepray"]
 [ext_resource type="Script" path="res://test/unit/test_flush_callbacks.gd" id="7_flush"]
 [ext_resource type="Script" path="res://test/unit/api_regressions.gd" id="regressions"]
+[ext_resource type="Script" path="res://test/unit/test_motion_exclusions.gd" id="motionex"]
 
 [node name="Tests" type="Node2D"]
 
@@ -39,3 +40,6 @@ script = ExtResource("7_flush")
 
 [node name="APIRegressions" type="Node2D" parent="."]
 script = ExtResource("regressions")
+
+[node name="TestMotionExclusions" type="Node2D" parent="."]
+script = ExtResource("motionex")

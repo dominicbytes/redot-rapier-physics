@@ -339,6 +339,7 @@ impl RapierSpace {
         physics_shapes: &PhysicsShapes,
         physics_ids: &PhysicsIds,
         physics_collision_objects: &PhysicsCollisionObjects,
+        motion_excluded: &dyn Fn(Rid, u64) -> bool,
     ) -> bool {
         reset_body_motion_result(result);
         let mut body_transform = from; // Because body_transform needs to be modified during recovery
@@ -363,6 +364,7 @@ impl RapierSpace {
             physics_shapes,
             physics_ids,
             physics_collision_objects,
+            motion_excluded,
         );
         // Skip processing if motion is too small, but only after recovery had a chance to push
         // the body out of a moving platform.
@@ -397,6 +399,7 @@ impl RapierSpace {
                 physics_shapes,
                 physics_ids,
                 physics_collision_objects,
+                motion_excluded,
             );
             // Far from the origin, parry can report a tiny safe fraction for perpendicular wall pushes.
             // Godot treats this as no travel, so keep the collision and clamp only the safe motion.
@@ -426,6 +429,7 @@ impl RapierSpace {
                 physics_shapes,
                 physics_ids,
                 physics_collision_objects,
+                motion_excluded,
             );
         }
         finish_body_motion_result(
@@ -494,6 +498,7 @@ impl RapierSpace {
         physics_shapes: &PhysicsShapes,
         physics_ids: &PhysicsIds,
         physics_collision_objects: &PhysicsCollisionObjects,
+        motion_excluded: &dyn Fn(Rid, u64) -> bool,
     ) -> bool {
         let shape_count = p_body.get_base().get_shape_count();
         if shape_count < 1 {
@@ -562,6 +567,10 @@ impl RapierSpace {
                             let col_rid = collision_body.get_base().get_rid();
                             if collision_body.has_exception(moving_rid)
                                 || p_body.has_exception(col_rid)
+                                || motion_excluded(
+                                    col_rid,
+                                    collision_body.get_base().get_instance_id(),
+                                )
                             {
                                 continue;
                             }
@@ -681,6 +690,7 @@ impl RapierSpace {
         physics_shapes: &PhysicsShapes,
         physics_ids: &PhysicsIds,
         physics_collision_objects: &PhysicsCollisionObjects,
+        motion_excluded: &dyn Fn(Rid, u64) -> bool,
     ) {
         let body_aabb = p_body.get_aabb(physics_shapes, physics_ids);
         let margin_aabb = *p_transform * body_aabb;
@@ -759,7 +769,9 @@ impl RapierSpace {
                     {
                         let moving_rid = p_body.get_base().get_rid();
                         let col_rid = collision_body.get_base().get_rid();
-                        if collision_body.has_exception(moving_rid) || p_body.has_exception(col_rid)
+                        if collision_body.has_exception(moving_rid)
+                            || p_body.has_exception(col_rid)
+                            || motion_excluded(col_rid, collision_body.get_base().get_instance_id())
                         {
                             continue;
                         }
@@ -933,6 +945,7 @@ impl RapierSpace {
         physics_shapes: &PhysicsShapes,
         physics_ids: &PhysicsIds,
         physics_collision_objects: &PhysicsCollisionObjects,
+        motion_excluded: &dyn Fn(Rid, u64) -> bool,
     ) -> bool {
         let shape_count = p_body.get_base().get_shape_count();
         if shape_count < 1 {
@@ -1022,7 +1035,9 @@ impl RapierSpace {
                     {
                         let moving_rid = p_body.get_base().get_rid();
                         let col_rid = collision_body.get_base().get_rid();
-                        if collision_body.has_exception(moving_rid) || p_body.has_exception(col_rid)
+                        if collision_body.has_exception(moving_rid)
+                            || p_body.has_exception(col_rid)
+                            || motion_excluded(col_rid, collision_body.get_base().get_instance_id())
                         {
                             continue;
                         }

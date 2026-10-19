@@ -1675,6 +1675,7 @@ impl RapierPhysicsServerImpl {
         collide_separation_ray: bool,
         recovery_as_collision: bool,
         result: RawPtr<*mut PhysicsServerExtensionMotionResult>,
+        motion_excluded: &dyn Fn(Rid, u64) -> bool,
     ) -> bool {
         let physics_data = physics_data();
         if let Some(body) = physics_data.collision_objects.get(&body)
@@ -1706,6 +1707,7 @@ impl RapierPhysicsServerImpl {
                 &physics_data.shapes,
                 &physics_data.ids,
                 &physics_data.collision_objects,
+                motion_excluded,
             );
         }
         false
