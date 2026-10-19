@@ -64,6 +64,8 @@ pub struct RapierCollisionObjectBaseState {
     pub(crate) shapes: Vec<CollisionObjectShape>,
     pub(crate) transform: Transform,
     pub(crate) inv_transform: Transform,
+    #[cfg_attr(feature = "serde-serialize", serde(default))]
+    pub(crate) first_kinematic_transform: bool,
 }
 impl Default for RapierCollisionObjectBaseState {
     fn default() -> Self {
@@ -74,6 +76,7 @@ impl Default for RapierCollisionObjectBaseState {
             shapes: Vec::new(),
             transform: Transform::IDENTITY,
             inv_transform: Transform::IDENTITY,
+            first_kinematic_transform: false,
         }
     }
 }
@@ -135,6 +138,7 @@ impl RapierCollisionObjectBase {
                 shapes: Vec::new(),
                 transform: Transform::IDENTITY,
                 inv_transform: Transform::IDENTITY,
+                first_kinematic_transform: false,
             },
             instance_id: 0,
             canvas_instance_id: 0,
@@ -431,7 +435,13 @@ impl RapierCollisionObjectBase {
         wake_up: bool,
         physics_engine: &mut PhysicsEngine,
     ) {
-        let teleport = self.state.transform == Transform::IDENTITY;
+        let teleport = if self.mode == BodyMode::KINEMATIC {
+            let first = self.state.first_kinematic_transform;
+            self.state.first_kinematic_transform = false;
+            first
+        } else {
+            self.state.transform == Transform::IDENTITY
+        };
         self.state.transform = p_transform;
         self.state.inv_transform = transform_inverse(&self.state.transform);
         if !self.is_valid() {

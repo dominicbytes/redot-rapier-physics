@@ -1830,6 +1830,7 @@ impl RapierBody {
         }
         let prev_mode = self.base.mode;
         self.base.mode = p_mode;
+        self.base.state.first_kinematic_transform = p_mode == BodyMode::KINEMATIC;
         let id = self.base.get_id();
         if let Some(space) = physics_spaces.get_mut(&self.base.get_space(physics_ids)) {
             match p_mode {

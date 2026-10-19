@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cc2ig1s2mncgp"]
+[gd_scene load_steps=12 format=3 uid="uid://cc2ig1s2mncgp"]
 
 [ext_resource type="Script" path="res://test/unit/test_body.gd" id="1_qwomm"]
 [ext_resource type="Script" path="res://test/unit/test_joint_base.gd" id="2_yboo1"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://test/unit/api_regressions.gd" id="regressions"]
 [ext_resource type="Script" path="res://test/unit/test_motion_exclusions.gd" id="motionex"]
 [ext_resource type="Script" path="res://test/unit/test_motion_sweep.gd" id="sweep"]
+[ext_resource type="Script" path="res://test/unit/test_query_pose.gd" id="pose"]
 
 [node name="Tests" type="Node2D"]
 
@@ -47,3 +48,6 @@ script = ExtResource("motionex")
 
 [node name="TestMotionSweep" type="Node2D" parent="."]
 script = ExtResource("sweep")
+
+[node name="TestQueryPose" type="Node2D" parent="."]
+script = ExtResource("pose")

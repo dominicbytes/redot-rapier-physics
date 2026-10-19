@@ -195,6 +195,25 @@ impl PhysicsEngine {
                 .get_mut(body_handle)
         {
             set_rigid_body_properties_internal(body, pixel_pos, rot, teleport, wake_up);
+            // Kinematic targets stay deferred; actual pose changes update only this body's
+            // colliders and broad-phase leaves so direct queries can see them immediately.
+            if body.is_fixed() || teleport {
+                for handle in body.colliders() {
+                    if let Some(collider) =
+                        physics_world.physics_objects.collider_set.get_mut(*handle)
+                        && let Some(local_pose) = collider.position_wrt_parent().copied()
+                    {
+                        collider.set_position(*body.position() * local_pose);
+                        if collider.is_enabled() {
+                            physics_world.physics_objects.broad_phase.set_aabb(
+                                &IntegrationParameters::default(),
+                                *handle,
+                                collider.compute_aabb(),
+                            );
+                        }
+                    }
+                }
+            }
         }
         self.body_wake_up_connected_rigidbodies(world_handle, body_handle);
     }
