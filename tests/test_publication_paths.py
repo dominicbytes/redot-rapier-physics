@@ -43,6 +43,13 @@ class PublicationPathTests(unittest.TestCase):
             self.assertGreater(PATHS.scan_payload(outer.getvalue()), 0)
         self.assertEqual(PATHS.scan_payload(b"res://main.tscn https://example.test/source /source/main.rs"), 0)
 
+    def test_drive_letter_needs_a_path_segment(self):
+        # Byte runs like these occur in release machine code; none of them is a path.
+        for noise in (b"\x90D:\\$'\x00", b"\x00a:/\x01\x02", b"xx C:\\ yy"):
+            self.assertEqual(PATHS.path_hits(noise), 0)
+        for path in (b"D:\\a\\repo", b"C:/build/src", b"E:\\src", b"F:\\My Folder\\x"):
+            self.assertGreater(PATHS.path_hits(path), 0)
+
     def test_unix_and_runner_roots_are_rejected(self):
         for root in ("home", "Users", "__w"):
             self.assertGreater(PATHS.path_hits(("/" + root + "/private/source").encode()), 0)

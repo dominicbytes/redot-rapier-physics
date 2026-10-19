@@ -12,8 +12,10 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+# A drive letter only counts when a path segment follows it: machine code in a
+# release binary can contain short byte runs such as `D:\$'` that are not paths.
 ABSOLUTE = re.compile(
-    r"(?<![a-zA-Z0-9])[a-zA-Z]:[\\/]|/(?:home|Users|__w|tmp)/|"
+    r"(?<![a-zA-Z0-9])[a-zA-Z]:[\\/](?:[\w.-][\w .-]*[\\/]|[\w.-]{3})|/(?:home|Users|__w|tmp)/|"
     r"/(?:mnt|cygdrive)/[a-zA-Z]/|/[a-z]/(?:a|work|Users)/",
     re.IGNORECASE,
 )
