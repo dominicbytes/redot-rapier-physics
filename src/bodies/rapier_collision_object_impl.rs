@@ -189,6 +189,7 @@ impl RapierCollisionObjectBase {
                 .remove_owner(collision_object.get_base().get_id());
         }
         collision_object.get_mut_base().state.shapes[p_index].id = p_shape;
+        let shape = collision_object.get_base().state.shapes[p_index];
         if let Some(shape) = physics_shapes.get_mut(&get_id_rid(shape.id, physics_ids)) {
             shape
                 .get_mut_base()
