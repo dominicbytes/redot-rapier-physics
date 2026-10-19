@@ -13,6 +13,7 @@ import tomllib
 import zipfile
 from pathlib import Path
 from typing import Any
+from publication_paths import report_path, safe_report, scrub_text
 
 
 ADDON_SOURCE = Path("bin2d/addons/godot-rapier2d")
@@ -198,7 +199,7 @@ def _check_archive(repo: Path, archive: Path) -> dict[str, Any]:
     if native_files != expected_binaries:
         raise ParityError("package native payload is not the exact six-profile contract")
     return {
-        "path": str(archive.resolve()),
+        "path": report_path(archive, "archive"),
         "sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
         "file_count": len(files),
         "native_file_count": len(native_files),
@@ -240,11 +241,11 @@ def main() -> int:
     try:
         report = verify(args.repo.resolve(), args.archive.resolve() if args.archive else None)
     except (OSError, KeyError, ValueError, ParityError, zipfile.BadZipFile) as exc:
-        report = {"status": "FAIL", "error": str(exc)}
+        report = {"status": "FAIL", "error": scrub_text(str(exc))}
         code = 2
     else:
         code = 0
-    payload = json.dumps(report, indent=2, sort_keys=True) + "\n"
+    payload = json.dumps(safe_report(report), indent=2, sort_keys=True) + "\n"
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(payload, encoding="utf-8")

@@ -5,10 +5,12 @@ import importlib.util
 import json
 import tempfile
 import unittest
+import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 SPEC = importlib.util.spec_from_file_location(
     "compare_determinism", ROOT / "scripts/compare_determinism.py"
 )
@@ -47,6 +49,7 @@ class DeterminismComparisonTests(unittest.TestCase):
             result = COMPARE.compare_replays(paths)
             self.assertEqual(result["status"], "PASS")
             self.assertEqual(result["run_count"], 2)
+            self.assertTrue(all(run["path"] == "<replay>" for run in result["runs"]))
             self.assertEqual(result["platforms"], ["Linux-x86_64", "Windows-x86_64"])
 
     def test_first_divergent_state_fails_the_comparison(self) -> None:

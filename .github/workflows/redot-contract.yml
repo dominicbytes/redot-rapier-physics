@@ -95,6 +95,14 @@ jobs:
           python scripts/verify_2d_parity.py --report reports/ci/windows/parity.json
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
 
+      - name: Remap native build and PDB paths
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $flags = python scripts/publication_paths.py rustflags --windows
+          if ($LASTEXITCODE -ne 0) { throw 'Build path configuration failed' }
+          "CARGO_ENCODED_RUSTFLAGS=$flags" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
       - name: Lint, test, and build Rapier2D profiles
         shell: pwsh
         run: |
@@ -152,7 +160,7 @@ jobs:
           if (-not (Select-String -Quiet -LiteralPath "$evidence/feature-parity.log" -Pattern "REDOT RAPIER2D FEATURE PARITY: SUCCESS")) {
             throw "Rapier2D feature parity sentinel missing"
           }
-          Get-FileHash -Algorithm SHA256 "$addonBin/libgodot_rapier.windows.*.x86_64-pc-windows-msvc.dll" | ConvertTo-Json | Out-File "$evidence/binary-sha256.json" -Encoding utf8
+          Get-FileHash -Algorithm SHA256 "$addonBin/libgodot_rapier.windows.*.x86_64-pc-windows-msvc.dll" | ForEach-Object { @{ file = (Split-Path $_.Path -Leaf); sha256 = $_.Hash.ToLowerInvariant() } } | ConvertTo-Json | Out-File "$evidence/binary-sha256.json" -Encoding utf8
 
       - name: Prove the Windows deterministic profile
         shell: pwsh
@@ -186,8 +194,20 @@ jobs:
           python scripts/performance_guardrail.py compare --baseline "$performance/performance-default.json" --candidate "$performance/performance-rapier.json" --output "$performance/comparison.json"
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
 
-      - name: Upload Windows evidence
+      - name: Sanitize and scan publication inputs
+        id: publication
         if: always()
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force reports/ci/windows,build/native,build/api | Out-Null
+          python scripts/publication_paths.py sanitize reports/ci/windows
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence sanitization failed' }
+          python scripts/publication_paths.py scan reports/ci/windows build/native build/api
+          if ($LASTEXITCODE -ne 0) { throw 'Publication path scan failed' }
+
+      - name: Upload Windows evidence
+        if: always() && steps.publication.outcome == 'success'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: rapier2d-windows-evidence
@@ -244,6 +264,12 @@ jobs:
           python3 scripts/redot_porting.py validate --skip-local-files
           python3 -m unittest discover -s tests -p 'test_*.py'
           python3 scripts/verify_2d_parity.py --report reports/ci/linux/parity.json
+
+      - name: Remap native build paths
+        run: |
+          set -euo pipefail
+          flags="$(python3 scripts/publication_paths.py rustflags)"
+          echo "CARGO_ENCODED_RUSTFLAGS=$flags" >> "$GITHUB_ENV"
 
       - name: Lint, test, and build Rapier2D profiles
         run: |
@@ -303,8 +329,20 @@ jobs:
           python3 scripts/performance_guardrail.py run --backend rapier --redot-bin "$REDOT_BIN" --output-dir "$performance"
           python3 scripts/performance_guardrail.py compare --baseline "$performance/performance-default.json" --candidate "$performance/performance-rapier.json" --output "$performance/comparison.json"
 
-      - name: Upload Linux evidence
+      - name: Sanitize and scan publication inputs
+        id: publication
         if: always()
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force reports/ci/linux,build/native,build/api | Out-Null
+          python scripts/publication_paths.py sanitize reports/ci/linux
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence sanitization failed' }
+          python scripts/publication_paths.py scan reports/ci/linux build/native build/api
+          if ($LASTEXITCODE -ne 0) { throw 'Publication path scan failed' }
+
+      - name: Upload Linux evidence
+        if: always() && steps.publication.outcome == 'success'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: rapier2d-linux-evidence
@@ -379,7 +417,20 @@ jobs:
             --report reports/ci/package/determinism-cross-platform.json
           sha256sum "build/package-a/$archive" > reports/ci/package/archive.sha256
 
+      - name: Sanitize and scan publication inputs
+        id: publication
+        if: always()
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force reports/ci/package,build/package-a | Out-Null
+          python scripts/publication_paths.py sanitize reports/ci/package
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence sanitization failed' }
+          python scripts/publication_paths.py scan reports/ci/package build/package-a docs/gamedev/evidence/rapier2d-exact-feature-licenses.json docs/gamedev/evidence/rapier2d-sbom.spdx.json
+          if ($LASTEXITCODE -ne 0) { throw 'Publication path scan failed' }
+
       - name: Upload the unpublished package candidate
+        if: success() && steps.publication.outcome == 'success'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: redot-rapier2d-unpublished-candidate
@@ -462,8 +513,20 @@ jobs:
           python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/default.log" --result "$evidence/default.json" --backend "DEFAULT" --sentinel "REDOT RAPIER2D DEFAULT CONTROL: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path build/clean-default --scene res://main.tscn --quit-after 600
           if ($LASTEXITCODE -ne 0) { throw 'Default clean install control failed' }
 
-      - name: Upload clean-install evidence
+      - name: Sanitize and scan publication inputs
+        id: publication
         if: always()
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force reports/ci/clean-${{ matrix.platform }} | Out-Null
+          python scripts/publication_paths.py sanitize reports/ci/clean-${{ matrix.platform }}
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence sanitization failed' }
+          python scripts/publication_paths.py scan reports/ci/clean-${{ matrix.platform }}
+          if ($LASTEXITCODE -ne 0) { throw 'Publication path scan failed' }
+
+      - name: Upload clean-install evidence
+        if: always() && steps.publication.outcome == 'success'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: rapier2d-clean-install-${{ matrix.platform }}
@@ -553,8 +616,20 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw 'Export runtime failed' }
           }
 
-      - name: Upload full-export evidence
+      - name: Sanitize and scan publication inputs
+        id: publication
         if: always()
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force reports/ci/full-export | Out-Null
+          python scripts/publication_paths.py sanitize reports/ci/full-export
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence sanitization failed' }
+          python scripts/publication_paths.py scan reports/ci/full-export
+          if ($LASTEXITCODE -ne 0) { throw 'Publication path scan failed' }
+
+      - name: Upload full-export evidence
+        if: always() && steps.publication.outcome == 'success'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: rapier2d-full-export-evidence-${{ matrix.platform }}

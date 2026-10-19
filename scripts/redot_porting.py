@@ -20,6 +20,7 @@ import zipfile
 from copy import deepcopy
 from pathlib import Path, PurePosixPath
 from typing import Any
+from publication_paths import report_path, safe_report, scrub_text
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -726,8 +727,8 @@ def prepare_consumer(source: Path, output: Path, expected_commit: str) -> dict[s
     copied = source_report(source, expected_commit)
     _require(before == copied, "source changed while preparing the consumer")
     return {
-        "source": str(source.resolve()),
-        "consumer": str(output.resolve()),
+        "source": report_path(source, "source"),
+        "consumer": report_path(output, "consumer"),
         "source_boundary": copied,
     }
 
@@ -785,7 +786,7 @@ def cargo_build(
         "features": features,
         "api_sha256": lock["api"]["sha256"],
         "gdext_revision": lock["bindings"]["gdext_revision"],
-        "target_dir": str(target_dir.resolve()),
+        "target_dir": report_path(target_dir, "target"),
         "contract": contract,
     }
 
@@ -861,8 +862,8 @@ def package_addon(root: Path, dimension: str, output_dir: Path) -> dict[str, Any
     )
     return {
         "status": "PASS",
-        "archive": str(archive.resolve()),
-        "manifest": str(manifest_path.resolve()),
+        "archive": report_path(archive, "archive"),
+        "manifest": report_path(manifest_path, "manifest"),
         **verification,
     }
 
@@ -912,7 +913,7 @@ def materialize_clean_install(
         )
     return {
         "status": "PASS",
-        "project": str(output.resolve()),
+        "project": report_path(output, "project"),
         "archive_sha256": sha256_file(archive),
         "installed_file_count": len(installed),
         "installed_payload_manifest_sha256": manifest_digest(installed),
@@ -967,18 +968,18 @@ def configure_export_templates(
         )
         _require(count == 1, f"{field} template field is missing: {preset_name}")
         contents = contents[: options.start("body")] + body + contents[options.end("body") :]
-        configured[f"{preset_name} {field}"] = template_value
+        configured[f"{preset_name} {field}"] = report_path(template, "export template")
 
     presets_path.write_text(contents, encoding="utf-8")
     return {
         "status": "PASS",
-        "project": str(project.resolve()),
+        "project": report_path(project, "project"),
         "presets": configured,
     }
 
 
 def _write_report(path: Path | None, report: dict[str, Any]) -> None:
-    payload = json.dumps(report, indent=2, sort_keys=True) + "\n"
+    payload = json.dumps(safe_report(report), indent=2, sort_keys=True) + "\n"
     if path is not None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(payload, encoding="utf-8")
@@ -1121,13 +1122,13 @@ def main(argv: list[str] | None = None) -> int:
             raise ContractError(f"unknown command: {args.command}")
         _write_report(args.report, {"status": "PASS", **deepcopy(report)})
         return 0
-    except ContractError as exc:
-        failure = {"status": "FAIL", "command": args.command, "error": str(exc)}
+    except (ContractError, OSError, ValueError, KeyError, subprocess.SubprocessError) as exc:
+        failure = {"status": "FAIL", "command": args.command, "error": scrub_text(str(exc))}
         report_path = getattr(args, "report", None)
         if report_path is not None:
             _write_report(report_path, failure)
         else:
-            print(f"ERROR: {exc}", file=sys.stderr)
+            print(scrub_text(f"ERROR: {exc}"), file=sys.stderr)
         return 2
 
 

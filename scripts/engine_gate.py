@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+from publication_paths import scrub_text
 
 
 ERRORS = re.compile(
@@ -51,7 +52,7 @@ def run_gate(engine: str, arguments: list[str], log: Path, sentinel: str | None 
     console = completed.stdout
     log_text = log.read_text(encoding="utf-8", errors="replace") if log.is_file() else ""
     # Keep console diagnostics as well as the engine logger's output.
-    log.write_text(console + "\n" + log_text, encoding="utf-8")
+    log.write_text(scrub_text(console + "\n" + log_text), encoding="utf-8")
     if completed.returncode:
         raise RuntimeError(f"engine exited {completed.returncode}")
     require_clean_output(console + "\n" + log_text)

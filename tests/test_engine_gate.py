@@ -6,9 +6,11 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+import sys
 from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 SPEC = importlib.util.spec_from_file_location("engine_gate", ROOT / "scripts/engine_gate.py")
 GATE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(GATE)

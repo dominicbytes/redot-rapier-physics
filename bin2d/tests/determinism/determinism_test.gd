@@ -342,7 +342,7 @@ func _finish() -> void:
 	if file:
 		file.store_string(json_string)
 		file.close()
-		print("DETERMINISM_TEST: Output written to %s" % output_path)
+		print("DETERMINISM_TEST: Output written")
 		print("DETERMINISM_TEST: %d frames, %d bodies" % [frame_records.size(), bodies.size()])
 		print("DETERMINISM_TEST: STATUS=SUCCESS")
 	else:

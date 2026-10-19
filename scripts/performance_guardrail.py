@@ -18,6 +18,7 @@ import sys
 import tempfile
 from pathlib import Path
 from typing import Any
+from publication_paths import report_path, safe_report, scrub_text
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -163,6 +164,7 @@ def execution_environment(redot: Path, native_hashes: dict[str, str]) -> dict[st
 
 def require_clean_output(console: str, log: Path) -> None:
     text = console + "\n" + (log.read_text(encoding="utf-8", errors="replace") if log.is_file() else "")
+    log.write_text(scrub_text(text), encoding="utf-8")
     if re.search(r"SCRIPT ERROR|Parse Error|Assertion failed|^ERROR:|GDExtension.*(?:error|fail)|Failed to (?:load|initialize)|panicked at|thread .+ panicked|fatal runtime error", text, re.IGNORECASE | re.MULTILINE):
         raise PerformanceError("engine diagnostics contain an error")
 
@@ -253,8 +255,8 @@ def run_backend(redot: Path, backend: str, output: Path) -> dict[str, Any]:
         },
     }
     output_path = output / f"performance-{backend}.json"
-    output_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(output_path)
+    output_path.write_text(json.dumps(safe_report(report), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(report_path(output_path, "performance report"))
     return report
 
 
@@ -347,18 +349,18 @@ def compare(baseline_path: Path, candidate_path: Path, guardrail_path: Path, out
         "schema_version": 1,
         "status": "PASS" if not failures else "FAIL",
         "policy": "regression guardrail; improvement over the default backend is not required",
-        "guardrail": str(guardrail_path.resolve()),
+        "guardrail": report_path(guardrail_path, "guardrail"),
         "guardrail_sha256": sha256_file(guardrail_path),
-        "baseline": str(baseline_path.resolve()),
+        "baseline": report_path(baseline_path, "baseline"),
         "baseline_sha256": sha256_file(baseline_path),
-        "candidate": str(candidate_path.resolve()),
+        "candidate": report_path(candidate_path, "candidate"),
         "candidate_sha256": sha256_file(candidate_path),
         "checks": checks,
         "failures": failures,
     }
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(output)
+    output.write_text(json.dumps(safe_report(report), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(report_path(output, "comparison report"))
     return report
 
 
@@ -388,7 +390,7 @@ def main() -> int:
             if result["status"] != "PASS":
                 return 2
     except (OSError, ValueError, KeyError, subprocess.TimeoutExpired, PerformanceError) as exc:
-        print(f"performance guardrail: FAIL: {exc}", file=sys.stderr)
+        print(scrub_text(f"performance guardrail: FAIL: {exc}"), file=sys.stderr)
         return 2
     print("performance guardrail: PASS")
     return 0
