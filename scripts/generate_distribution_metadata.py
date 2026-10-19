@@ -50,8 +50,14 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def lf_bytes(content: bytes) -> bytes:
+    """Canonicalize checkout text without changing binary hashes."""
+    return content.replace(b"\r\n", b"\n")
+
+
 def sha256_file(path: Path) -> str:
-    return sha256(path.read_bytes())
+    content = path.read_bytes()
+    return sha256(lf_bytes(content) if path == LOCK else content)
 
 
 def normalize_license_text(content: bytes) -> bytes:
@@ -555,8 +561,9 @@ def apply_outputs(outputs: dict[Path, bytes], check: bool) -> None:
     mismatches = []
     for path, content in outputs.items():
         if check:
-            if not path.is_file() or path.read_bytes() != content:
-                mismatches.append(str(path.relative_to(ROOT)))
+            if not path.is_file() or lf_bytes(path.read_bytes()) != lf_bytes(content):
+                label = path.relative_to(ROOT).as_posix() if path.is_relative_to(ROOT) else path.name
+                mismatches.append(label)
         else:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(content)
@@ -564,21 +571,29 @@ def apply_outputs(outputs: dict[Path, bytes], check: bool) -> None:
         raise MetadataError("generated distribution metadata is stale: " + ", ".join(mismatches))
 
 
+def api_input(redot_lock: dict[str, Any], explicit: Path | None) -> Path:
+    value = explicit or os.environ.get("GDRUST_GODOT_API_JSON")
+    api = Path(value) if value else ROOT / redot_lock["api"]["snapshot"]
+    if not api.is_file():
+        raise MetadataError("Redot API JSON is missing; supply --api or GDRUST_GODOT_API_JSON")
+    if sha256(api.read_bytes()) != redot_lock["api"]["sha256"]:
+        raise MetadataError("Redot API JSON pinned hash mismatch")
+    return api.absolute()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cargo", type=Path)
-    parser.add_argument("--api", type=Path)
+    parser.add_argument("--api", type=Path, help="pinned API JSON (or GDRUST_GODOT_API_JSON)")
     parser.add_argument("--offline", action="store_true")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     redot_lock = json.loads(REDOT_LOCK.read_text(encoding="utf-8"))
-    api = args.api or (ROOT / redot_lock["api"]["snapshot"])
-    if not api.is_file():
-        raise SystemExit(f"Redot API JSON not found: {api}")
     cargo_value = args.cargo or (Path(shutil.which("cargo")) if shutil.which("cargo") else None)
     if cargo_value is None or not cargo_value.is_file():
         raise SystemExit("Cargo executable not found; pass --cargo")
     try:
+        api = api_input(redot_lock, args.api)
         outputs = build_outputs(cargo_executable_path(cargo_value), api.resolve(), args.offline)
         apply_outputs(outputs, args.check)
     except (OSError, ValueError, KeyError, json.JSONDecodeError, MetadataError) as exc:

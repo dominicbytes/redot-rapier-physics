@@ -86,39 +86,67 @@ Godot Rapier Physics also exposes new nodes, [Fluid2D](src/fluids/fluid_2d.rs) a
 
 ## How to build
 
-1. Prerequisites:
-- [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+The port supports single-precision Rapier2D on Windows and Linux x86-64.
+Use Rust 1.94.0 from `rust-toolchain.toml` and the Redot 26.2 editor identified
+by `redot.lock.json`. Keep `Cargo.lock`; do not run `cargo update` for a build.
+A plain `cargo build` without `--config compat/rapier-cargo-config.toml`
+resolves a different gdext than `Cargo.lock` pins.
 
-2. Update dependencies to latest:
+From a clean clone, dump the API and interface header using that editor in a
+separate directory, then return to the repository root. Set `$REDOT_BIN` to
+the editor executable first. The following examples use Bash:
 
 ```bash
-cargo update
+mkdir -p build/api
+(cd build/api && "$REDOT_BIN" --headless --dump-extension-api --dump-gdextension-interface)
+export GDRUST_GODOT_API_JSON="$PWD/build/api/extension_api.json"
+export CARGO_TARGET_DIR="$PWD/../rapier-target"
+python -I scripts/redot_porting.py validate --api "$GDRUST_GODOT_API_JSON"
 ```
 
-3. Build the project
+The API JSON and `gdextension_interface.h` must match the pinned SHA-256
+values in `redot.lock.json`. An API from another platform or editor build may
+have different bytes; use the exact pinned snapshot if a dump does not match.
+Both `validate` and `cargo-build` accept `--api`, `--interface-header`, and
+`--infrastructure-source`. The equivalent environment variables are
+`GDRUST_GODOT_API_JSON`, `REDOT_INTERFACE_HEADER`, and
+`REDOT_INFRASTRUCTURE_SOURCE`. The interface header defaults beside an
+explicit API. Plain `validate` checks the repository contract and vendored
+infrastructure provenance without sibling checkouts; supplying infrastructure
+source additionally checks every pinned source hash. `cargo-build` always
+verifies the API and header. The metadata generator accepts `--api` or
+`GDRUST_GODOT_API_JSON` and verifies the pinned API hash too.
+
+Build and stage the editor and debug libraries, then the release library:
+
 ```bash
-# for 2d
-cargo build --release --features="single-dim2,api-4-7"
-# for 3d
-cargo build --release --features="single-dim3,api-4-7"
+bash scripts/build-dev-2d.sh
+bash scripts/build-rel-2d.sh
+REDOT_BIN="$REDOT_BIN" bash scripts/test.sh
 ```
 
-4. Copy the output to bin folder of the addon:
+The helpers use `--config compat/rapier-cargo-config.toml`, `--locked`,
+`--no-default-features`, `single-dim2,redot-compat,serde-serialize,parallel`,
+and `godot/api-custom-json`. Editor builds additionally use `register-docs`;
+debug/release export builds omit it. To build a single profile directly:
 
-Eg. macOS
 ```bash
-cp target/release/libgodot_rapier.dylib bin2d/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib
-```
-Eg. Windows
-```bash
-cp target/release/godot_rapier.dll bin2d/addons/godot-rapier2d/bin/godot_rapier.windows.x86_64-pc-windows-msvc.dll
+cargo build --config compat/rapier-cargo-config.toml --locked --no-default-features \
+  --features single-dim2,redot-compat,serde-serialize,parallel,register-docs,godot/api-custom-json
 ```
 
-For the correct path to use inside the bin folder, look inside the `bin2d/addons/godot-rapier2d.gdextension` or the `bin3d/addons/godot-rapier3d.gdextension`.
+Add `--offline` when dependencies are already cached. Direct builds do not
+stage libraries. The descriptor expects these names in
+`bin2d/addons/godot-rapier2d/bin/`, with `PROFILE` replaced by `editor`,
+`debug`, or `release`:
 
-## Build script
+- Windows: `libgodot_rapier.windows.PROFILE.x86_64-pc-windows-msvc.dll`
+- Linux: `libgodot_rapier.linux.PROFILE.x86_64-unknown-linux-gnu.so`
 
-Optionally, run the build script from `scripts/build-dev-2d.sh` or `scripts/build-dev-3d.sh`. (this also does linting)
+Set `RAPIER_COPY_TO` explicitly for an optional secondary staging directory;
+there is no personal-directory default. macOS/web/mobile scripts and the
+3D/double-precision entry points are upstream-only and unsupported by this
+port. Unsupported shell entry points stop with an explanatory error.
 
 ### Available features
 
@@ -171,12 +199,9 @@ More on godot cli usage [here](https://docs.godotengine.org/en/stable/tutorials/
 In order to make a PR that will get merged, you need to lint and format your code by running:
 
 ```sh
-# Format
-cargo fmt -- --config-path rustfmt.toml
-# Run clippy for 2d only
-cargo clippy --fix --allow-dirty --all-targets --features="single-dim2,api-4-7"
-# Run clippy for 3d only
-cargo clippy --fix --allow-dirty --all-targets --features="single-dim3,api-4-7"
+cargo fmt -- --config-path rustfmt.toml --check
+cargo clippy --config compat/rapier-cargo-config.toml --locked --no-default-features \
+  --all-targets --features single-dim2,redot-compat,serde-serialize,parallel,register-docs,godot/api-custom-json
 ```
 
-The above runs formatting with `cargo fmt` and linting with `cargo clippy`. For clippy you can specify (and should run) both 2d and 3d feature sets.
+Set `GDRUST_GODOT_API_JSON` as described above before linting.

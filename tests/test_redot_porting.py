@@ -26,7 +26,7 @@ def load(name: str) -> dict:
 class ContractTests(unittest.TestCase):
     def test_packaging_uses_vendored_infrastructure_provenance(self) -> None:
         contract = {"required_platforms": ["linux-x86_64", "windows-x86_64"]}
-        with tempfile.TemporaryDirectory(dir=ROOT / "build") as temp_name:
+        with tempfile.TemporaryDirectory() as temp_name:
             with (
                 mock.patch.object(PORTING, "validate_contract", return_value=contract) as validate,
                 mock.patch.object(PORTING, "collect_package_payload", return_value=[]),
@@ -65,7 +65,7 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(result["addon_files_verified"], ["2d", "3d"])
         self.assertEqual(
             result["infrastructure"]["source_files_verified"],
-            31 if verify_local_files else 0,
+            0,
         )
         self.assertIn(
             'channel = "1.94.0"',

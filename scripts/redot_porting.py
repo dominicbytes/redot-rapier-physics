@@ -461,7 +461,39 @@ def verify_snapshot(snapshot: dict[str, Any], source: Path | None) -> dict[str, 
     }
 
 
-def validate_contract(root: Path, verify_local_files: bool = True) -> dict[str, Any]:
+def api_inputs(
+    root: Path,
+    lock: dict[str, Any],
+    api: Path | None = None,
+    interface_header: Path | None = None,
+) -> tuple[Path, Path]:
+    api_value = api or os.environ.get("GDRUST_GODOT_API_JSON")
+    api_path = Path(api_value) if api_value else root / lock["api"]["snapshot"]
+    header_value = interface_header or os.environ.get("REDOT_INTERFACE_HEADER")
+    header = Path(header_value) if header_value else (
+        api_path.with_name("gdextension_interface.h") if api_value
+        else root / lock["api"]["interface_header"]
+    )
+    for path, hash_key, label, option in (
+        (api_path, "sha256", "Redot API JSON", "--api or GDRUST_GODOT_API_JSON"),
+        (
+            header, "interface_sha256", "Redot interface header",
+            "--interface-header or REDOT_INTERFACE_HEADER",
+        ),
+    ):
+        _require(path.is_file(), f"{label} is missing; supply {option}")
+        _require(sha256_file(path) == lock["api"][hash_key], f"{label} pinned hash mismatch")
+    return api_path.absolute(), header.absolute()
+
+
+def validate_contract(
+    root: Path,
+    verify_local_files: bool = True,
+    *,
+    api: Path | None = None,
+    interface_header: Path | None = None,
+    infrastructure_source: Path | None = None,
+) -> dict[str, Any]:
     porting = _load_json(root / "porting.json")
     lock = _load_json(root / "redot.lock.json")
     summary = validate_documents(porting, lock)
@@ -473,7 +505,14 @@ def validate_contract(root: Path, verify_local_files: bool = True) -> dict[str, 
         snapshot.get("manifest_sha256") == infrastructure.get("snapshot_manifest_sha256"),
         "locked infrastructure manifest hash mismatch",
     )
-    source = (root / infrastructure["source_hint"]).resolve() if verify_local_files else None
+    source_value = infrastructure_source or os.environ.get("REDOT_INFRASTRUCTURE_SOURCE")
+    source = Path(source_value) if source_value else None
+    if source is not None:
+        _require(
+            source.is_dir(),
+            "infrastructure source is missing; supply --infrastructure-source "
+            "or REDOT_INFRASTRUCTURE_SOURCE",
+        )
     summary["infrastructure"] = verify_snapshot(snapshot, source)
 
     cargo_manifest = _read_text(root / "Cargo.toml")
@@ -598,14 +637,7 @@ def validate_contract(root: Path, verify_local_files: bool = True) -> dict[str, 
     )
 
     if verify_local_files:
-        api = lock["api"]
-        for path_key, hash_key in (
-            ("snapshot", "sha256"),
-            ("interface_header", "interface_sha256"),
-        ):
-            path = (root / api[path_key]).resolve()
-            _require(path.is_file(), f"locked API artifact is missing: {path}")
-            _require(sha256_file(path) == api[hash_key], f"locked API artifact drift: {path}")
+        api_inputs(root, lock, api, interface_header)
         summary["local_api_verified"] = True
     else:
         summary["local_api_verified"] = False
@@ -740,8 +772,15 @@ def cargo_build(
     target_dir: Path,
     artifact_kind: str,
     generate_lock: bool,
+    *,
+    api: Path | None = None,
+    interface_header: Path | None = None,
+    infrastructure_source: Path | None = None,
 ) -> dict[str, Any]:
-    contract = validate_contract(root, verify_local_files=True)
+    contract = validate_contract(
+        root, verify_local_files=True, api=api, interface_header=interface_header,
+        infrastructure_source=infrastructure_source,
+    )
     porting = _load_json(root / "porting.json")
     lock = _load_json(root / "redot.lock.json")
     addon = next(item for item in porting["addons"] if item["dimension"] == dimension)
@@ -756,15 +795,16 @@ def cargo_build(
         if artifact_kind == "editor" or feature not in excluded
     ] + addon["dependency_features"]
     config = (root / "compat/rapier-cargo-config.toml").resolve()
-    api_json = (root / lock["api"]["snapshot"]).resolve()
+    api_json, _ = api_inputs(root, lock, api, interface_header)
     environment = os.environ.copy()
     environment[lock["api"]["environment_variable"]] = str(api_json)
     environment["CARGO_TARGET_DIR"] = str(target_dir.resolve())
     environment["CARGO_HOME"] = str((target_dir.resolve().parent / "cargo-home").resolve())
-    rustc = cargo.resolve().parent / ("rustc.exe" if os.name == "nt" else "rustc")
+    cargo = cargo.absolute()
+    rustc = cargo.parent / ("rustc.exe" if os.name == "nt" else "rustc")
     if rustc.is_file():
         environment["RUSTC"] = str(rustc)
-    base = [str(cargo.resolve()), "--config", str(config)]
+    base = [str(cargo), "--config", str(config)]
     if generate_lock:
         _run(base + ["generate-lockfile"], cwd=consumer, env=environment)
     command = base + [
@@ -989,7 +1029,10 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     validate = subparsers.add_parser("validate", help="validate the pinned port contract")
-    validate.add_argument("--skip-local-files", action="store_true")
+    validate.add_argument(
+        "--skip-local-files", action="store_true",
+        help="validate vendored provenance without API files",
+    )
     validate.add_argument("--redot-bin", type=Path)
     validate.add_argument("--report", type=Path)
 
@@ -1058,6 +1101,18 @@ def build_parser() -> argparse.ArgumentParser:
         "--linux-release-template", type=Path, required=True
     )
     configure_exports.add_argument("--report", type=Path)
+    for input_parser in (validate, cargo):
+        input_parser.add_argument(
+            "--api", type=Path, help="pinned API JSON (or GDRUST_GODOT_API_JSON)"
+        )
+        input_parser.add_argument(
+            "--interface-header", type=Path,
+            help="pinned interface header (or REDOT_INTERFACE_HEADER; defaults beside API)",
+        )
+        input_parser.add_argument(
+            "--infrastructure-source", type=Path,
+            help="optionally verify source against vendored provenance (or REDOT_INFRASTRUCTURE_SOURCE)",
+        )
     return parser
 
 
@@ -1065,7 +1120,15 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         if args.command == "validate":
-            report = validate_contract(ROOT, verify_local_files=not args.skip_local_files)
+            verify_api = not args.skip_local_files and bool(
+                args.api or args.interface_header or os.environ.get("GDRUST_GODOT_API_JSON")
+                or os.environ.get("REDOT_INTERFACE_HEADER")
+            )
+            report = validate_contract(
+                ROOT, verify_local_files=verify_api, api=args.api,
+                interface_header=args.interface_header,
+                infrastructure_source=args.infrastructure_source,
+            )
             if args.redot_bin:
                 lock = _load_json(ROOT / "redot.lock.json")
                 observed = _run([str(args.redot_bin.resolve()), "--version"])
@@ -1088,6 +1151,8 @@ def main(argv: list[str] | None = None) -> int:
                 args.target_dir.resolve(),
                 args.artifact_kind,
                 args.generate_lock,
+                api=args.api, interface_header=args.interface_header,
+                infrastructure_source=args.infrastructure_source,
             )
         elif args.command == "package":
             report = package_addon(ROOT, args.dimension, args.output_dir.resolve())
