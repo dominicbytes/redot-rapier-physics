@@ -1,0 +1,5 @@
+id = "monitor-exit-identity"
+summary = "Preserve the public RID and attached instance ID in deferred monitor exit events."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/bodies/rapier_area.rs", "src/bodies/rapier_collision_object_base.rs", "src/spaces/rapier_space.rs", "src/spaces/rapier_space_callbacks.rs", "src/spaces/rapier_space_state.rs"]

@@ -128,12 +128,13 @@ impl RapierSpace {
             .get_removed_collider_info(&collider_handle1)
         {
             body_id1 = removed_collider_info_1.rb_id;
-            instance_id1 = removed_collider_info_1.rb_id;
+            p_object1 = Rid::new(removed_collider_info_1.rid);
+            instance_id1 = removed_collider_info_1.instance_id;
             type1 = removed_collider_info_1.collision_object_type;
             shape1 = removed_collider_info_1.shape_index;
         } else if let Some(body1) = physics_collision_objects.get(&p_object1) {
             body_id1 = body1.get_base().get_id();
-            instance_id1 = body1.get_base().get_id();
+            instance_id1 = body1.get_base().get_instance_id();
             type1 = body1.get_base().get_type();
         }
         if let Some(removed_collider_info_2) = self
@@ -141,12 +142,13 @@ impl RapierSpace {
             .get_removed_collider_info(&collider_handle2)
         {
             body_id2 = removed_collider_info_2.rb_id;
-            instance_id2 = removed_collider_info_2.rb_id;
+            p_object2 = Rid::new(removed_collider_info_2.rid);
+            instance_id2 = removed_collider_info_2.instance_id;
             type2 = removed_collider_info_2.collision_object_type;
             shape2 = removed_collider_info_2.shape_index;
         } else if let Some(body2) = physics_collision_objects.get(&p_object2) {
             body_id2 = body2.get_base().get_id();
-            instance_id2 = body2.get_base().get_id();
+            instance_id2 = body2.get_base().get_instance_id();
             type2 = body2.get_base().get_type();
         }
         if event_info.is_sensor {
@@ -199,6 +201,7 @@ impl RapierSpace {
                     &mut p_collision_object2,
                     shape2,
                     body_id2,
+                    p_object2,
                     instance_id2,
                     collider_handle1,
                     shape1,
@@ -217,6 +220,7 @@ impl RapierSpace {
                     &mut p_collision_object1,
                     shape1,
                     body_id1,
+                    p_object1,
                     instance_id1,
                     collider_handle2,
                     shape2,

@@ -23,7 +23,6 @@ use servers::rapier_physics_singleton::PhysicsShapes;
 use servers::rapier_physics_singleton::PhysicsSpaces;
 use servers::rapier_physics_singleton::RapierId;
 use servers::rapier_physics_singleton::get_id_rid;
-use servers::rapier_physics_singleton::physics_data;
 
 #[cfg(feature = "serde-serialize")]
 use super::exportable_object::ExportToImport;
@@ -62,6 +61,7 @@ pub struct MonitorInfo {
 // It's designed to be temporary, and destroyed after the signal is sent.
 pub struct EventReport {
     pub id: RapierId,
+    pub rid: u64,
     pub collision_object_type: CollisionObjectType,
     pub state: i32,
     pub instance_id: u64,
@@ -109,6 +109,7 @@ impl EventReport {
         Self {
             state: state_in,
             id: from_info.last_entry_report.id,
+            rid: from_info.last_entry_report.rid,
             collision_object_type: from_info.last_entry_report.collision_object_type,
             instance_id: from_info.last_entry_report.instance_id,
             object_shape_index: from_info.last_entry_report.object_shape_index,
@@ -411,6 +412,7 @@ impl RapierArea {
         other_collider: &mut Option<&mut RapierCollisionObject>,
         other_collider_shape: usize,
         other_collider_id: RapierId,
+        other_collider_rid: Rid,
         other_collider_instance_id: u64,
         this_collider_handle: ColliderHandle,
         this_shape: usize,
@@ -425,6 +427,7 @@ impl RapierArea {
         }
         let event_report = EventReport {
             id: other_collider_id,
+            rid: other_collider_rid.to_u64(),
             collision_object_type: other_collider_type,
             state: event_state,
             instance_id: other_collider_instance_id,
@@ -839,24 +842,14 @@ impl RapierArea {
         unhandled_events: &BTreeMap<OrderedMonitorKey, EventReport>,
         monitor_callback: Option<Callable>,
         area_monitor_callback: Option<Callable>,
-        physics_ids: &PhysicsIds,
     ) {
-        let physics_data = physics_data();
         for monitor_report in unhandled_events.values() {
             if monitor_report.state == 0 {
                 godot_error!("Invalid monitor state");
                 continue;
             }
-            let rid = get_id_rid(monitor_report.id, physics_ids);
-            // Resolve the RapierId stored in instance_id to the real Godot instance_id
-            let godot_instance_id: i64 = if let Some(obj_rid) =
-                physics_data.ids.get(&monitor_report.instance_id)
-                && let Some(obj) = physics_data.collision_objects.get(obj_rid)
-            {
-                obj.get_base().get_instance_id() as i64
-            } else {
-                0
-            };
+            let rid = Rid::new(monitor_report.rid);
+            let godot_instance_id = monitor_report.instance_id as i64;
             let arg_array = if monitor_report.state > 0 {
                 vec![
                     AreaBodyStatus::ADDED.to_variant(),
@@ -1234,6 +1227,7 @@ mod tests {
     fn event_report(state: i32) -> EventReport {
         EventReport {
             id: 42,
+            rid: 456,
             collision_object_type: CollisionObjectType::Area,
             state,
             instance_id: 7,

@@ -406,15 +406,8 @@ impl RapierSpace {
                         godot_error!("Invalid monitor state");
                         continue;
                     }
-                    let rid = get_id_rid(monitor_report.id, physics_ids);
-                    let godot_instance_id: i64 = if let Some(obj_rid) =
-                        physics_ids.get(&monitor_report.instance_id)
-                        && let Some(obj) = physics_collision_objects.get(obj_rid)
-                    {
-                        obj.get_base().get_instance_id() as i64
-                    } else {
-                        0
-                    };
+                    let rid = Rid::new(monitor_report.rid);
+                    let godot_instance_id = monitor_report.instance_id as i64;
                     let arg_array = if monitor_report.state > 0 {
                         vec![
                             AreaBodyStatus::ADDED.to_variant(),

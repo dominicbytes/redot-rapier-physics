@@ -212,6 +212,7 @@ impl RapierCollisionObjectBase {
                 space.get_mut_state().add_removed_collider(
                     shape.collider_handle,
                     self.state.id,
+                    self.rid,
                     self.instance_id,
                     i,
                     self.collision_object_type,
@@ -236,6 +237,7 @@ impl RapierCollisionObjectBase {
                 space.get_mut_state().add_removed_collider(
                     shape.collider_handle,
                     self.state.id,
+                    self.rid,
                     self.instance_id,
                     p_shape_index,
                     self.get_type(),
