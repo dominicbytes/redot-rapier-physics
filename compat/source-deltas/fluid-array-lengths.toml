@@ -1,0 +1,5 @@
+id = "fluid-array-lengths"
+summary = "Reject mismatched fluid position and velocity arrays before mutation."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/fluids/rapier_fluid.rs"]
