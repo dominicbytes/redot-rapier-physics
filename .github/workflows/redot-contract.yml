@@ -110,10 +110,15 @@ jobs:
           cargo fmt --all -- --check
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           New-Item -ItemType Directory -Force build/native | Out-Null
+          # Lint and test without path remapping: remapped spans change how Clippy
+          # recognizes proc-macro code. Only packaged builds need the remap.
+          $remap = $env:CARGO_ENCODED_RUSTFLAGS
+          Remove-Item Env:CARGO_ENCODED_RUSTFLAGS
           cargo clippy --config compat/rapier-cargo-config.toml --locked --no-default-features --features $env:RAPIER2D_EDITOR_FEATURES -- -D warnings
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           cargo test --config compat/rapier-cargo-config.toml --locked --no-default-features --features $env:RAPIER2D_EDITOR_FEATURES
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
+          $env:CARGO_ENCODED_RUSTFLAGS = $remap
           cargo --config compat/rapier-cargo-config.toml build --locked --no-default-features --features $env:RAPIER2D_EDITOR_FEATURES
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           Copy-Item -LiteralPath target/debug/godot_rapier.dll -Destination build/native/windows-editor.dll -Force
@@ -276,8 +281,10 @@ jobs:
           set -euo pipefail
           cargo fmt --all -- --check
           mkdir -p build/native
-          cargo clippy --config compat/rapier-cargo-config.toml --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES" -- -D warnings
-          cargo test --config compat/rapier-cargo-config.toml --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES"
+          # Lint and test without path remapping: remapped spans change how Clippy
+          # recognizes proc-macro code. Only packaged builds need the remap.
+          env -u CARGO_ENCODED_RUSTFLAGS cargo clippy --config compat/rapier-cargo-config.toml --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES" -- -D warnings
+          env -u CARGO_ENCODED_RUSTFLAGS cargo test --config compat/rapier-cargo-config.toml --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES"
           cargo --config compat/rapier-cargo-config.toml build --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES"
           cp target/debug/libgodot_rapier.so build/native/linux-editor.so
           cargo --config compat/rapier-cargo-config.toml build --locked --no-default-features --features "$RAPIER2D_EXPORT_FEATURES"
