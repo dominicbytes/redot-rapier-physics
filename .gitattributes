@@ -1,0 +1,7 @@
+# Canonical text used by the pinned contract and distribution metadata.
+Cargo.lock text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+*.sh text eol=lf
+bin2d/addons/godot-rapier2d/THIRDPARTY-REDOT.txt text eol=lf
+bin2d/addons/godot-rapier2d/LICENSE-MPL-2.0.txt text eol=lf

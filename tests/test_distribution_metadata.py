@@ -64,7 +64,7 @@ class DistributionMetadataTests(unittest.TestCase):
         )
 
     def test_check_mode_rejects_stale_output(self) -> None:
-        with tempfile.TemporaryDirectory(dir=ROOT / "build") as temp_name:
+        with tempfile.TemporaryDirectory() as temp_name:
             path = Path(temp_name) / "generated.txt"
             path.write_bytes(b"old\n")
             with self.assertRaisesRegex(METADATA.MetadataError, "metadata is stale"):

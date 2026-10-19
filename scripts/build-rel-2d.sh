@@ -1,10 +1,4 @@
-cargo fmt -- --config-path rustfmt.toml
-cargo clippy --fix --allow-dirty --features="single-dim2,serde-serialize,parallel,register-docs,api-4-7"
-cargo build --release --features="single-dim2,serde-serialize,parallel,register-docs,api-4-7"
-rm bin2d/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib
-rm /Users/dragosdaian/Documents/Godot-Physics-Tests/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib
-cp target/release/libgodot_rapier.dylib bin2d/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib
-cp target/release/libgodot_rapier.dylib /Users/dragosdaian/Documents/Godot-Physics-Tests/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib
-
-xattr -rc bin2d/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib
-xattr -rc /Users/dragosdaian/Documents/Godot-Physics-Tests/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib
+#!/usr/bin/env bash
+set -euo pipefail
+# Optional secondary staging directory: RAPIER_COPY_TO.
+bash "$(dirname "$0")/build-redot-2d.sh" release

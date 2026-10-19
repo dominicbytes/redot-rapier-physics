@@ -1,12 +1,4 @@
-cargo fmt -- --config-path rustfmt.toml
-cargo clippy --fix --allow-dirty --features="single-dim3,serde-serialize,test,register-docs,api-4-7"
-if [ "${OSTYPE#darwin}" != "$OSTYPE" ]; then
-    cargo build --features="single-dim3,serde-serialize,test,register-docs,api-4-7"
-    echo "Running on macOS"
-    rm -f bin3d/addons/godot-rapier3d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib
-    cp target/debug/libgodot_rapier.dylib bin3d/addons/godot-rapier3d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib
-else
-    cargo build --features="single-dim3,serde-serialize,test,register-docs,api-4-7" --target=x86_64-unknown-linux-gnu
-    echo "Running on Linux"
-    cp target/x86_64-unknown-linux-gnu/debug/libgodot_rapier.so bin3d/addons/godot-rapier3d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
-fi
+#!/usr/bin/env bash
+# Retained upstream entry point; outside the pinned Redot 2D desktop contract.
+echo "This upstream-only build is unsupported by the Redot port. Use build-dev-2d.sh or build-rel-2d.sh for single-precision Windows/Linux 2D." >&2
+exit 2

@@ -1,16 +1,5 @@
-#!/bin/bash
-
-# Detect the operating system
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS: Always use the full path to Godot
-    GODOT="/Applications/Godot.app/Contents/MacOS/Godot"
-elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    # Linux: Use the 'godot' command assuming it's in the PATH or defined by an alias
-    GODOT="godot"
-else
-    echo "Unsupported OS: $OSTYPE"
-    exit 1
-fi
-
-# Run the 2D regression test runner. The scene exits with a non-zero status on regressions.
-"$GODOT" --headless --path ./bin2d start.tscn
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+: "${REDOT_BIN:?Set REDOT_BIN to the pinned Redot editor executable}"
+"$REDOT_BIN" --headless --audio-driver Dummy --path ./bin2d --quit-after 30000 start.tscn
