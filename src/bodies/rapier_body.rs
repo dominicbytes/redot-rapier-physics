@@ -106,6 +106,19 @@ impl IdWithPriority {
         Self { id, priority }
     }
 }
+#[cfg(feature = "serde-serialize")]
+#[derive(serde::Serialize, serde::Deserialize, Clone)]
+pub struct BodyParameters {
+    linear_damping_mode: i32,
+    angular_damping_mode: i32,
+    linear_damping: real,
+    angular_damping: real,
+    gravity_scale: real,
+    using_area_gravity: bool,
+    using_area_linear_damping: bool,
+    using_area_angular_damping: bool,
+    omit_force_integration: bool,
+}
 #[cfg_attr(feature = "serde-serialize", derive(serde::Serialize))]
 #[derive(Debug)]
 #[cfg(feature = "serde-serialize")]
@@ -129,6 +142,13 @@ impl<'a> ExportToImport for BodyExport<'a> {
 pub struct BodyImport {
     body_state: RapierBodyState,
     base_state: RapierCollisionObjectBaseState,
+}
+#[cfg(feature = "serde-serialize")]
+impl BodyImport {
+    pub fn has_valid_contacts(&self) -> bool {
+        self.body_state.contact_count >= 0
+            && self.body_state.contact_count as usize <= self.body_state.contacts.len()
+    }
 }
 #[cfg(feature = "serde-serialize")]
 impl ImportToExport for BodyImport {
@@ -209,6 +229,63 @@ pub struct RapierBody {
     base: RapierCollisionObjectBase,
 }
 impl RapierBody {
+    #[cfg(feature = "serde-serialize")]
+    pub fn snapshot_parameters(&self) -> BodyParameters {
+        BodyParameters {
+            linear_damping_mode: self.linear_damping_mode.ord(),
+            angular_damping_mode: self.angular_damping_mode.ord(),
+            linear_damping: self.linear_damping,
+            angular_damping: self.angular_damping,
+            gravity_scale: self.gravity_scale,
+            using_area_gravity: self.using_area_gravity,
+            using_area_linear_damping: self.using_area_linear_damping,
+            using_area_angular_damping: self.using_area_angular_damping,
+            omit_force_integration: self.omit_force_integration,
+        }
+    }
+
+    #[cfg(feature = "serde-serialize")]
+    pub fn restore_parameters(
+        &mut self,
+        parameters: Option<&BodyParameters>,
+        physics_engine: &PhysicsEngine,
+    ) {
+        if let Some(parameters) = parameters {
+            self.linear_damping_mode = BodyDampMode::try_from_ord(parameters.linear_damping_mode)
+                .unwrap_or(BodyDampMode::COMBINE);
+            self.angular_damping_mode = BodyDampMode::try_from_ord(parameters.angular_damping_mode)
+                .unwrap_or(BodyDampMode::COMBINE);
+            self.linear_damping = parameters.linear_damping;
+            self.angular_damping = parameters.angular_damping;
+            self.gravity_scale = parameters.gravity_scale;
+            self.using_area_gravity = parameters.using_area_gravity;
+            self.using_area_linear_damping = parameters.using_area_linear_damping;
+            self.using_area_angular_damping = parameters.using_area_angular_damping;
+            self.omit_force_integration = parameters.omit_force_integration;
+        } else {
+            // Older snapshots contain effective damping, but not its body/area split.
+            self.linear_damping_mode = BodyDampMode::REPLACE;
+            self.angular_damping_mode = BodyDampMode::REPLACE;
+            self.linear_damping = self.state.total_linear_damping;
+            self.angular_damping = self.state.total_angular_damping;
+            self.using_area_linear_damping = false;
+            self.using_area_angular_damping = false;
+            if let Some(world) = physics_engine.get_world(self.base.get_space_id())
+                && let Some(body) = world
+                    .physics_objects
+                    .rigid_body_set
+                    .get(self.base.get_body_handle())
+            {
+                self.gravity_scale = body.gravity_scale();
+                self.using_area_gravity = self.gravity_scale == 0.0 && !self.state.areas.is_empty();
+                self.omit_force_integration = self.gravity_scale == 0.0 && !self.using_area_gravity;
+                if self.using_area_gravity {
+                    self.gravity_scale = 1.0;
+                }
+            }
+        }
+    }
+
     pub fn new(id: RapierId, rid: Rid) -> Self {
         let state = RapierBodyState {
             mass: 1.0,
@@ -1016,7 +1093,10 @@ impl RapierBody {
         if contact_idx < 0 || contact_idx >= self.state.contact_count {
             return 0.0;
         }
-        self.state.contacts[contact_idx as usize].tangent_impulse
+        self.state
+            .contacts
+            .get(contact_idx as usize)
+            .map_or(0.0, |contact| contact.tangent_impulse)
     }
 
     pub fn reset_contact_count(&mut self) {
@@ -2314,6 +2394,12 @@ impl ExportableObject for RapierBody {
     fn import_state(&mut self, _: &mut PhysicsEngine, data: ObjectImportState) {
         match data {
             bodies::exportable_object::ObjectImportState::Body(body_import) => {
+                if !body_import.has_valid_contacts() {
+                    godot_error!(
+                        "Invalid body snapshot: contact count exceeds stored contacts or is negative."
+                    );
+                    return;
+                }
                 self.state = body_import.body_state;
                 self.base.state = body_import.base_state;
             }

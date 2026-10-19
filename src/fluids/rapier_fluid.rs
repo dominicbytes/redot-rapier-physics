@@ -73,6 +73,10 @@ impl RapierFluid {
         velocities: Vec<Vector>,
         physics_engine: &mut PhysicsEngine,
     ) {
+        if points.len() != velocities.len() {
+            godot_error!("Points and velocities must have the same length.");
+            return;
+        }
         if self.is_valid() {
             let rapier_points = points
                 .iter()
@@ -97,6 +101,10 @@ impl RapierFluid {
         velocities: Vec<Vector>,
         physics_engine: &mut PhysicsEngine,
     ) {
+        if points.len() != velocities.len() {
+            godot_error!("Points and velocities must have the same length.");
+            return;
+        }
         if self.is_valid() {
             let rapier_points = points
                 .iter()

@@ -1,0 +1,5 @@
+id = "snapshot-contact-validation"
+summary = "Reject invalid snapshot contact counts before mutation and check tangent contact access."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/bodies/rapier_body.rs", "src/nodes/state_manager.rs"]

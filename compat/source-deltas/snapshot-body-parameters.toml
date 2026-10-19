@@ -1,0 +1,5 @@
+id = "snapshot-body-parameters"
+summary = "Restore body gravity and damping parameters alongside simulation snapshots."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/bodies/rapier_body.rs", "src/nodes/state_manager.rs"]
