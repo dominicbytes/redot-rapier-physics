@@ -1,4 +1,13 @@
-extends RefCounted
+extends SceneTree
+
+func _initialize() -> void:
+	_run.call_deferred()
+
+func _run() -> void:
+	assert(await run(root), "Regression test did not complete")
+	print("EXPECTED DIAGNOSTICS TEST: SUCCESS")
+	quit(0)
+
 
 func run(host: Node) -> bool:
 	var world := Node2D.new()
