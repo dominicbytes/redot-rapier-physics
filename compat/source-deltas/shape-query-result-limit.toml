@@ -1,0 +1,5 @@
+id = "shape-query-result-limit"
+summary = "Honor the caller's intersect_shape result limit instead of the global shape-cast cap."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/rapier_wrapper/query.rs", "src/spaces/rapier_direct_space_state_impl.rs"]

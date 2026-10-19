@@ -2,6 +2,7 @@ use std::cmp::Ordering;
 use std::collections::BTreeMap;
 use std::collections::BTreeSet;
 
+use godot::builtin::Rid;
 use rapier::prelude::ColliderHandle;
 
 use crate::bodies::rapier_collision_object_base::CollisionObjectType;
@@ -12,12 +13,14 @@ use crate::servers::rapier_physics_singleton::RapierId;
 impl RemovedColliderInfo {
     pub fn new(
         rb_id: RapierId,
+        rid: Rid,
         instance_id: u64,
         shape_index: usize,
         collision_object_type: CollisionObjectType,
     ) -> Self {
         Self {
             rb_id,
+            rid: rid.to_u64(),
             instance_id,
             shape_index,
             collision_object_type,
@@ -31,6 +34,7 @@ impl RemovedColliderInfo {
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct RemovedColliderInfo {
     pub rb_id: RapierId,
+    pub rid: u64,
     pub instance_id: u64,
     pub shape_index: usize,
     pub collision_object_type: CollisionObjectType,
@@ -158,17 +162,19 @@ impl RapierSpaceState {
         self.body_area_update_list.remove(&body);
     }
 
+    #[allow(clippy::too_many_arguments)]
     pub fn add_removed_collider(
         &mut self,
         handle: ColliderHandle,
         rb_id: RapierId,
+        rid: Rid,
         instance_id: u64,
         shape_index: usize,
         collision_object_type: CollisionObjectType,
     ) {
         self.removed_colliders.insert(
             OrderedColliderHandle(handle),
-            RemovedColliderInfo::new(rb_id, instance_id, shape_index, collision_object_type),
+            RemovedColliderInfo::new(rb_id, rid, instance_id, shape_index, collision_object_type),
         );
     }
 
@@ -408,12 +414,14 @@ mod tests {
         let mut state = RapierSpaceState::new(0, &mut physics_engine, &create_world_settings());
         let collider_handle = ColliderHandle::from_raw_parts(1, 0);
         let rb_id = 0;
+        let rid = Rid::new(456);
         let instance_id = 123;
         let shape_index = 0;
         let collision_object_type = CollisionObjectType::Body;
         state.add_removed_collider(
             collider_handle,
             rb_id,
+            rid,
             instance_id,
             shape_index,
             collision_object_type,
@@ -422,6 +430,7 @@ mod tests {
         assert!(removed_info.is_some());
         let removed_info = removed_info.unwrap();
         assert_eq!(removed_info.rb_id, rb_id);
+        assert_eq!(removed_info.rid, rid.to_u64());
         assert_eq!(removed_info.instance_id, instance_id);
         assert_eq!(removed_info.shape_index, shape_index);
         assert_eq!(removed_info.collision_object_type, collision_object_type);
@@ -459,7 +468,14 @@ mod tests {
         let mut physics_engine = PhysicsEngine::default();
         let mut state = RapierSpaceState::new(0, &mut physics_engine, &create_world_settings());
         let collider_handle = ColliderHandle::from_raw_parts(0, 0);
-        state.add_removed_collider(collider_handle, 1, 123, 0, CollisionObjectType::Body);
+        state.add_removed_collider(
+            collider_handle,
+            1,
+            Rid::new(456),
+            123,
+            0,
+            CollisionObjectType::Body,
+        );
         state.reset_space_if_empty(&mut physics_engine, &create_world_settings());
         assert!(state.get_removed_collider_info(&collider_handle).is_none());
     }

@@ -639,6 +639,7 @@ impl PhysicsEngine {
         physics_ids: &PhysicsIds,
         space: &RapierSpace,
         needs_exact: bool,
+        max_results: usize,
     ) -> Vec<ShapeCastResult> {
         let mut results: Vec<ShapeCastResult> = Vec::new();
         if let Some(raw_shared_shape) = self.get_shape(shape_info.handle) {
@@ -708,10 +709,7 @@ impl PhysicsEngine {
                                 result.pixel_witness1 = shape_transform * contact.point1;
                                 result.pixel_witness2 = collider.position() * contact.point2;
                                 results.push(result);
-                                if results.len()
-                                    >= crate::servers::rapier_project_settings::motion_settings()
-                                        .max_shape_cast_results
-                                {
+                                if results.len() >= max_results {
                                     break;
                                 }
                             }
@@ -825,11 +823,7 @@ impl PhysicsEngine {
                             godot_error!("collider not found");
                         }
                         cast_excludes.insert(collider_handle);
-                        if needs_exact
-                            || results.len()
-                                >= crate::servers::rapier_project_settings::motion_settings()
-                                    .max_shape_cast_results
-                        {
+                        if needs_exact || results.len() >= max_results {
                             break;
                         }
                     }
