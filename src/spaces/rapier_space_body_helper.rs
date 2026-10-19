@@ -792,6 +792,80 @@ impl RapierSpace {
                             let end_contact =
                                 physics_engine.shapes_contact(body_shape_info, col_shape_info, 0.0);
                             if !is_end_contact_relevant(&end_contact, p_motion) {
+                                {
+                                    body_shape_info.transform.translation =
+                                        vector_to_rapier(body_shape_transform.origin);
+                                    let hit = physics_engine.shape_collide(
+                                        vector_to_rapier(p_motion),
+                                        body_shape_info,
+                                        vector_to_rapier(Vector::default()),
+                                        col_shape_info,
+                                    );
+                                    if !hit.collided || hit.toi <= 0.0 || hit.toi >= best_safe {
+                                        continue;
+                                    }
+                                    #[cfg(feature = "dim2")]
+                                    if body_shape.allows_one_way_collision()
+                                        && shape_col_object
+                                            .get_base()
+                                            .is_shape_set_as_one_way_collision(shape_index)
+                                    {
+                                        let direction = get_one_way_valid_direction(
+                                            &col_shape_transform,
+                                            shape_col_object
+                                                .get_base()
+                                                .get_shape_one_way_collision_direction(shape_index),
+                                        );
+                                        // Godot validates the side of the swept volume, including
+                                        // its extra penetration advance, before collecting rest info.
+                                        let penetration_advance: Real = godot::classes::ProjectSettings::singleton()
+                                            .get_setting_with_override("physics/2d/solver/contact_max_allowed_penetration")
+                                            .try_to().unwrap_or(0.3);
+                                        let normal = physics_engine.swept_shape_contact_normal(
+                                            body_shape_info,
+                                            col_shape_info,
+                                            vector_to_rapier(
+                                                p_motion * (hit.toi + penetration_advance),
+                                            ),
+                                        );
+                                        if p_motion.dot(direction) <= 0.0
+                                            || normal.is_none_or(|normal| {
+                                                vector_to_godot(normal).dot(direction)
+                                                    < GODOT_ONE_WAY_DOT_EPSILON
+                                            })
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                    // Only supplement the discrete path for a separated start.
+                                    // Resting contacts still need its recovery and margin rules.
+                                    if hit.collided && hit.toi > 0.0 && hit.toi < best_safe {
+                                        body_shape_info.transform.translation = vector_to_rapier(
+                                            body_shape_transform.origin + p_motion * hit.toi,
+                                        );
+                                        let contact = physics_engine.shapes_contact(
+                                            body_shape_info,
+                                            col_shape_info,
+                                            p_margin,
+                                        );
+                                        if contact.collided
+                                            && is_motion_blocked_by_contact(&contact, p_motion)
+                                            && !physics_engine.should_skip_collision_one_dir(
+                                                &contact,
+                                                body_shape,
+                                                shape_col_object,
+                                                shape_index,
+                                                &col_shape_transform,
+                                                p_margin,
+                                                RapierSpace::get_last_step(),
+                                                false,
+                                            )
+                                        {
+                                            best_safe = hit.toi;
+                                            best_unsafe = hit.toi;
+                                        }
+                                    }
+                                }
                                 // Doesn't collide at end, skip
                                 continue;
                             }
