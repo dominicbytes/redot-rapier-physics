@@ -1,0 +1,5 @@
+id = "query-collider-object"
+summary = "Resolve attached query collider instances as Object, including RefCounted objects."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/spaces/rapier_direct_space_state_impl.rs"]
