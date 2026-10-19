@@ -21,6 +21,10 @@ func _ready() -> void:
 	add_child(area_override_refresh)
 	assert(await area_override_refresh.run(), "Body parameter changes must refresh overlapping area overrides")
 	area_override_refresh.queue_free()
+	var force_integration_argument := preload("res://test/unit/test_force_integration_argument.gd").new()
+	add_child(force_integration_argument)
+	assert(await force_integration_argument.run(), "Force integration callbacks must receive state and optional userdata")
+	force_integration_argument.queue_free()
 	# Wait for scene tests that run across physics frames.
 	for test in get_tree().get_nodes_in_group(&"async_unit_tests"):
 		while not test.done:

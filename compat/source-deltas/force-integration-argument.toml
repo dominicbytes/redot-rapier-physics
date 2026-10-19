@@ -1,0 +1,5 @@
+id = "force-integration-argument"
+summary = "Create direct body state before capturing force integration callback arguments."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/bodies/rapier_body.rs"]
