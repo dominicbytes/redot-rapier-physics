@@ -1,0 +1,5 @@
+id = "motion-exclusions"
+summary = "Honor body and object exclusions throughout body motion tests."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/servers/rapier_physics_server_2d.rs", "src/servers/rapier_physics_server_3d.rs", "src/servers/rapier_physics_server_impl.rs", "src/spaces/rapier_space_body_helper.rs"]

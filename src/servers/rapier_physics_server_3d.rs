@@ -543,6 +543,12 @@ impl IPhysicsServer3DExtension for RapierPhysicsServer3D {
                 collide_separation_ray,
                 recovery_as_collision,
                 result,
+                &|rid, instance_id| {
+                    self.base().body_test_motion_is_excluding_body(rid)
+                        || self
+                            .base()
+                            .body_test_motion_is_excluding_object(instance_id)
+                },
             )
         }
     }
