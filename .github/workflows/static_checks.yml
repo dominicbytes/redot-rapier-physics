@@ -4,6 +4,7 @@ on:
 
 jobs:
   format-code:
+    if: github.repository == 'appsinacup/godot-rapier-physics'
     name: Format Code
     runs-on: ubuntu-latest
     steps:
@@ -15,6 +16,7 @@ jobs:
           cargo fmt --all -- --config-path ./rustfmt.toml --check
 
   clippy-2d:
+    if: github.repository == 'appsinacup/godot-rapier-physics'
     name: Clippy 2D
     runs-on: ubuntu-latest
     steps:
@@ -26,6 +28,7 @@ jobs:
           cargo clippy --all-targets --features="single-dim2,serde-serialize,register-docs,api-4-7" -- -D warnings
 
   clippy-3d:
+    if: github.repository == 'appsinacup/godot-rapier-physics'
     name: Clippy 3D
     runs-on: ubuntu-latest
     steps:
@@ -37,6 +40,7 @@ jobs:
           cargo clippy --all-targets --features="single-dim3,serde-serialize,register-docs,api-4-7" -- -D warnings
 
   gdlint:
+    if: github.repository == 'appsinacup/godot-rapier-physics'
     name: GDLint
     runs-on: ubuntu-latest
     steps:

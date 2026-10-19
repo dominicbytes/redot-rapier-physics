@@ -4,6 +4,7 @@ on:
 
 jobs:
   release:
+    if: github.repository == 'appsinacup/godot-rapier-physics'
     runs-on: ubuntu-22.04
     permissions:
       contents: write

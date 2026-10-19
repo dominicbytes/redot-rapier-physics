@@ -4,6 +4,7 @@ on:
 
 jobs:
   cargo-check:
+    if: github.repository == 'appsinacup/godot-rapier-physics'
     name: Godot API ${{ matrix.api.version }} ${{ matrix.dimensions.name }}
     runs-on: ubuntu-latest
     strategy:
