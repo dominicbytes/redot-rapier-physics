@@ -172,6 +172,7 @@ struct StateManager {
     cached_states: Vec<CachedState>,
     #[export]
     #[var(get = get_max_cache_length, set = set_max_cache_length)]
+    /// Maximum number of cached snapshots. Zero disables caching and clears existing snapshots.
     max_cache_length: u32,
     #[export]
     rolling_cache: bool,
@@ -186,6 +187,7 @@ struct StateManager {
     cached_states: Vec<CachedState>,
     #[export]
     #[var(get = get_max_cache_length, set = set_max_cache_length)]
+    /// Maximum number of cached snapshots. Zero disables caching and clears existing snapshots.
     max_cache_length: u32,
     #[export]
     rolling_cache: bool,
@@ -277,6 +279,9 @@ impl StateManager {
     // A cached state has a tag associated with it; this tag can be any variant type.
     // Tags are not unique, but are the only way for a user to associate some custom information with their cached state.
     fn cache_state(&mut self, in_space: Rid, tag: Variant) {
+        if self.max_cache_length == 0 {
+            return;
+        }
         if let Some(export_state) = self.fetch_state(in_space) {
             let cached_state = CachedState {
                 state: RawImportState::from_export_state(export_state),

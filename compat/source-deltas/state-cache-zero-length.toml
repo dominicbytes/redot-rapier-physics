@@ -1,0 +1,5 @@
+id = "state-cache-zero-length"
+summary = "Treat zero cache capacity as disabled caching, including rolling mode."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/nodes/state_manager.rs"]
