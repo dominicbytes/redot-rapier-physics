@@ -11,6 +11,7 @@
     "ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.",
     "WARNING: ObjectDB instances leaked at exit (run with --verbose for details)."
   ],
+  "crash_banner": "================================================================",
   "crash_diagnostics": [
     "CrashHandlerException: Program crashed with signal 11",
     "Engine version: Redot Engine v26.3.stable.official (85e5203945af15755dd2f66cb6fdf7545fd88c0b)",

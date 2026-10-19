@@ -57,9 +57,15 @@ def completed_import_output(text: str, code: int, config: dict, project: Path) -
             raise RuntimeError("completed import is missing a required Rapier class")
     allowed = set(config["diagnostics"])
     if code:
-        if config["crash_diagnostics"][0] not in text:
+        # The crash handler sometimes dies after printing its banner; then the banner must end the output.
+        lines = [line.strip() for line in text.splitlines() if line.strip()]
+        if config["crash_diagnostics"][0] in text:
+            allowed.update(config["crash_diagnostics"])
+        elif lines[-1:] != [config["crash_banner"]]:
             raise RuntimeError("access violation lacks the known shutdown diagnostic")
-        allowed.update(config["crash_diagnostics"])
+        allowed.add(config["crash_banner"])
+    elif config["crash_banner"] in text:
+        raise RuntimeError("crash output without an access violation")
     filtered = []
     for line in text.splitlines():
         if line.strip() in allowed:

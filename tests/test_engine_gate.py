@@ -102,6 +102,19 @@ class ImportExceptionTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             self.check(crash, code=0)
 
+    def test_truncated_crash_banner_must_end_output(self):
+        banner = self.config["crash_banner"]
+        truncated = "[ DONE ] loading_editor_layout\n\n" + banner + "\n"
+        for code in (3221225477, -1073741819):
+            self.check(truncated, code)
+        for code in (0, 1, 3221225501):
+            with self.subTest(code=code), self.assertRaises(RuntimeError):
+                self.check(truncated, code)
+        with self.assertRaises(RuntimeError):
+            self.check(truncated + "after banner\n", 3221225477)
+        with self.assertRaises(RuntimeError):
+            self.check("import started\n" + banner, 3221225477)
+
     def test_runtime_never_accepts_known_diagnostics(self):
         with self.assertRaises(RuntimeError):
             GATE.require_clean_output(self.text)
