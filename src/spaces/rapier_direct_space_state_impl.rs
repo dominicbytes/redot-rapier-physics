@@ -301,6 +301,7 @@ impl RapierDirectSpaceStateImpl {
             &physics_data.ids,
             space,
             false,
+            max_results,
         );
         let mut cpt = 0;
         for collision in results {
@@ -371,6 +372,7 @@ impl RapierDirectSpaceStateImpl {
             &physics_data.ids,
             space,
             true,
+            crate::servers::rapier_project_settings::motion_settings().max_shape_cast_results,
         );
         let mut closest_located_safe = 1.0;
         let mut closest_located_unsafe = 1.0;
@@ -501,6 +503,7 @@ impl RapierDirectSpaceStateImpl {
             &physics_data.ids,
             space,
             false,
+            crate::servers::rapier_project_settings::motion_settings().max_shape_cast_results,
         );
         if results.is_empty() {
             return false;
