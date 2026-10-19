@@ -7,6 +7,7 @@ env:
 
 jobs:
   run-unit-tests:
+    if: github.repository == 'appsinacup/godot-rapier-physics'
     name: Run Unit Tests ${{ matrix.dimensions.name }}
     runs-on: ubuntu-latest
     strategy:
@@ -23,6 +24,7 @@ jobs:
           cargo test --all-targets --features="${{ matrix.dimensions.feature }},test,register-docs,api-4-7"
 
   run-integration-tests:
+    if: github.repository == 'appsinacup/godot-rapier-physics'
     name: Run Godot Tests ${{ matrix.dimensions.name }} (${{ matrix.os.name }})
     runs-on: ${{ matrix.os.runner }}
     timeout-minutes: 30

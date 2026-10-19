@@ -4,6 +4,7 @@ on:
 
 jobs:
   godot:
+    if: github.repository == 'appsinacup/godot-rapier-physics'
     runs-on: "ubuntu-latest"
     name: ${{ matrix.dimensions }} ${{ matrix.precision }}
     strategy:

@@ -4,6 +4,7 @@ on:
 
 jobs:
   build-windows:
+    if: github.repository == 'appsinacup/godot-rapier-physics'
     runs-on: "windows-latest"
     name: ${{ matrix.dimensions.short }} ${{ matrix.precision }} ${{ matrix.arch }}
     strategy:
