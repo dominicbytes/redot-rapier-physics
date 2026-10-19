@@ -130,15 +130,15 @@ jobs:
           Copy-Item -LiteralPath build/native/windows-release.dll -Destination "$addonBin/libgodot_rapier.windows.release.x86_64-pc-windows-msvc.dll" -Force
           New-Item -ItemType Directory -Force reports/ci/windows | Out-Null
           $evidence = (Resolve-Path reports/ci/windows).Path
-          & $env:REDOT_BIN --headless --path bin2d --import --quit-after 300 --log-file "$evidence/import.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/import.log" -- --headless --audio-driver Dummy --path bin2d --import --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Redot import failed" }
-          & $env:REDOT_BIN --headless --fixed-fps 60 --path bin2d --scene res://test/redot/compatibility_smoke.tscn --quit-after 600 --log-file "$evidence/smoke.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/smoke.log" --sentinel "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/redot/compatibility_smoke.tscn --quit-after 600
           if ($LASTEXITCODE -ne 0) { throw "Rapier2D smoke failed" }
-          & $env:REDOT_BIN --headless --fixed-fps 60 --path bin2d --quit-after 30000 --log-file "$evidence/regression.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/regression.log" --sentinel "STATUS: SUCCESS" --timeout 900 -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --quit-after 30000
           if ($LASTEXITCODE -ne 0) { throw "Rapier2D regression failed" }
-          & $env:REDOT_BIN --headless --fixed-fps 60 --path bin2d --scene res://test/unit/run_unit_tests.tscn --quit-after 1200 --log-file "$evidence/unit.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/unit.log" --sentinel "UNIT TESTS STATUS: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/unit/run_unit_tests.tscn --quit-after 1200
           if ($LASTEXITCODE -ne 0) { throw "Rapier2D unit scene failed" }
-          & $env:REDOT_BIN --headless --fixed-fps 60 --path bin2d --scene res://test/redot/feature_parity_smoke.tscn --quit-after 1200 --log-file "$evidence/feature-parity.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/feature-parity.log" --sentinel "REDOT RAPIER2D FEATURE PARITY: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/redot/feature_parity_smoke.tscn --quit-after 1200
           if ($LASTEXITCODE -ne 0) { throw "Rapier2D feature parity smoke failed" }
           if (-not (Select-String -Quiet -LiteralPath "$evidence/smoke.log" -Pattern "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS")) {
             throw "Rapier2D smoke sentinel missing"
@@ -166,7 +166,7 @@ jobs:
           for ($run = 1; $run -le 3; $run++) {
             $output = Join-Path $determinism "run-$run.json"
             $log = Join-Path $determinism "run-$run.log"
-            & $env:REDOT_BIN --headless --fixed-fps 60 --path bin2d --scene res://tests/determinism/determinism_test.tscn --quit-after 1200 --log-file $log -- "--rapier-determinism-output=$output"
+            python scripts/engine_gate.py --engine $env:REDOT_BIN --log $log --sentinel "DETERMINISM_TEST: STATUS=SUCCESS" --result "$output" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://tests/determinism/determinism_test.tscn --quit-after 1200 -- "--rapier-determinism-output=$output"
             if ($LASTEXITCODE -ne 0) { throw "Determinism run $run failed" }
           }
           python scripts/compare_determinism.py "$determinism/run-1.json" "$determinism/run-2.json" "$determinism/run-3.json" --report "$determinism/comparison.json"
@@ -270,11 +270,11 @@ jobs:
           cp build/native/linux-editor.so "$addon_bin/libgodot_rapier.linux.editor.x86_64-unknown-linux-gnu.so"
           cp build/native/linux-debug.so "$addon_bin/libgodot_rapier.linux.debug.x86_64-unknown-linux-gnu.so"
           cp build/native/linux-release.so "$addon_bin/libgodot_rapier.linux.release.x86_64-unknown-linux-gnu.so"
-          "$REDOT_BIN" --headless --path bin2d --import --quit-after 300 --log-file "$GITHUB_WORKSPACE/reports/ci/linux/import.log"
-          "$REDOT_BIN" --headless --fixed-fps 60 --path bin2d --scene res://test/redot/compatibility_smoke.tscn --quit-after 600 --log-file "$GITHUB_WORKSPACE/reports/ci/linux/smoke.log"
-          "$REDOT_BIN" --headless --fixed-fps 60 --path bin2d --quit-after 30000 --log-file "$GITHUB_WORKSPACE/reports/ci/linux/regression.log"
-          "$REDOT_BIN" --headless --fixed-fps 60 --path bin2d --scene res://test/unit/run_unit_tests.tscn --quit-after 1200 --log-file "$GITHUB_WORKSPACE/reports/ci/linux/unit.log"
-          "$REDOT_BIN" --headless --fixed-fps 60 --path bin2d --scene res://test/redot/feature_parity_smoke.tscn --quit-after 1200 --log-file "$GITHUB_WORKSPACE/reports/ci/linux/feature-parity.log"
+          python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/import.log" -- --headless --audio-driver Dummy --path bin2d --import --quit-after 300
+          python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/smoke.log" --sentinel "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/redot/compatibility_smoke.tscn --quit-after 600
+          python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/regression.log" --sentinel "STATUS: SUCCESS" --timeout 900 -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --quit-after 30000
+          python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/unit.log" --sentinel "UNIT TESTS STATUS: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/unit/run_unit_tests.tscn --quit-after 1200
+          python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/feature-parity.log" --sentinel "REDOT RAPIER2D FEATURE PARITY: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/redot/feature_parity_smoke.tscn --quit-after 1200
           grep -Fq "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS" reports/ci/linux/smoke.log
           grep -Fq "STATUS: SUCCESS" reports/ci/linux/regression.log
           grep -Fq "UNIT TESTS STATUS: SUCCESS" reports/ci/linux/unit.log
@@ -290,7 +290,7 @@ jobs:
           cp build/native/linux-deterministic.so "$addon_bin/libgodot_rapier.linux.editor.x86_64-unknown-linux-gnu.so"
           for run in 1 2 3; do
             output="$GITHUB_WORKSPACE/$determinism/run-$run.json"
-            "$REDOT_BIN" --headless --fixed-fps 60 --path bin2d --scene res://tests/determinism/determinism_test.tscn --quit-after 1200 --log-file "$GITHUB_WORKSPACE/$determinism/run-$run.log" -- "--rapier-determinism-output=$output"
+            python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/$determinism/run-$run.log" --sentinel "DETERMINISM_TEST: STATUS=SUCCESS" --result "$output" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://tests/determinism/determinism_test.tscn --quit-after 1200 -- "--rapier-determinism-output=$output"
           done
           python3 scripts/compare_determinism.py "$determinism/run-1.json" "$determinism/run-2.json" "$determinism/run-3.json" --report "$determinism/comparison.json"
           cp build/native/linux-editor.so "$addon_bin/libgodot_rapier.linux.editor.x86_64-unknown-linux-gnu.so"
@@ -453,13 +453,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           New-Item -ItemType Directory -Force reports/ci/clean-${{ matrix.platform }} | Out-Null
           $evidence = (Resolve-Path reports/ci/clean-${{ matrix.platform }}).Path
-          & $env:REDOT_BIN --headless --path build/clean-selected --import --quit-after 300 --log-file "$evidence/selected-import.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/selected-import.log" -- --headless --audio-driver Dummy --path build/clean-selected --import --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
-          & $env:REDOT_BIN --headless --fixed-fps 60 --path build/clean-selected --scene res://main.tscn --quit-after 600 --log-file "$evidence/selected.log" -- "--rapier-result=$((Resolve-Path reports/ci/clean-${{ matrix.platform }}).Path)/selected.json"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/selected.log" --result "$evidence/selected.json" --backend "Rapier2D" --sentinel "REDOT RAPIER2D CLEAN INSTALL: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path build/clean-selected --scene res://main.tscn --quit-after 600
           if ($LASTEXITCODE -ne 0) { throw 'Selected clean install failed' }
-          & $env:REDOT_BIN --headless --path build/clean-default --import --quit-after 300 --log-file "$evidence/default-import.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/default-import.log" -- --headless --audio-driver Dummy --path build/clean-default --import --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
-          & $env:REDOT_BIN --headless --fixed-fps 60 --path build/clean-default --scene res://main.tscn --quit-after 600 --log-file "$evidence/default.log" -- "--rapier-result=$((Resolve-Path reports/ci/clean-${{ matrix.platform }}).Path)/default.json"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/default.log" --result "$evidence/default.json" --backend "DEFAULT" --sentinel "REDOT RAPIER2D DEFAULT CONTROL: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path build/clean-default --scene res://main.tscn --quit-after 600
           if ($LASTEXITCODE -ne 0) { throw 'Default clean install control failed' }
 
       - name: Upload clean-install evidence
@@ -521,19 +521,19 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           New-Item -ItemType Directory -Force build/exports,reports/ci/full-export | Out-Null
           $evidence = (Resolve-Path reports/ci/full-export).Path
-          & $env:REDOT_BIN --headless --path build/export-project --import --quit-after 300 --log-file "$evidence/import.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/import.log" -- --headless --audio-driver Dummy --path build/export-project --import --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
-          & $env:REDOT_BIN --headless --path build/export-project --export-debug 'Windows x86-64' build/exports/windows-debug.exe --quit-after 300 --log-file "$evidence/windows-debug-export.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/windows-debug-export.log" -- --headless --audio-driver Dummy --path build/export-project --export-debug 'Windows x86-64' build/exports/windows-debug.exe --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
-          & $env:REDOT_BIN --headless --path build/export-project --export-release 'Windows x86-64' build/exports/windows-release.exe --quit-after 300 --log-file "$evidence/windows-release-export.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/windows-release-export.log" -- --headless --audio-driver Dummy --path build/export-project --export-release 'Windows x86-64' build/exports/windows-release.exe --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
-          & $env:REDOT_BIN --headless --path build/export-project --export-debug 'Linux x86-64' build/exports/linux-debug.x86_64 --quit-after 300 --log-file "$evidence/linux-debug-export.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/linux-debug-export.log" -- --headless --audio-driver Dummy --path build/export-project --export-debug 'Linux x86-64' build/exports/linux-debug.x86_64 --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
-          & $env:REDOT_BIN --headless --path build/export-project --export-release 'Linux x86-64' build/exports/linux-release.x86_64 --quit-after 300 --log-file "$evidence/linux-release-export.log"
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/linux-release-export.log" -- --headless --audio-driver Dummy --path build/export-project --export-release 'Linux x86-64' build/exports/linux-release.x86_64 --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
-          & build/exports/windows-debug.exe --headless --quit-after 600 -- "--rapier-result=$((Resolve-Path reports/ci/full-export).Path)/windows-debug.json"
+          python scripts/engine_gate.py --engine ./build/exports/windows-debug.exe --log "$evidence/windows-debug-runtime.log" --sentinel "REDOT RAPIER2D CLEAN INSTALL: SUCCESS" --result "$evidence/windows-debug.json" --backend Rapier2D -- --headless --audio-driver Dummy --quit-after 600
           if ($LASTEXITCODE -ne 0) { throw 'Windows debug export runtime failed' }
-          & build/exports/windows-release.exe --headless --quit-after 600 -- "--rapier-result=$((Resolve-Path reports/ci/full-export).Path)/windows-release.json"
+          python scripts/engine_gate.py --engine ./build/exports/windows-release.exe --log "$evidence/windows-release-runtime.log" --sentinel "REDOT RAPIER2D CLEAN INSTALL: SUCCESS" --result "$evidence/windows-release.json" --backend Rapier2D -- --headless --audio-driver Dummy --quit-after 600
           if ($LASTEXITCODE -ne 0) { throw 'Windows release export runtime failed' }
           docker run --rm --entrypoint /bin/sh --mount "type=bind,source=$((Resolve-Path build/exports).Path),target=/exports" --mount "type=bind,source=$((Resolve-Path reports/ci/full-export).Path),target=/reports" redotsteam-linux-runtime@sha256:5255ec8a80a56834e07c9fc581e259fbf94d8ab4881de9673475480352b58f77 -lc "chmod +x /exports/linux-debug.x86_64 /exports/linux-release.x86_64 && /exports/linux-debug.x86_64 --headless --quit-after 600 -- --rapier-result=/reports/linux-debug.json && /exports/linux-release.x86_64 --headless --quit-after 600 -- --rapier-result=/reports/linux-release.json"
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }

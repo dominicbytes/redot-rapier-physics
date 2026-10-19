@@ -30,7 +30,7 @@ def replay(os_name: str) -> dict:
             "solver_parallel": False,
             "redot_separate_thread": False,
         },
-        "observed": {"os": os_name, "arch": "x86_64"},
+        "observed": {"os": os_name, "arch": "x86_64", "backend": "RapierPhysicsServer2D"},
         "frames": [copy.deepcopy(frame) for _ in range(300)],
     }
 
@@ -62,6 +62,27 @@ class DeterminismComparisonTests(unittest.TestCase):
                 paths.append(path)
             with self.assertRaisesRegex(COMPARE.ReplayError, "divergence"):
                 COMPARE.compare_replays(paths)
+
+    def test_malformed_replays_are_rejected(self) -> None:
+        mutations = [
+            lambda r: r["profile"].update(body_count=0),
+            lambda r: r["profile"].update(body_count=True),
+            lambda r: r["frames"].__setitem__(0, []),
+            lambda r: r["frames"][0].__setitem__(0, ["0"] * 9),
+            lambda r: r["frames"][0].__setitem__(0, ["0000000000000000"] * 8),
+            lambda r: r["observed"].update(os=""),
+            lambda r: r["observed"].update(arch=None),
+            lambda r: r["observed"].pop("backend"),
+            lambda r: r["profile"].update(precision="double"),
+        ]
+        for mutate in mutations:
+            with self.subTest(mutate=mutate), tempfile.TemporaryDirectory() as temp_name:
+                value = replay("Windows")
+                mutate(value)
+                path = Path(temp_name) / "invalid.json"
+                path.write_text(json.dumps(value), encoding="utf-8")
+                with self.assertRaises(COMPARE.ReplayError):
+                    COMPARE.inspect_replay(path)
 
     def test_parallel_profile_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temp_name:
