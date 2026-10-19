@@ -433,7 +433,7 @@ jobs:
           New-Item -ItemType Directory -Force reports/ci/package,build/package-a | Out-Null
           python scripts/publication_paths.py sanitize reports/ci/package
           if ($LASTEXITCODE -ne 0) { throw 'Evidence sanitization failed' }
-          python scripts/publication_paths.py scan reports/ci/package build/package-a docs/gamedev/evidence/rapier2d-exact-feature-licenses.json docs/gamedev/evidence/rapier2d-sbom.spdx.json
+          python scripts/publication_paths.py scan reports/ci/package build/package-a compat/provenance/rapier2d-exact-feature-licenses.json compat/provenance/rapier2d-sbom.spdx.json
           if ($LASTEXITCODE -ne 0) { throw 'Publication path scan failed' }
 
       - name: Upload the unpublished package candidate
@@ -445,8 +445,8 @@ jobs:
             build/package-a/*.zip
             build/package-a/*.json
             reports/ci/package
-            docs/gamedev/evidence/rapier2d-exact-feature-licenses.json
-            docs/gamedev/evidence/rapier2d-sbom.spdx.json
+            compat/provenance/rapier2d-exact-feature-licenses.json
+            compat/provenance/rapier2d-sbom.spdx.json
           if-no-files-found: error
           retention-days: 90
 

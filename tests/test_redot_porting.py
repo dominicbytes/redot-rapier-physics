@@ -283,7 +283,7 @@ class ContractTests(unittest.TestCase):
             self.assertEqual(presets.read_text(encoding="utf-8"), contents)
 
     def test_infrastructure_manifest_is_self_authenticating(self) -> None:
-        snapshot = load("docs/gamedev/evidence/redot-porting-infrastructure.snapshot.json")
+        snapshot = load("compat/provenance/redot-porting-infrastructure.snapshot.json")
         result = PORTING.verify_snapshot(snapshot, None)
         self.assertEqual(result["file_count"], 31)
         self.assertEqual(result["manifest_sha256"], snapshot["manifest_sha256"])

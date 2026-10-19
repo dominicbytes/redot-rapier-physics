@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-11",
+  "source_hint": "../redot-porting-infrastructure",
+  "provenance": "Local source snapshot; the source directory had no Git metadata, so this ordered content manifest is the immutable implementation input.",
+  "exclusions": [
+    ".cache/**",
+    "dist/**",
+    "generated/**",
+    "**/__pycache__/**",
+    "smoke/.godot/**",
+    "smoke/addons/**/bin/* except descriptor and .gitkeep",
+    "docs/gamedev/source-of-truth.xlsx",
+    "docs/gamedev/evidence/**"
+  ],
+  "file_count": 31,
+  "manifest_sha256": "ec5f2e8fe2fe65b94a17d577043aad16b70652bf23a09930e34001710b2ddf54",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "9dfa9b013873e647c0b6064eb9f8e1a58f90b32dc9cb6b2d542e7efe8e3647b9",
+      "bytes": 137
+    },
+    {
+      "path": ".github/workflows/build-and-release.yml",
+      "sha256": "999d477a86dfbcbf5079e2ba875787092e237e013241d5eae99794fa586ecacb",
+      "bytes": 13127
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "074b5f9a4fee8e19839d18b4bc2a2293f058c175f5089f9f16f252e044e6cacf",
+      "bytes": 267
+    },
+    {
+      "path": "BLOCKERS.md",
+      "sha256": "66f53f285554d458437507475079812640901cc38df95e915dff9fac6822b7eb",
+      "bytes": 339
+    },
+    {
+      "path": "DECISIONS.md",
+      "sha256": "c5f98efe571f56ed14440164c91b647f32797f77c84764b0d7dd7385d2be916b",
+      "bytes": 1225
+    },
+    {
+      "path": "docs/gamedev/implementation-plan.md",
+      "sha256": "52c1fd31b34ddf8cda933e51bdfb4b74798b7858a2a466c85d9c0febfa667db1",
+      "bytes": 2701
+    },
+    {
+      "path": "docs/gamedev/preflight-report.md",
+      "sha256": "3d7eaec0250595c1568609320118c126677de4c9a3eb711ebf39f237e736b4bd",
+      "bytes": 7582
+    },
+    {
+      "path": "docs/gamedev/references/source-register.md",
+      "sha256": "5aeed3f32f47541f89be0856a32bb14ddc724a13d583888b638a32bb443329a9",
+      "bytes": 1572
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "19016254482232b9c15834036eb6a20c9577d646faaab6a991f5fb35f605b1e5",
+      "bytes": 1098
+    },
+    {
+      "path": "PORT_MATRIX.md",
+      "sha256": "cb8369cc66b041718b63ce8330675064179557eef6debbc76858ecb276e8ab1d",
+      "bytes": 1167
+    },
+    {
+      "path": "porting.json",
+      "sha256": "6caef1e142150a0cf9636b4e44b7fbc5e7800b87d25c699155069c276617c45f",
+      "bytes": 647
+    },
+    {
+      "path": "README.md",
+      "sha256": "2bcf920cd1bbdb5a4e5786df22a2110473d8857bea3a15ba18a8a1c4997f152e",
+      "bytes": 5405
+    },
+    {
+      "path": "redot.lock.json",
+      "sha256": "da33190e6abd3c55708a576902ff2f6511697409e20acaf87ebdeef2fe32cf0e",
+      "bytes": 1658
+    },
+    {
+      "path": "requirements-build.txt",
+      "sha256": "6906e87d4421ae744e8e28e9c05f9c0706aa11d6d421c8d15be9f4677b0e6817",
+      "bytes": 13
+    },
+    {
+      "path": "SConstruct",
+      "sha256": "b33fe251bac86f659e7dc53165ff04f88910d27d33dd4f8617cd89438a69d1fe",
+      "bytes": 1410
+    },
+    {
+      "path": "scripts/porting.py",
+      "sha256": "edadf9d073b1520aa4b8d0a5eafd48bd8a42aa5681c139520a54ad6d33551e17",
+      "bytes": 34486
+    },
+    {
+      "path": "smoke/addons/redot_porting_example/bin/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1
+    },
+    {
+      "path": "smoke/addons/redot_porting_example/bin/redot_porting_example.gdextension",
+      "sha256": "ac23250dcd7422f914cacc5edc235871c83935b3bfd460c0f3b2338a9e325fa2",
+      "bytes": 1170
+    },
+    {
+      "path": "smoke/project.godot",
+      "sha256": "81a11cc2e2ae76c601b00bf38100fafc0795425e6ead1253b2f7a705b5c722f5",
+      "bytes": 592
+    },
+    {
+      "path": "smoke/smoke.gd",
+      "sha256": "6e509c722c31ee222d3112b2f55fdd39da0d68034f102da716757795ce7928aa",
+      "bytes": 739
+    },
+    {
+      "path": "smoke/smoke.gd.uid",
+      "sha256": "de0bc4fea2de699dc6714a7cae8fc066f68ec1b804b42cb73ed22fb3b976b187",
+      "bytes": 20
+    },
+    {
+      "path": "smoke/smoke.tscn",
+      "sha256": "4d2027e6fc55551a26ef2720d74ea729ac3213fc83f8ec1bd9712d8a2685c56d",
+      "bytes": 163
+    },
+    {
+      "path": "src/redot_porting_probe.cpp",
+      "sha256": "bf3098796100f0907190a38a7d10280526a7032af1426b9843e952bfa7183069",
+      "bytes": 495
+    },
+    {
+      "path": "src/redot_porting_probe.hpp",
+      "sha256": "544c9f8209e189be21bc340f45f22a492f13eedf526c5d15631d80b5a9b08b94",
+      "bytes": 387
+    },
+    {
+      "path": "src/register_types.cpp",
+      "sha256": "684fc59af0538535696657f51e882806b0c94e7a7e969e0e243ae686a8b1c867",
+      "bytes": 1053
+    },
+    {
+      "path": "src/register_types.hpp",
+      "sha256": "04e44758d8ea0779147eb8960e0129c2a178c6ba94ddcadc0ad5f4ac98a8942a",
+      "bytes": 301
+    },
+    {
+      "path": "tests/test_porting.py",
+      "sha256": "e8979d647e6c63cddb345f54d84c38756eb7dbc86d6bf8f74863ad86ae17b0f1",
+      "bytes": 7806
+    },
+    {
+      "path": "third_party/redot-cpp-LICENSE.md",
+      "sha256": "67f3b52502d83ad1737c89b0a1cfc5ff08dffaffe78715d45f906e99c43e1ae4",
+      "bytes": 1146
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "c3f1a8abd5109d40860876e0e6aa8c02b730bdb8d16c85a90a4e7cc42a288a0b",
+      "bytes": 738
+    },
+    {
+      "path": "TODO.md",
+      "sha256": "2a48229777678617447e3f4290d5a95d5f6e05c101da460d331ba4ce2cbc8d82",
+      "bytes": 471
+    },
+    {
+      "path": "UPSTREAM_LOCK.md",
+      "sha256": "b9966e1d01eff06f8aa72a341975f427a3cb6d4a31998a7e520d22904845366d",
+      "bytes": 502
+    }
+  ]
+}

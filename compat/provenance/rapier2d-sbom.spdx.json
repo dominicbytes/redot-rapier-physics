@@ -1,0 +1,2402 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "creationInfo": {
+    "created": "2026-08-12T00:00:00Z",
+    "creators": [
+      "Tool: redot-rapier2d-generate-distribution-metadata/1"
+    ]
+  },
+  "dataLicense": "CC0-1.0",
+  "documentDescribes": [
+    "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+  ],
+  "documentNamespace": "https://github.com/dominicbytes/redot-rapier-physics/sbom/0.35.2-redot.1/9c8d4ef7866aaf02",
+  "name": "redot-rapier-physics-2d-0.35.2-redot.1",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-allocator-api2-0.2.21-f72f8d4b",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/allocator-api2@0.2.21",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "allocator-api2",
+      "versionInfo": "0.2.21"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-approx-0.5.1-23612640",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "cab112f0a86d568ea0e627cc1d6be74a1e9cd55214684db5561995f6dad897c6"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/approx@0.5.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "name": "approx",
+      "versionInfo": "0.5.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-arrayvec-0.7.8-603ac76d",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d3fb67a6e08acf24fdeccbac2cb6ac4305825bd1f117462e0e6f2f193345ad56"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/arrayvec@0.7.8",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "arrayvec",
+      "versionInfo": "0.7.8"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-autocfg-1.5.1-15275796",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/autocfg@1.5.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0 OR MIT",
+      "licenseDeclared": "Apache-2.0 OR MIT",
+      "name": "autocfg",
+      "versionInfo": "1.5.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-bincode-1.3.3-986b3528",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b1f45e9417d87227c7a56d22e471c6206462cba514c7590c09aff4cf6d1ddcad"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/bincode@1.3.3",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "bincode",
+      "versionInfo": "1.3.3"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-bitflags-2.13.1-0cb5e5b2",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b588b76d00fde79687d7646a9b5bdf3cc0f655e0bbd080335a95d7e96f3587da"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/bitflags@2.13.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "bitflags",
+      "versionInfo": "2.13.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-bytemuck-1.25.2-d4f62647",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "95832e849adfb21180ccb6826a99da14e5d266ae5c2e668e1602cf234f153797"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/bytemuck@1.25.2",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Zlib OR Apache-2.0 OR MIT",
+      "licenseDeclared": "Zlib OR Apache-2.0 OR MIT",
+      "name": "bytemuck",
+      "versionInfo": "1.25.2"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-cfg-if-1.0.4-ffc41bac",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/cfg-if@1.0.4",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "cfg-if",
+      "versionInfo": "1.0.4"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-crossbeam-deque-0.8.7-d8b3b446",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5181e0de7b61eb03a81e347d6dd8797bae9da5146707b51077e2d71a54ec0ceb"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/crossbeam-deque@0.8.7",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "crossbeam-deque",
+      "versionInfo": "0.8.7"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-crossbeam-epoch-0.9.20-a427eb73",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2d6914041f254d6e9176c01941b21115dcfb7089e55135a35411081bd106ef3f"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/crossbeam-epoch@0.9.20",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "crossbeam-epoch",
+      "versionInfo": "0.9.20"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-crossbeam-utils-0.8.22-3fd83367",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "61803da095bee82a81bb1a452ecc25d3b2f1416d1897eb86430c6159ef717c17"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/crossbeam-utils@0.8.22",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "crossbeam-utils",
+      "versionInfo": "0.8.22"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-downcast-rs-2.0.2-8e7a5676",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "117240f60069e65410b3ae1bb213295bd828f707b5bec6596a1afc8793ce0cbc"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/downcast-rs@2.0.2",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "downcast-rs",
+      "versionInfo": "2.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-either-1.17.0-b56da0d1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9e5e8f6c15a24b9a3ee5efec809ccd006d3b30e8b3bb63c39af737c7f87daa1d"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/either@1.17.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "either",
+      "versionInfo": "1.17.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-ena-0.14.4-52ebc0ea",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "eabffdaee24bd1bf95c5ef7cec31260444317e72ea56c4c91750e8b7ee58d5f1"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/ena@0.14.4",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "ena",
+      "versionInfo": "0.14.4"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-equivalent-1.0.2-a1023597",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/equivalent@1.0.2",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0 OR MIT",
+      "licenseDeclared": "Apache-2.0 OR MIT",
+      "name": "equivalent",
+      "versionInfo": "1.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-fnv-1.0.7-d126ad89",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/fnv@1.0.7",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0 OR MIT",
+      "licenseDeclared": "Apache-2.0 OR MIT",
+      "name": "fnv",
+      "versionInfo": "1.0.7"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-foldhash-0.2.0-be49207d",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/foldhash@0.2.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Zlib",
+      "licenseDeclared": "Zlib",
+      "name": "foldhash",
+      "versionInfo": "0.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-gdextension-api-0.5.1-cce937a4",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "git+https://github.com/godot-rust/godot4-prebuilt?branch=release-v0.5#3a0f8c3db2157974b18e14acb1d082ea4b6dcf5c",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/gdextension-api@0.5.1?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fgodot-rust%2Fgodot4-prebuilt%3Fbranch%3Drelease-v0.5%233a0f8c3db2157974b18e14acb1d082ea4b6dcf5c",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "name": "gdextension-api",
+      "versionInfo": "0.5.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-generational-arena-0.2.9-3873be61",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "877e94aff08e743b651baaea359664321055749b398adff8740a7399af7796e7"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/generational-arena@0.2.9",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "name": "generational-arena",
+      "versionInfo": "0.2.9"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-glam-0.32.1-7080df15",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f70749695b063ecbf6b62949ccccde2e733ec3ecbbd71d467dca4e5c6c97cca0"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/glam@0.32.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "glam",
+      "versionInfo": "0.32.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-glam-0.33.3-f8067bb6",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7360bd2cd76e0cd9032d42cf2922155cecea2685b0cfa4630c3246df030bcfd6"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/glam@0.33.3",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "glam",
+      "versionInfo": "0.33.3"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-glamx-0.3.0-d45a2f92",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9847f980afb0628849bcd6a406cdffd29eb9d53fca83e1646005901a9acd4c5c"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/glamx@0.3.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "glamx",
+      "versionInfo": "0.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-godot-0.5.5-0a10c23f",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/godot@0.5.5?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fgodot-rust%2Fgdext%3Frev%3D637cef73172bba23850131acd8583b0c72ebf0c7%23637cef73172bba23850131acd8583b0c72ebf0c7",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "name": "godot",
+      "versionInfo": "0.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-godot-bindings-0.5.5-e4872f47",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/godot-bindings@0.5.5?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fgodot-rust%2Fgdext%3Frev%3D637cef73172bba23850131acd8583b0c72ebf0c7%23637cef73172bba23850131acd8583b0c72ebf0c7",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "name": "godot-bindings",
+      "versionInfo": "0.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-godot-cell-0.5.5-78cc34aa",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/godot-cell@0.5.5?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fgodot-rust%2Fgdext%3Frev%3D637cef73172bba23850131acd8583b0c72ebf0c7%23637cef73172bba23850131acd8583b0c72ebf0c7",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "name": "godot-cell",
+      "versionInfo": "0.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-godot-codegen-0.5.5-13b7433c",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/godot-codegen@0.5.5?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fgodot-rust%2Fgdext%3Frev%3D637cef73172bba23850131acd8583b0c72ebf0c7%23637cef73172bba23850131acd8583b0c72ebf0c7",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "name": "godot-codegen",
+      "versionInfo": "0.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-godot-core-0.5.5-d3b070e1",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/godot-core@0.5.5?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fgodot-rust%2Fgdext%3Frev%3D637cef73172bba23850131acd8583b0c72ebf0c7%23637cef73172bba23850131acd8583b0c72ebf0c7",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "name": "godot-core",
+      "versionInfo": "0.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-godot-ffi-0.5.5-da9041bc",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/godot-ffi@0.5.5?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fgodot-rust%2Fgdext%3Frev%3D637cef73172bba23850131acd8583b0c72ebf0c7%23637cef73172bba23850131acd8583b0c72ebf0c7",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "name": "godot-ffi",
+      "versionInfo": "0.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-godot-macros-0.5.5-45d9f7cd",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/godot-macros@0.5.5?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fgodot-rust%2Fgdext%3Frev%3D637cef73172bba23850131acd8583b0c72ebf0c7%23637cef73172bba23850131acd8583b0c72ebf0c7",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "name": "godot-macros",
+      "versionInfo": "0.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://github.com/dominicbytes/redot-rapier-physics",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/godot-rapier@0.35.2-redot.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "godot-rapier",
+      "versionInfo": "0.35.2-redot.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-hashbrown-0.16.1-707e2353",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "841d1cc9bed7f9236f321df977030373f4a4163ae1a7dbfe1a51a2c1a51d9100"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/hashbrown@0.16.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "hashbrown",
+      "versionInfo": "0.16.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-hashbrown-0.17.1-851151f9",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/hashbrown@0.17.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "hashbrown",
+      "versionInfo": "0.17.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-heck-0.5.0-dc2d85cd",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/heck@0.5.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "heck",
+      "versionInfo": "0.5.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-indexmap-2.14.0-330ea4bf",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d466e9454f08e4a911e14806c24e16fba1b4c121d1ea474396f396069cf949d9"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/indexmap@2.14.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0 OR MIT",
+      "licenseDeclared": "Apache-2.0 OR MIT",
+      "name": "indexmap",
+      "versionInfo": "2.14.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-itertools-0.14.0-b76ddbf3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/itertools@0.14.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "itertools",
+      "versionInfo": "0.14.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-itoa-1.0.18-971ac085",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/itoa@1.0.18",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "itoa",
+      "versionInfo": "1.0.18"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-libc-0.2.189-016c11ba",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/libc@0.2.189",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "libc",
+      "versionInfo": "0.2.189"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-libm-0.2.16-5ecf5039",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b6d2cec3eae94f9f509c767b45932f1ada8350c4bdb85af2fcab4a3c14807981"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/libm@0.2.16",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "libm",
+      "versionInfo": "0.2.16"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-litrs-1.0.0-e5db7843",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "11d3d7f243d5c5a8b9bb5d6dd2b1602c0cb0b9db1621bafc7ed66e35ff9fe092"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/litrs@1.0.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "litrs",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-log-0.4.33-6a30fd76",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0ceec5bc11778974d1bcb055b18002eba7f4b3518b6a0081b3af5f21666da9ad"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/log@0.4.33",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "log",
+      "versionInfo": "0.4.33"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-markdown-1.0.0-0a960c25",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a5cab8f2cadc416a82d2e783a1946388b31654d391d1c7d92cc1f03e295b1deb"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/markdown@1.0.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "markdown",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-matrixmultiply-0.3.11-cc4ba341",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3f607c237553f086e7043417a51df26b2eb899d3caff94e6a67592ff992fedc7"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/matrixmultiply@0.3.11",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "matrixmultiply",
+      "versionInfo": "0.3.11"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-memchr-2.8.3-a92d906d",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/memchr@2.8.3",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Unlicense OR MIT",
+      "licenseDeclared": "Unlicense OR MIT",
+      "name": "memchr",
+      "versionInfo": "2.8.3"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-nalgebra-0.35.0-551cd5dd",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "adc43a60c217b0c6ff46e47f26911015ad8d2e5a8be1af668c67e370d99a4346"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/nalgebra@0.35.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "name": "nalgebra",
+      "versionInfo": "0.35.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-nalgebra-macros-0.3.0-5b41a6a2",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "973e7178a678cfd059ccec50887658d482ce16b0aa9da3888ddeab5cd5eb4889"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/nalgebra-macros@0.3.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "name": "nalgebra-macros",
+      "versionInfo": "0.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-nanoserde-0.2.1-e956e356",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a36fb3a748a4c9736ed7aeb5f2dfc99665247f1ce306abbddb2bf0ba2ac530a4"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/nanoserde@0.2.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "nanoserde",
+      "versionInfo": "0.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-nanoserde-derive-0.2.1-37efc126",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a846cbc04412cf509efcd8f3694b114fc700a035fb5a37f21517f9fb019f1ebc"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/nanoserde-derive@0.2.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "nanoserde-derive",
+      "versionInfo": "0.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-num-complex-0.4.6-57461665",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "73f88a1307638156682bada9d7604135552957b7818057dcef22705b4d509495"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/num-complex@0.4.6",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "num-complex",
+      "versionInfo": "0.4.6"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-num-cpus-1.17.0-65a1e036",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "91df4bbde75afed763b708b7eee1e8e7651e02d97f6d5dd763e89367e957b23b"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/num_cpus@1.17.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "num_cpus",
+      "versionInfo": "1.17.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-num-derive-0.4.2-0e20461c",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ed3955f1a9c7c0c15e092f9c887db08b1fc683305fdf6eb6684f22555355e202"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/num-derive@0.4.2",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "num-derive",
+      "versionInfo": "0.4.2"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-num-integer-0.1.46-af848736",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7969661fd2958a5cb096e56c8e1ad0444ac2bbcd0061bd28660485a44879858f"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/num-integer@0.1.46",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "num-integer",
+      "versionInfo": "0.1.46"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-num-rational-0.4.2-a143c157",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f83d14da390562dca69fc84082e73e548e1ad308d24accdedd2720017cb37824"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/num-rational@0.4.2",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "num-rational",
+      "versionInfo": "0.4.2"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-num-traits-0.2.19-52b2379b",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/num-traits@0.2.19",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "num-traits",
+      "versionInfo": "0.2.19"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-ordered-float-5.3.0-060afe99",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b7d950ca161dc355eaf28f82b11345ed76c6e1f6eb1f4f4479e0323b9e2fbd0e"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/ordered-float@5.3.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "ordered-float",
+      "versionInfo": "5.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-parry2d-0.30.2-8fa81ee4",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b7637d1087885e0bd9421938e79b66b4eb2e08afcb0c717a312ed917daefa528"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/parry2d@0.30.2",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "name": "parry2d",
+      "versionInfo": "0.30.2"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-proc-macro2-1.0.107-b0e870ae",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "985e7ec9bb745e6ce6535b544d84d6cd6f7ad8bd711c398938ae983b91a766d9"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/proc-macro2@1.0.107",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "proc-macro2",
+      "versionInfo": "1.0.107"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-profiling-1.0.18-52860aa3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3d595e54a326bc53c1c197b32d295e14b169e3cfeaa8dc82b529f947fba6bcf5"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/profiling@1.0.18",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "profiling",
+      "versionInfo": "1.0.18"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-profiling-procmacros-1.0.18-47d311f3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4488a4a36b9a4ba6b9334a32a39971f77c1436ec82c38707bce707699cc3bbcb"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/profiling-procmacros@1.0.18",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "profiling-procmacros",
+      "versionInfo": "1.0.18"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-quote-1.0.47-c8d100d5",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1fbf4db142a473a8d80c26bbf18454ed458bf8d26c8219c331daecfdbd079001"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/quote@1.0.47",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "quote",
+      "versionInfo": "1.0.47"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rapier2d-0.35.1-4f04f227",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/rapier2d@0.35.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "name": "rapier2d",
+      "versionInfo": "0.35.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rawpointer-0.2.1-9b51f2dc",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "60a357793950651c4ed0f3f52338f53b2f809f32d83a07f72909fa13e4c6c1e3"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/rawpointer@0.2.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "rawpointer",
+      "versionInfo": "0.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rayon-1.12.0-62d6aeac",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "fb39b166781f92d482534ef4b4b1b2568f42613b53e5b6c160e24cfbfa30926d"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/rayon@1.12.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "rayon",
+      "versionInfo": "1.12.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rayon-core-1.13.0-73d83d34",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "22e18b0f0062d30d4230b2e85ff77fdfe4326feb054b9783a3460d8435c8ab91"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/rayon-core@1.13.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "rayon-core",
+      "versionInfo": "1.13.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-robust-1.2.0-dceb10fb",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4e27ee8bb91ca0adcf0ecb116293afa12d393f9c2b9b9cd54d33e8078fe19839"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/robust@1.2.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "robust",
+      "versionInfo": "1.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-safe-arch-1.1.0-232cb0c6",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3a52ec151f024d703f9fd65abb7cbe81e7cdb39f18917a3a37e3014470dc7c59"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/safe_arch@1.1.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Zlib OR Apache-2.0 OR MIT",
+      "licenseDeclared": "Zlib OR Apache-2.0 OR MIT",
+      "name": "safe_arch",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-salva2d-0.10.0-63ddbbed",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4192bc60c2e206b7514738fbfbddc2246113442327ffed375c6c1a08032943be"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/salva2d@0.10.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "name": "salva2d",
+      "versionInfo": "0.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-serde-1.0.229-6425d610",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4148590afebada386688f18773da617792bf2ef03ffc1e4cbd2b1d45b023e0ba"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/serde@1.0.229",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "serde",
+      "versionInfo": "1.0.229"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-serde-arrays-0.2.0-190ebc9a",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "94a16b99c5ea4fe3daccd14853ad260ec00ea043b2708d1fd1da3106dcd8d9df"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/serde_arrays@0.2.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "serde_arrays",
+      "versionInfo": "0.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-serde-core-1.0.229-b30cb7b6",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "67dca2c9c51e58a4791a4b1ed58308b39c64224d349a935ab5039aa360942a48"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/serde_core@1.0.229",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "serde_core",
+      "versionInfo": "1.0.229"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-serde-derive-1.0.229-39e0584e",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e7a5d71263a5a7d47b41f6b3f06ba276f10cc18b0931f1799f710578e2309348"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/serde_derive@1.0.229",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "serde_derive",
+      "versionInfo": "1.0.229"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-serde-json-1.0.151-3b5ee236",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c841b55ecdae098c80dcae9cf767f6f8a0c2cdb3416bbef72181df4d0fe73f14"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/serde_json@1.0.151",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "serde_json",
+      "versionInfo": "1.0.151"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-simba-0.10.2-b71e9b58",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f1a7200d82ff1c7b4235efd12f11e2537a402c91cf83a5cb97ce80eef787fde7"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/simba@0.10.2",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "name": "simba",
+      "versionInfo": "0.10.2"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-slab-0.4.12-fdc540b0",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0c790de23124f9ab44544d7ac05d60440adc586479ce501c1d6d7da3cd8c9cf5"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/slab@0.4.12",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "slab",
+      "versionInfo": "0.4.12"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-smallvec-1.15.2-00ca6d2f",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8ed6a63f02c8539c91a8685a86f4099661ba3da017932f6ebbea6de3f0fa7c90"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/smallvec@1.15.2",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "smallvec",
+      "versionInfo": "1.15.2"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-spade-2.15.1-6c53ff18",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9699399fd9349b00b184f5635b074f9ec93afffef30c853f8c875b32c0f8c7fa"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/spade@2.15.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "spade",
+      "versionInfo": "2.15.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-static-assertions-1.1.0-eef8bf84",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/static_assertions@1.1.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "static_assertions",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-syn-2.0.119-5a9ee538",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "872831b642d1a07999a962a351ed35b955ea2cfc8f3862091e2a240a84f17297"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/syn@2.0.119",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "syn",
+      "versionInfo": "2.0.119"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-syn-3.0.3-c50aa285",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "53e9bae58849f64dfa4f5d5ae372c8341f7305f82a3868709269343628b659a3"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/syn@3.0.3",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "syn",
+      "versionInfo": "3.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-thiserror-2.0.20-5fcb3f2d",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ec86235f5fcc2a73650310756d2ac5b138a5780bbbdfae3eeccec992c435ba4f"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/thiserror@2.0.20",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "thiserror",
+      "versionInfo": "2.0.20"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-thiserror-impl-2.0.20-d7dd04a5",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "bc04cd3e1236dd4a98afca4569f2deb3f120e5422a4023be2cb683f8486292af"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/thiserror-impl@2.0.20",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "thiserror-impl",
+      "versionInfo": "2.0.20"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-typenum-1.20.1-e590bddb",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b6f5e870be6c3b371b77fe0ee0bafb859fa4964b4404c27de1d380043c4dda20"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/typenum@1.20.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "typenum",
+      "versionInfo": "1.20.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-unicode-id-0.3.6-9dd35eff",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "70ba288e709927c043cbe476718d37be306be53fb1fafecd0dbe36d072be2580"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/unicode-id@0.3.6",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT OR Apache-2.0",
+      "licenseDeclared": "MIT OR Apache-2.0",
+      "name": "unicode-id",
+      "versionInfo": "0.3.6"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-unicode-ident-1.0.24-032c349f",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/unicode-ident@1.0.24",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "licenseDeclared": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "name": "unicode-ident",
+      "versionInfo": "1.0.24"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-venial-0.6.1-747af1a5",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9a42528baceab6c7784446df2a10f4185078c39bf73dc614f154353f1a6b1229"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/venial@0.6.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "venial",
+      "versionInfo": "0.6.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-which-8.0.5-90f65675",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8f3ef584124b911bcc3875c2f1472e80f24361ceb789bd1c62b3e9a3df9ff43c"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/which@8.0.5",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "which",
+      "versionInfo": "8.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-wide-1.6.1-d3aca6cf",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "de2aaf408e58689c2096682331b1f42bb2d9f2ed6b11560407d023cd0a6c634e"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/wide@1.6.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Zlib OR Apache-2.0 OR MIT",
+      "licenseDeclared": "Zlib OR Apache-2.0 OR MIT",
+      "name": "wide",
+      "versionInfo": "1.6.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-zmij-1.0.23-0aa54962",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
+        }
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/zmij@1.0.23",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "zmij",
+      "versionInfo": "1.0.23"
+    }
+  ],
+  "relationships": [
+    {
+      "relatedSpdxElement": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684",
+      "relationshipType": "DESCRIBES",
+      "spdxElementId": "SPDXRef-DOCUMENT"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-allocator-api2-0.2.21-f72f8d4b",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-approx-0.5.1-23612640",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-arrayvec-0.7.8-603ac76d",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-autocfg-1.5.1-15275796",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-bincode-1.3.3-986b3528",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-bitflags-2.13.1-0cb5e5b2",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-bytemuck-1.25.2-d4f62647",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-cfg-if-1.0.4-ffc41bac",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-crossbeam-deque-0.8.7-d8b3b446",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-crossbeam-epoch-0.9.20-a427eb73",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-crossbeam-utils-0.8.22-3fd83367",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-downcast-rs-2.0.2-8e7a5676",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-either-1.17.0-b56da0d1",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-ena-0.14.4-52ebc0ea",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-equivalent-1.0.2-a1023597",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-fnv-1.0.7-d126ad89",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-foldhash-0.2.0-be49207d",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-gdextension-api-0.5.1-cce937a4",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-generational-arena-0.2.9-3873be61",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-glam-0.32.1-7080df15",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-glam-0.33.3-f8067bb6",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-glamx-0.3.0-d45a2f92",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-godot-0.5.5-0a10c23f",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-godot-bindings-0.5.5-e4872f47",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-godot-cell-0.5.5-78cc34aa",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-godot-codegen-0.5.5-13b7433c",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-godot-core-0.5.5-d3b070e1",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-godot-ffi-0.5.5-da9041bc",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-godot-macros-0.5.5-45d9f7cd",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-hashbrown-0.16.1-707e2353",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-hashbrown-0.17.1-851151f9",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-heck-0.5.0-dc2d85cd",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-indexmap-2.14.0-330ea4bf",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-itertools-0.14.0-b76ddbf3",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-itoa-1.0.18-971ac085",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-libc-0.2.189-016c11ba",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-libm-0.2.16-5ecf5039",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-litrs-1.0.0-e5db7843",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-log-0.4.33-6a30fd76",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-markdown-1.0.0-0a960c25",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-matrixmultiply-0.3.11-cc4ba341",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-memchr-2.8.3-a92d906d",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-nalgebra-0.35.0-551cd5dd",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-nalgebra-macros-0.3.0-5b41a6a2",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-nanoserde-0.2.1-e956e356",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-nanoserde-derive-0.2.1-37efc126",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-num-complex-0.4.6-57461665",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-num-cpus-1.17.0-65a1e036",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-num-derive-0.4.2-0e20461c",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-num-integer-0.1.46-af848736",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-num-rational-0.4.2-a143c157",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-num-traits-0.2.19-52b2379b",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-ordered-float-5.3.0-060afe99",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-parry2d-0.30.2-8fa81ee4",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-proc-macro2-1.0.107-b0e870ae",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-profiling-1.0.18-52860aa3",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-profiling-procmacros-1.0.18-47d311f3",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-quote-1.0.47-c8d100d5",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-rapier2d-0.35.1-4f04f227",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-rawpointer-0.2.1-9b51f2dc",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-rayon-1.12.0-62d6aeac",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-rayon-core-1.13.0-73d83d34",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-robust-1.2.0-dceb10fb",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-safe-arch-1.1.0-232cb0c6",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-salva2d-0.10.0-63ddbbed",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-serde-1.0.229-6425d610",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-serde-arrays-0.2.0-190ebc9a",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-serde-core-1.0.229-b30cb7b6",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-serde-derive-1.0.229-39e0584e",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-serde-json-1.0.151-3b5ee236",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-simba-0.10.2-b71e9b58",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-slab-0.4.12-fdc540b0",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-smallvec-1.15.2-00ca6d2f",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-spade-2.15.1-6c53ff18",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-static-assertions-1.1.0-eef8bf84",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-syn-2.0.119-5a9ee538",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-syn-3.0.3-c50aa285",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-thiserror-2.0.20-5fcb3f2d",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-thiserror-impl-2.0.20-d7dd04a5",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-typenum-1.20.1-e590bddb",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-unicode-id-0.3.6-9dd35eff",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-unicode-ident-1.0.24-032c349f",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-venial-0.6.1-747af1a5",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-which-8.0.5-90f65675",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-wide-1.6.1-d3aca6cf",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-Package-zmij-1.0.23-0aa54962",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    }
+  ],
+  "spdxVersion": "SPDX-2.3"
+}

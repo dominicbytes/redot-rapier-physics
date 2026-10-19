@@ -42,3 +42,7 @@ bin2d/start.gd.uid
 bin2d/test.gd.uid
 bin3d/start.gd.uid
 bin3d/test.gd.uid
+
+# Local working records and validation reports
+docs/gamedev/
+reports/
