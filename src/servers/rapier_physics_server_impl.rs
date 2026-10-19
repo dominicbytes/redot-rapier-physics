@@ -1655,7 +1655,8 @@ impl RapierPhysicsServerImpl {
     #[allow(clippy::too_many_arguments)]
     /// # Safety
     ///
-    /// `result` must point to a valid writable Godot motion result for the duration of this call.
+    /// `result` must be null or point to a valid writable Godot motion result for the duration
+    /// of this call.
     pub unsafe fn body_test_motion(
         &self,
         body: Rid,
@@ -1674,7 +1675,17 @@ impl RapierPhysicsServerImpl {
                 .spaces
                 .get(&body.get_base().get_space(&physics_data.ids))
         {
-            let result: &mut PhysicsServerExtensionMotionResult = unsafe { &mut *result.ptr() };
+            // The engine passes null when the caller omits the result, as in
+            // `PhysicsServer2D.body_test_motion(body, parameters)`.
+            let mut discarded_result: PhysicsServerExtensionMotionResult;
+            let result: &mut PhysicsServerExtensionMotionResult = if result.ptr().is_null() {
+                // SAFETY: the motion result holds only floats, integers, object ids and RIDs,
+                // for which all-zero bytes are valid values (a zero RID is `Rid::Invalid`).
+                discarded_result = unsafe { std::mem::zeroed() };
+                &mut discarded_result
+            } else {
+                unsafe { &mut *result.ptr() }
+            };
             return space.test_body_motion(
                 body,
                 from,
@@ -2695,10 +2706,7 @@ impl RapierPhysicsServerImpl {
     }
 
     pub(super) fn space_flush_queries(space: &Rid) {
-        let physics_data = physics_data();
-        if let Some(space) = physics_data.spaces.get_mut(space) {
-            space.flush();
-        }
+        RapierSpace::flush(space);
     }
 
     pub(super) fn get_id(&self, rid: Rid) -> u64 {

@@ -68,16 +68,14 @@ impl PendingQueryCallback {
                 let Some(callable) = body.get_state_sync_callback() else {
                     return;
                 };
-                // SAFETY: borrowed rather than cloned, so a callback that frees this body
-                // leaves these dangling. Godot's own server defers body removal for this.
-                let callable: *const Callable = callable;
-                let arg: *const Variant = body.get_direct_state_variant();
+                // Copied (a reference-count increment) rather than borrowed: the callback can
+                // free this body, or create objects and so move it within `collision_objects`.
+                let callable = callable.clone();
+                let arg = body.get_direct_state_variant().clone();
                 let _span = crate::servers::rapier_profiler::scope(
                     crate::servers::rapier_profiler::Span::FlushCall,
                 );
-                unsafe {
-                    (*callable).call(std::slice::from_ref(&*arg));
-                }
+                callable.call(std::slice::from_ref(&arg));
             }
             Self::Callv { callable, args } => {
                 callable.callv(&args);
@@ -745,19 +743,26 @@ impl RapierSpace {
         physics_engine.world_import(self.get_state().get_id(), &world_settings, physics_objects);
     }
 
-    pub fn flush(&mut self) {
+    /// Dispatches the pending query callbacks of the space registered under `space_rid`.
+    ///
+    /// No reference into `PhysicsData::spaces` is held while the callbacks run: a callback can
+    /// create spaces, which may move every space in the map, or free this space.
+    pub fn flush(space_rid: &Rid) {
         let _span = crate::servers::rapier_profiler::scope(
             crate::servers::rapier_profiler::Span::FlushQueries,
         );
-        // Kept across frames for its allocation, taken out because a callback can re-enter.
-        let mut callbacks = std::mem::take(&mut self.query_callbacks);
-        callbacks.clear();
-        {
+        let mut callbacks = {
+            let physics_data = physics_data();
+            let Some(space) = physics_data.spaces.get_mut(space_rid) else {
+                return;
+            };
+            // Kept across frames for its allocation, taken out because a callback can re-enter.
+            let mut callbacks = std::mem::take(&mut space.query_callbacks);
+            callbacks.clear();
             let _span = crate::servers::rapier_profiler::scope(
                 crate::servers::rapier_profiler::Span::FlushCollect,
             );
-            let physics_data = physics_data();
-            let state = self.get_state();
+            let state = space.get_state();
             RapierSpace::collect_query_callbacks(
                 state.get_active_list(),
                 state.get_deactivated_state_sync_list(),
@@ -768,7 +773,8 @@ impl RapierSpace {
                 &physics_data.ids,
                 &mut callbacks,
             );
-        }
+            callbacks
+        };
         {
             let _span = crate::servers::rapier_profiler::scope(
                 crate::servers::rapier_profiler::Span::FlushDispatch,
@@ -777,11 +783,15 @@ impl RapierSpace {
                 callback.call();
             }
         }
-        self.query_callbacks = callbacks;
         let physics_data = physics_data();
-        self.get_mut_state().reset_state_query_list();
-        self.get_mut_state().reset_deactivated_state_sync_list();
-        self.update_after_queries(&mut physics_data.collision_objects, &physics_data.ids);
+        // Look the space up again: a callback may have freed it.
+        let Some(space) = physics_data.spaces.get_mut(space_rid) else {
+            return;
+        };
+        space.query_callbacks = callbacks;
+        space.get_mut_state().reset_state_query_list();
+        space.get_mut_state().reset_deactivated_state_sync_list();
+        space.update_after_queries(&mut physics_data.collision_objects, &physics_data.ids);
     }
 }
 impl Drop for RapierSpace {
