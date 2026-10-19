@@ -9,6 +9,7 @@ import json
 import re
 from pathlib import Path
 from typing import Any
+from publication_paths import report_path, safe_report, scrub_text
 
 
 PROTOCOL = "redot-rapier2d-determinism-v1"
@@ -30,50 +31,51 @@ def sha256(value: Any) -> str:
 
 
 def inspect_replay(path: Path) -> dict[str, Any]:
+    identifier = report_path(path, "replay")
     try:
         replay = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        raise ReplayError(f"cannot load {path}: {exc}") from exc
+        raise ReplayError(f"cannot load {identifier}: {type(exc).__name__}") from exc
     if not isinstance(replay, dict) or replay.get("protocol") != PROTOCOL:
-        raise ReplayError(f"unexpected protocol in {path}")
+        raise ReplayError(f"unexpected protocol in {identifier}")
     profile = replay.get("profile")
     frames = replay.get("frames")
     observed = replay.get("observed")
     if not isinstance(profile, dict) or not isinstance(frames, list):
-        raise ReplayError(f"invalid replay structure in {path}")
+        raise ReplayError(f"invalid replay structure in {identifier}")
     if not isinstance(observed, dict):
-        raise ReplayError(f"missing observed identity in {path}")
+        raise ReplayError(f"missing observed identity in {identifier}")
     if profile.get("simulation_frames") != len(frames):
-        raise ReplayError(f"frame count mismatch in {path}")
+        raise ReplayError(f"frame count mismatch in {identifier}")
     if len(frames) < CHECKPOINTS[-1]:
-        raise ReplayError(f"replay is too short in {path}")
+        raise ReplayError(f"replay is too short in {identifier}")
     if profile.get("solver_parallel") is not False:
-        raise ReplayError(f"solver_parallel must be false in {path}")
+        raise ReplayError(f"solver_parallel must be false in {identifier}")
     if profile.get("redot_separate_thread") is not False:
-        raise ReplayError(f"Redot separate-thread physics must be false in {path}")
+        raise ReplayError(f"Redot separate-thread physics must be false in {identifier}")
     if (profile.get("precision") != "single" or profile.get("physics_ticks_per_second") != 60
             or profile.get("simulation_frames") != 300 or profile.get("seed") != 0):
-        raise ReplayError(f"unsupported replay profile in {path}")
+        raise ReplayError(f"unsupported replay profile in {identifier}")
     count = profile.get("body_count")
     if type(count) is not int or count <= 0:
-        raise ReplayError(f"invalid body count in {path}")
+        raise ReplayError(f"invalid body count in {identifier}")
     for key in ("os", "arch"):
         if not isinstance(observed.get(key), str) or not observed[key].strip():
-            raise ReplayError(f"missing platform identity in {path}")
+            raise ReplayError(f"missing platform identity in {identifier}")
     if observed.get("backend") != "RapierPhysicsServer2D":
-        raise ReplayError(f"missing Rapier backend identity in {path}")
+        raise ReplayError(f"missing Rapier backend identity in {identifier}")
     for frame in frames:
         if not isinstance(frame, list) or len(frame) != count:
-            raise ReplayError(f"body count mismatch in {path}")
+            raise ReplayError(f"body count mismatch in {identifier}")
         for body in frame:
             if not isinstance(body, list) or len(body) != 9:
-                raise ReplayError(f"invalid body component count in {path}")
+                raise ReplayError(f"invalid body component count in {identifier}")
             if any(not isinstance(value, str) or not re.fullmatch(r"[0-9a-fA-F]{16}", value) for value in body):
-                raise ReplayError(f"invalid hexadecimal component in {path}")
+                raise ReplayError(f"invalid hexadecimal component in {identifier}")
 
     canonical = {"protocol": PROTOCOL, "profile": profile, "frames": frames}
     return {
-        "path": str(path.resolve()),
+        "path": report_path(path, "replay"),
         "observed": observed,
         "profile": profile,
         "checkpoint_sha256": {
@@ -130,11 +132,11 @@ def main() -> int:
     try:
         report = compare_replays([path.resolve() for path in args.replays])
     except ReplayError as exc:
-        report = {"status": "FAIL", "error": str(exc)}
+        report = {"status": "FAIL", "error": scrub_text(str(exc))}
         code = 2
     else:
         code = 0
-    payload = json.dumps(report, indent=2, sort_keys=True) + "\n"
+    payload = json.dumps(safe_report(report), indent=2, sort_keys=True) + "\n"
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(payload, encoding="utf-8")

@@ -5,11 +5,13 @@ import importlib.util
 import json
 import tempfile
 import unittest
+import sys
 from pathlib import Path
 from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 SPEC = importlib.util.spec_from_file_location(
     "performance_guardrail", ROOT / "scripts/performance_guardrail.py"
 )
@@ -122,7 +124,7 @@ class PerformanceGuardrailTests(unittest.TestCase):
             config = root / "scenarios.json"
             config.write_text(json.dumps(dict(scenarios=[], runs_per_scenario=1)), encoding="utf-8")
             completed = subprocess.CompletedProcess([], 0, PERFORMANCE.SENTINEL + "\nSCRIPT ERROR: failing import")
-            with mock.patch.multiple(PERFORMANCE, FIXTURE=fixture, ADDON=addon, SCENARIOS=config), \
+            with mock.patch.multiple(PERFORMANCE, ROOT=root, FIXTURE=fixture, ADDON=addon, SCENARIOS=config), \
                     mock.patch.object(PERFORMANCE, "patch_descriptor_for_release", return_value={}), \
                     mock.patch.object(PERFORMANCE, "execution_environment", return_value={}), \
                     mock.patch.object(PERFORMANCE.subprocess, "run", return_value=completed):
@@ -208,6 +210,8 @@ class PerformanceGuardrailTests(unittest.TestCase):
             baseline, candidate, guardrail, output = self.write_reports(Path(temp_name))
             result = PERFORMANCE.compare(baseline, candidate, guardrail, output)
             self.assertEqual(result["status"], "PASS")
+            for key in ("baseline", "candidate", "guardrail"):
+                self.assertFalse(Path(result[key]).is_absolute())
 
     def test_affinity_mismatch_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temp_name:
