@@ -957,7 +957,8 @@ def configure_export_templates(
             contents,
         )
         _require(options is not None, f"export preset options are missing: {preset_name}")
-        template_value = template.as_posix()
+        _require(template.is_file(), "export template is missing")
+        template_value = Path(os.path.relpath(template.resolve(), project.resolve())).as_posix()
         replacement = f"custom_template/{field}={json.dumps(template_value)}"
         body, count = re.subn(
             rf"(?m)^custom_template/{field}=.*$",
