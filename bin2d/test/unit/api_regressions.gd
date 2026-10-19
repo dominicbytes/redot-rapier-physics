@@ -13,6 +13,10 @@ func _ready() -> void:
 	await preload("res://test/unit/test_shape_replacement.gd").new().run(get_tree())
 	preload("res://test/unit/test_shape.gd").new().run()
 	preload("res://test/unit/test_world_boundary.gd").new().run()
+	var custom_integrator_gravity := preload("res://test/unit/test_custom_integrator_gravity.gd").new()
+	add_child(custom_integrator_gravity)
+	assert(await custom_integrator_gravity.run(), "Custom integration must keep automatic gravity disabled")
+	custom_integrator_gravity.queue_free()
 	# Wait for scene tests that run across physics frames.
 	for test in get_tree().get_nodes_in_group(&"async_unit_tests"):
 		while not test.done:

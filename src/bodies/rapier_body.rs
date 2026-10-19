@@ -1543,7 +1543,7 @@ impl RapierBody {
                 let new_gravity_scale = variant_to_float(&p_value);
                 if self.gravity_scale != new_gravity_scale {
                     self.gravity_scale = new_gravity_scale;
-                    if !self.using_area_gravity {
+                    if !self.using_area_gravity && !self.omit_force_integration {
                         self.apply_gravity_scale(self.gravity_scale, physics_engine);
                     }
                 }
