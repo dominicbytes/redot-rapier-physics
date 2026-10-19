@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "revision": 8,
+  "revision": 9,
   "policy": "regression guardrail; improvement over the default backend is not required",
-  "revision_note": "Revision 1's 33.334 ms fluid p95 was retired after the Linux pilot because it imposed an unrequested 30 FPS target on a Rapier-only capability with no default-backend baseline. Revision 2 retained the 100 ms ceiling and added spread/memory checks. Revisions 3-4 controlled and recorded CPU affinity. Revision 5 replaced Redot's block-updated headless TIME_PHYSICS_PROCESS monitor with direct wall-clock physics-frame intervals. Revision 6 replaces the scale-unstable p95 spread ratio with a p95 range capped at one configured 60 Hz physics tick (16.667 ms). Revision 7 records only the host platform's release-library hash so single-platform CI jobs can run without fabricating a foreign binary. Revision 8 canonicalizes text-contract line endings before hashing so Windows CRLF and Linux LF checkouts prove the same source; workloads and numerical thresholds remain unchanged.",
-  "frozen_on": "2026-08-12",
+  "revision_note": "Revision 1's 33.334 ms fluid p95 was retired after the Linux pilot because it imposed an unrequested 30 FPS target on a Rapier-only capability with no default-backend baseline. Revision 2 retained the 100 ms ceiling and added spread/memory checks. Revisions 3-4 controlled and recorded CPU affinity. Revision 5 replaced Redot's block-updated headless TIME_PHYSICS_PROCESS monitor with direct wall-clock physics-frame intervals. Revision 6 replaces the scale-unstable p95 spread ratio with a p95 range capped at one configured 60 Hz physics tick (16.667 ms). Revision 7 records only the host platform's release-library hash so single-platform CI jobs can run without fabricating a foreign binary. Revision 8 canonicalizes text-contract line endings before hashing so Windows CRLF and Linux LF checkouts prove the same source; workloads and numerical thresholds remain unchanged. Revision 9 records a fresh Windows 26.3 default-backend baseline and routes performance imports through the same temporary import-only engine gate; runtime workloads and thresholds remain unchanged.",
+  "frozen_on": "2026-10-19",
   "scenario_contract_sha256": "715870cb2898ee4e2776c08b28a39c991aa83943bd8074ec2768c85cf8e812eb",
   "fixture_manifest_sha256": "df7c046c51673e705bf1731988448e5559696efc7995d6cb0356e3211e0433fe",
-  "runner_sha256": "d034cc233f1d06154526b6dccf3e9447c383a6048d927fb5f4c5b2939a775996",
+  "runner_sha256": "3055e30ee11629f05661418c32a0d85d8aee04c834f66027a5a443682503513a",
   "aggregation": "three runs; wall-clock intervals between consecutive physics-frame signals; pooled frame samples; nearest-rank p95; median; maximum static-memory monitor",
   "environment_controls": {
     "windows_local": "paired baseline/candidate on the same native Windows host with process affinity 0-15",
@@ -19,8 +19,8 @@
   },
   "frozen_after_baseline": {
     "platform": "windows-x86_64",
-    "redot": "26.2.stable.official.4f5b14aba",
-    "baseline_report_sha256": "06e04090c06e35a3312fb27bfb84bb66adf731a77cb50f86b5ad83ef033fc5f8"
+    "redot": "26.3.stable.official.85e520394",
+    "baseline_report_sha256": "bb50e77764a7651ba13d8f6ec93a12e412324239ffca9c9649aa3d31ab306dd5"
   },
   "body_scenarios": {
     "bodies-small": {

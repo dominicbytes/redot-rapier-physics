@@ -1,0 +1,27 @@
+{
+  "comment": "TEMPORARY engine defect: official 26.3 editor shutdown crashes/leaks without this extension. Remove this exception when a fixed engine is pinned. Runtime scenes never use it.",
+  "engine_version_output": "26.3.stable.official.85e520394",
+  "allowed_exit_code": 3221225477,
+  "diagnostics": [
+    "WARNING: 2 RIDs of type \"Canvas\" were leaked.",
+    "WARNING: 29 RIDs of type \"CanvasItem\" were leaked.",
+    "ERROR: 2 RID allocations of type 'N16RendererViewport8ViewportE' were leaked at exit.",
+    "ERROR: 14 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.",
+    "ERROR: 100 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.",
+    "ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.",
+    "WARNING: ObjectDB instances leaked at exit (run with --verbose for details)."
+  ],
+  "crash_banner": "================================================================",
+  "crash_diagnostics": [
+    "CrashHandlerException: Program crashed with signal 11",
+    "Engine version: Redot Engine v26.3.stable.official (85e5203945af15755dd2f66cb6fdf7545fd88c0b)",
+    "Dumping the backtrace. Please include this when reporting the bug on: https://github.com/Redot-Engine/redot-engine/issues",
+    "-- END OF C++ BACKTRACE --"
+  ],
+  "required_classes": {
+    "Faucet2D": "res://addons/godot-rapier2d/faucet_2d.gd",
+    "Fluid2DRenderer": "res://addons/godot-rapier2d/fluid_2d_renderer.gd",
+    "Fluid2DShaderRenderer": "res://addons/godot-rapier2d/fluid_2d_shader_renderer.gd"
+  },
+  "crash_frame_pattern": "\\[[1-9][0-9]*\\] error\\(-1\\): no debug info in PE/COFF executable"
+}

@@ -4,12 +4,14 @@ import hashlib
 import importlib.util
 import json
 import os
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 
 
 def module(name):
@@ -32,7 +34,7 @@ class ToolingInputTests(unittest.TestCase):
         self.header = self.root / "gdextension_interface.h"
         self.api.write_bytes(b"api\n")
         self.header.write_bytes(b"header\n")
-        self.lock = {"api": {
+        self.lock = {"binding_abi": {
             "snapshot": "missing-api.json", "interface_header": "missing-header.h",
             "sha256": hashlib.sha256(self.api.read_bytes()).hexdigest(),
             "interface_sha256": hashlib.sha256(self.header.read_bytes()).hexdigest(),

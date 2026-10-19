@@ -113,7 +113,6 @@ class PerformanceGuardrailTests(unittest.TestCase):
                         PERFORMANCE.require_clean_output(console, log)
 
     def test_backend_rejects_successful_process_with_script_error(self) -> None:
-        import subprocess
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             fixture = root / "fixture"
@@ -123,11 +122,10 @@ class PerformanceGuardrailTests(unittest.TestCase):
             addon.mkdir()
             config = root / "scenarios.json"
             config.write_text(json.dumps(dict(scenarios=[], runs_per_scenario=1)), encoding="utf-8")
-            completed = subprocess.CompletedProcess([], 0, PERFORMANCE.SENTINEL + "\nSCRIPT ERROR: failing import")
             with mock.patch.multiple(PERFORMANCE, ROOT=root, FIXTURE=fixture, ADDON=addon, SCENARIOS=config), \
                     mock.patch.object(PERFORMANCE, "patch_descriptor_for_release", return_value={}), \
                     mock.patch.object(PERFORMANCE, "execution_environment", return_value={}), \
-                    mock.patch.object(PERFORMANCE.subprocess, "run", return_value=completed):
+                    mock.patch.object(PERFORMANCE, "run_gate", side_effect=RuntimeError("script error")):
                 with self.assertRaises(PERFORMANCE.PerformanceError):
                     PERFORMANCE.run_backend(Path("engine"), "default", root / "output")
 

@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import re
 import ctypes
 import hashlib
 import json
@@ -19,6 +18,7 @@ import tempfile
 from pathlib import Path
 from typing import Any
 from publication_paths import report_path, safe_report, scrub_text
+from engine_gate import run_gate, require_clean_output as require_gate_clean_output
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -165,8 +165,10 @@ def execution_environment(redot: Path, native_hashes: dict[str, str]) -> dict[st
 def require_clean_output(console: str, log: Path) -> None:
     text = console + "\n" + (log.read_text(encoding="utf-8", errors="replace") if log.is_file() else "")
     log.write_text(scrub_text(text), encoding="utf-8")
-    if re.search(r"SCRIPT ERROR|Parse Error|Assertion failed|^ERROR:|GDExtension.*(?:error|fail)|Failed to (?:load|initialize)|panicked at|thread .+ panicked|fatal runtime error", text, re.IGNORECASE | re.MULTILINE):
-        raise PerformanceError("engine diagnostics contain an error")
+    try:
+        require_gate_clean_output(text)
+    except RuntimeError as exc:
+        raise PerformanceError("engine diagnostics contain an error") from exc
 
 
 def run_backend(redot: Path, backend: str, output: Path) -> dict[str, Any]:
@@ -183,19 +185,12 @@ def run_backend(redot: Path, backend: str, output: Path) -> dict[str, Any]:
         shutil.copy2(project / f"project.{backend}.godot", project / "project.godot")
         native_hashes = patch_descriptor_for_release(project)
         import_log = output / f"{backend}-import.log"
-        imported = subprocess.run(
-            [
-                str(redot), "--headless", "--path", str(project), "--import",
-                "--quit-after", "300", "--log-file", str(import_log.resolve()),
-            ],
-            cwd=ROOT, check=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-            text=True, encoding="utf-8", errors="replace", timeout=120,
-        )
-        require_clean_output(imported.stdout, import_log)
-        if imported.returncode:
-            raise PerformanceError(
-                f"{backend} fixture import exited {imported.returncode}\n{imported.stdout[-4000:]}"
-            )
+        try:
+            run_gate(str(redot), ["--headless", "--audio-driver", "Dummy", "--path", str(project),
+                                  "--import", "--quit-after", "300"], import_log, timeout=120,
+                     import_allowlist=ROOT / "compat/redot-26.3-import-allowlist.json")
+        except (OSError, RuntimeError) as exc:
+            raise PerformanceError("performance fixture import failed") from exc
         for scenario in config["scenarios"]:
             if backend == "default" and not scenario["baseline"]:
                 continue
@@ -207,7 +202,7 @@ def run_backend(redot: Path, backend: str, output: Path) -> dict[str, Any]:
                 result_path.unlink(missing_ok=True)
                 log_path.unlink(missing_ok=True)
                 command = [
-                    str(redot), "--headless", "--fixed-fps", str(config["fixed_fps"]),
+                    str(redot), "--headless", "--audio-driver", "Dummy", "--fixed-fps", str(config["fixed_fps"]),
                     "--path", str(project), "--scene", "res://main.tscn",
                     "--quit-after", str(config["warmup_frames"] + config["sample_frames"] + 300),
                     "--log-file", str(log_path.resolve()), "--",
@@ -389,7 +384,7 @@ def main() -> int:
             )
             if result["status"] != "PASS":
                 return 2
-    except (OSError, ValueError, KeyError, subprocess.TimeoutExpired, PerformanceError) as exc:
+    except (OSError, ValueError, KeyError, subprocess.TimeoutExpired, RuntimeError, PerformanceError) as exc:
         print(scrub_text(f"performance guardrail: FAIL: {exc}"), file=sys.stderr)
         return 2
     print("performance guardrail: PASS")

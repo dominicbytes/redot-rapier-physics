@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import sys
 import subprocess
 import tempfile
 import unittest
@@ -8,6 +10,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 SPEC = importlib.util.spec_from_file_location(
     "verify_2d_parity", ROOT / "scripts/verify_2d_parity.py"
 )
@@ -120,6 +123,23 @@ class SourceDeltaRecordTests(unittest.TestCase):
                 self.record("bad", body)
                 with self.assertRaises(PARITY.ParityError):
                     self.compare()
+
+
+class EngineContractParityTests(unittest.TestCase):
+    def test_invalid_binding_or_second_engine_fails_before_source_comparison(self):
+        for mutation in ("binding", "engine"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temporary:
+                repo = Path(temporary)
+                config = json.loads((ROOT / "porting.json").read_text())
+                lock = json.loads((ROOT / "redot.lock.json").read_text())
+                if mutation == "binding":
+                    del lock["binding_abi"]
+                else:
+                    config["certified_redot"].append(dict(config["certified_redot"][0]))
+                (repo / "porting.json").write_text(json.dumps(config))
+                (repo / "redot.lock.json").write_text(json.dumps(lock))
+                with self.assertRaises(PARITY.ContractError):
+                    PARITY.verify(repo, None)
 
 
 if __name__ == "__main__":

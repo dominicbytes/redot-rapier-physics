@@ -1,10 +1,10 @@
 # Redot Rapier Physics
 
-[![Redot Rapier2D contract](https://github.com/dominicbytes/redot-rapier-physics/actions/workflows/redot-contract.yml/badge.svg?branch=redot-26.2)](https://github.com/dominicbytes/redot-rapier-physics/actions/workflows/redot-contract.yml)
+[![Redot Rapier2D contract](https://github.com/dominicbytes/redot-rapier-physics/actions/workflows/redot-contract.yml/badge.svg?branch=redot-26.3)](https://github.com/dominicbytes/redot-rapier-physics/actions/workflows/redot-contract.yml)
 
-An opt-in Rapier2D physics backend for Redot 26.2, based on [Godot Rapier Physics v0.35.2](https://github.com/appsinacup/godot-rapier-physics/releases/tag/v0.35.2) and Rapier 0.35.1.
+An opt-in Rapier2D physics backend for Redot 26.3, based on [Godot Rapier Physics v0.35.2](https://github.com/appsinacup/godot-rapier-physics/releases/tag/v0.35.2) and Rapier 0.35.1.
 
-> **Release status:** The source candidate is public on the `redot-26.2` branch. No version tag or downloadable package has been published yet.
+> **Release status:** The `0.35.2-redot.2` source candidate targets the `redot-26.3` release line. Hosted certification is pending. No version tag or downloadable package has been published yet.
 
 ## Features
 
@@ -15,7 +15,7 @@ The Redot port keeps the full applicable 2D feature set from the pinned upstream
 - 2D fluids and fluid effects
 - Physics-state serialization and restoration
 - Parallel solver builds
-- A separately validated deterministic profile for Windows and Linux
+- A separate deterministic profile for Windows and Linux (26.3 certification pending)
 - Editor class documentation
 
 Rapier2D is additive. Installing it does not replace Redot's default physics backend unless a project explicitly selects `Rapier2D`.
@@ -26,12 +26,14 @@ Rapier3D is not part of this release. It will remain a separate installable and 
 
 | Component | Supported version |
 | --- | --- |
-| Engine | Redot 26.2 stable |
-| Extension API | Redot's Godot-compatible 4.5.2 API, single precision |
-| Platforms | Windows x86-64 and Linux x86-64 |
+| Engine target | Redot 26.3 stable (`85e520394`), certification pending |
+| Binding ABI | Unmodified Redot 26.2 Godot-compatible 4.5.2 API, single precision |
+| Platform targets | Windows x86-64 and Linux x86-64; hosted gates pending |
 | Upstream plugin | Godot Rapier Physics 0.35.2 |
 | Physics library | Rapier 0.35.1 |
 | Rust bindings | [`dominicbytes/redot-rust`](https://github.com/dominicbytes/redot-rust) at `18ad5c538c452b8640420366794354e3ed48f205` |
+
+The certified-engine audit hashes and binding-generation hashes are separate in `redot.lock.json` (ADR-0317). New Redot Struct values are unsupported by this binding.
 
 Each plugin release targets one exact Redot release. macOS, mobile, web, other architectures, and double-precision builds are not supported by the first release line.
 
@@ -41,7 +43,7 @@ The current branch contains source and distribution metadata, not an installable
 
 1. Download the Rapier2D archive from [GitHub Releases](https://github.com/dominicbytes/redot-rapier-physics/releases).
 2. Extract it into the root of your Redot project. The addon should end up at `addons/godot-rapier2d`.
-3. Open the project in Redot 26.2.
+3. Open the project in Redot 26.3.
 4. Enable **Advanced Settings**, then set **Project Settings > Physics > 2D > Physics Engine** to `Rapier2D`.
 5. Restart the editor.
 

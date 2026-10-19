@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.35.2-redot.2 (unpublished candidate)
+
+- Prepare the separate Redot 26.3 stable release line with one exact engine identity.
+- Record raw 26.3 audit hashes separately from the verified 26.2 binding ABI; new Struct values remain unsupported.
+- Read CI engine assets and versions from the lock, verify both API sources, and identify artifacts by engine.
+- Temporarily tolerate only documented 26.3 import shutdown failures after fresh import completion checks. Runtime gates stay strict.
+- Reset platform certification to pending hosted CI; retain the pinned upstream plugin and unmodified bindings.
+
 ## v0.35.2
 
 ## What's Changed

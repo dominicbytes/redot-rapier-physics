@@ -1,13 +1,13 @@
 # Redot Rapier Physics 2D
 
-Rapier2D is an opt-in 2D physics backend for Redot 26.2, built from Godot Rapier Physics 0.35.2 and Rapier 0.35.1. This package preserves the upstream addon path `addons/godot-rapier2d` and includes the full desktop feature profile: standard PhysicsServer2D behavior, custom Rapier nodes, fluids, state serialization, parallel solver support, and editor class documentation.
+Rapier2D is an opt-in 2D physics backend for Redot 26.3, built from Godot Rapier Physics 0.35.2 and Rapier 0.35.1. This package preserves the upstream addon path `addons/godot-rapier2d` and includes the full desktop feature profile: standard PhysicsServer2D behavior, custom Rapier nodes, fluids, state serialization, parallel solver support, and editor class documentation.
 
 Each supported platform has distinct editor, debug-export, and release-export native libraries. Generated class documentation is present only in the editor library, so exported games do not embed the editor-only documentation registration feature.
 
 ## Install
 
 1. Extract the package into the root of a Redot project so this file is at `addons/godot-rapier2d/README.md`.
-2. Open the project with Redot 26.2.
+2. Open the project with Redot 26.3.
 3. Set **Project Settings > Physics > 2D > Physics Engine** to `Rapier2D`.
 4. Restart the editor after changing the backend.
 
@@ -19,9 +19,9 @@ Rapier's point queries honor a collision object's `input_pickable` state by defa
 
 - Windows x86-64
 - Linux x86-64
-- Redot 26.2 stable, compatible API 4.5.2, single precision
+- Redot 26.3 stable, compatible API 4.5.2, single precision
 
-This build is certified for that exact Redot release. A different Redot release requires a separately built and validated plugin version.
+Candidate `0.35.2-redot.2` targets exactly `26.3.stable.official.85e520394`; certification is pending hosted CI. Bindings use the unmodified Redot 26.2 compatibility ABI snapshot; new Struct values are unsupported. A different Redot release requires a separately built and validated plugin version.
 
 ## Licenses
 

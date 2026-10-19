@@ -14,6 +14,7 @@ import zipfile
 from pathlib import Path
 from typing import Any
 from publication_paths import report_path, safe_report, scrub_text
+from redot_porting import ContractError, validate_documents
 
 
 ADDON_SOURCE = Path("bin2d/addons/godot-rapier2d")
@@ -253,6 +254,8 @@ def _check_archive(repo: Path, archive: Path) -> dict[str, Any]:
 
 def verify(repo: Path, archive: Path | None) -> dict[str, Any]:
     config = json.loads((repo / "porting.json").read_text(encoding="utf-8"))
+    lock = json.loads((repo / "redot.lock.json").read_text(encoding="utf-8"))
+    validate_documents(config, lock)
     commit = config["upstream"]["commit"]
     release_version = config["product"]["release_version"]
     source_count, source_digest, source_deltas = _compare_runtime_source(repo, commit)
@@ -264,6 +267,9 @@ def verify(repo: Path, archive: Path | None) -> dict[str, Any]:
         "status": "PASS",
         "upstream_commit": commit,
         "release_version": release_version,
+        "certified_engine": lock["redot"]["version_output"],
+        "certified_engine_api_sha256": lock["api"]["sha256"],
+        "binding_abi_sha256": lock["binding_abi"]["sha256"],
         "runtime_source_files_compared": source_count,
         "runtime_source_manifest_sha256": source_digest,
         "upstream_addon_files_compared": addon_count,
@@ -286,7 +292,7 @@ def main() -> int:
     args = parser.parse_args()
     try:
         report = verify(args.repo.resolve(), args.archive.resolve() if args.archive else None)
-    except (OSError, KeyError, ValueError, ParityError, zipfile.BadZipFile) as exc:
+    except (OSError, KeyError, ValueError, ParityError, ContractError, zipfile.BadZipFile) as exc:
         report = {"status": "FAIL", "error": scrub_text(str(exc))}
         code = 2
     else:
