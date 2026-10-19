@@ -244,42 +244,41 @@ class ContractTests(unittest.TestCase):
                 (install / "addons" / "godot-rapier2d" / "README.md").is_file()
             )
 
-    def test_clean_install_export_templates_are_configured_per_platform(self) -> None:
-        with tempfile.TemporaryDirectory() as temp_name:
-            project = Path(temp_name)
+    def test_clean_install_export_templates_are_relative_to_project(self) -> None:
+        import os
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            project = root / "materialized"
+            project.mkdir()
             source = ROOT / "tests/fixtures/rapier2d-clean-install/export_presets.cfg"
-            (project / "export_presets.cfg").write_text(
-                source.read_text(encoding="utf-8"), encoding="utf-8"
-            )
-
-            result = PORTING.configure_export_templates(
-                project,
-                Path("C:/templates/windows_debug_x86_64.exe"),
-                Path("C:/templates/windows_release_x86_64.exe"),
-                Path("/templates/linux_debug.x86_64"),
-                Path("/templates/linux_release.x86_64"),
-            )
+            (project / "export_presets.cfg").write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+            templates = root / "templates"
+            templates.mkdir()
+            names = ("windows-debug", "windows-release", "linux-debug", "linux-release")
+            for name in names:
+                (templates / name).write_bytes(b"template")
+            previous = Path.cwd()
+            try:
+                os.chdir(root)
+                result = PORTING.configure_export_templates(project, *(Path("templates") / name for name in names))
+            finally:
+                os.chdir(previous)
             configured = (project / "export_presets.cfg").read_text(encoding="utf-8")
-
             self.assertEqual(result["status"], "PASS")
-            self.assertIn(
-                'custom_template/debug="C:/templates/windows_debug_x86_64.exe"',
-                configured,
-            )
-            self.assertIn(
-                'custom_template/release="C:/templates/windows_release_x86_64.exe"',
-                configured,
-            )
-            self.assertIn(
-                'custom_template/debug="/templates/linux_debug.x86_64"',
-                configured,
-            )
-            self.assertIn(
-                'custom_template/release="/templates/linux_release.x86_64"',
-                configured,
-            )
+            for name in names:
+                self.assertIn('"../templates/' + name + '"', configured)
             self.assertEqual(configured.count("custom_template/debug="), 2)
             self.assertEqual(configured.count("custom_template/release="), 2)
+
+    def test_missing_export_template_does_not_rewrite_presets(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            project = Path(temporary)
+            contents = (ROOT / "tests/fixtures/rapier2d-clean-install/export_presets.cfg").read_text(encoding="utf-8")
+            presets = project / "export_presets.cfg"
+            presets.write_text(contents, encoding="utf-8")
+            with self.assertRaisesRegex(PORTING.ContractError, "export template is missing"):
+                PORTING.configure_export_templates(project, *([project / "missing"] * 4))
+            self.assertEqual(presets.read_text(encoding="utf-8"), contents)
 
     def test_infrastructure_manifest_is_self_authenticating(self) -> None:
         snapshot = load("docs/gamedev/evidence/redot-porting-infrastructure.snapshot.json")
@@ -322,8 +321,8 @@ class ContractTests(unittest.TestCase):
         self.assertIn("scripts/compare_determinism.py", workflow)
         self.assertIn("scripts/performance_guardrail.py compare", workflow)
         self.assertIn("materialize-clean-install", workflow)
-        self.assertIn("--export-debug", workflow)
-        self.assertIn("--export-release", workflow)
+        self.assertIn('"--export-$profile"', workflow)
+        self.assertIn("needs: [package, clean-install]", workflow)
 
 
 if __name__ == "__main__":
