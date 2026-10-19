@@ -29,6 +29,7 @@
 | Interface header SHA-256 | `4CD695E86B92E2BF4E60BBE19CE137FAF41205DA1CF94F29E069AFEC0F7BF320` |
 | Required base API contract | Rapier `single-dim2` or `single-dim3`, plus dependency `godot/api-custom-json`; no Rapier top-level `api-*` feature; non-API feature profiles are tested separately |
 | Authorized compatibility delta | Empty `redot-compat` feature plus one cfg selector in each existing 2D/3D nullable `_get_space_state` branch; no JSON mutation and no forwarded Godot API feature |
+| Recorded runtime fixes | Each change to an upstream runtime file is listed in `compat/source-deltas/` (ADR-0307); the parity report enumerates them |
 | Downstream package version | `0.35.2-redot.1`; Cargo manifest and lock agree |
 | Local deterministic candidate | 58-file `redot-rapier-physics-2d-0.35.2-redot.1.zip`; SHA-256 `af8ec56c054981c3c699f166efd91ae1685fda18a87d67762603e609d984b258`; byte-identical repeat build |
 | Current downstream Cargo.lock SHA-256 | `9c8d4ef7866aaf0261dbc3b83b2f7c09db7e50919d91388c49e113c915b87c88` |
