@@ -64,7 +64,8 @@ pub struct RapierCollisionObjectBaseState {
     pub(crate) shapes: Vec<CollisionObjectShape>,
     pub(crate) transform: Transform,
     pub(crate) inv_transform: Transform,
-    #[cfg_attr(feature = "serde-serialize", serde(default))]
+    // Transient: not serialized, so binary snapshots keep their existing layout.
+    #[cfg_attr(feature = "serde-serialize", serde(skip))]
     pub(crate) first_kinematic_transform: bool,
 }
 impl Default for RapierCollisionObjectBaseState {
