@@ -1,0 +1,5 @@
+id = "null-motion-result"
+summary = "Accept the null result that body_test_motion receives when the caller omits it, instead of dereferencing it."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/servers/rapier_physics_server_impl.rs"]

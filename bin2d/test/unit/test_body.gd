@@ -7,6 +7,7 @@ func _ready():
 	test_body_collision_exception_invalid()
 	test_body_invalid()
 	test_body_center_of_mass()
+	test_body_test_motion_without_result()
 
 func test_body_collision_exception_invalid():
 	print("test_body_collision_exception_invalid")
@@ -331,3 +332,33 @@ func test_body():
 
 	
 	PhysicsServer2D.free_rid(body_rid)
+
+# PhysicsServer2D.body_test_motion() takes an optional result object. When it is omitted the
+# engine passes a null result to the server, which must still return whether the motion
+# collides, as Godot's built-in server does.
+func test_body_test_motion_without_result():
+	print("test_body_test_motion_without_result")
+	var space := PhysicsServer2D.space_create()
+	var mover_shape := PhysicsServer2D.circle_shape_create()
+	PhysicsServer2D.shape_set_data(mover_shape, 4.0)
+	var wall_shape := PhysicsServer2D.rectangle_shape_create()
+	PhysicsServer2D.shape_set_data(wall_shape, Vector2(4, 40))
+
+	var mover := PhysicsServer2D.body_create()
+	PhysicsServer2D.body_set_mode(mover, PhysicsServer2D.BODY_MODE_KINEMATIC)
+	PhysicsServer2D.body_add_shape(mover, mover_shape)
+	PhysicsServer2D.body_set_space(mover, space)
+	var wall := PhysicsServer2D.body_create()
+	PhysicsServer2D.body_add_shape(wall, wall_shape)
+	PhysicsServer2D.body_set_state(wall, PhysicsServer2D.BODY_STATE_TRANSFORM, Transform2D(0.0, Vector2(30, 0)))
+	PhysicsServer2D.body_set_space(wall, space)
+
+	# Without a result the answer must match the call with one, toward the wall and away from it.
+	var parameters := PhysicsTestMotionParameters2D.new()
+	for motion in [Vector2(50, 0), Vector2(-50, 0)]:
+		parameters.motion = motion
+		var collides := PhysicsServer2D.body_test_motion(mover, parameters, PhysicsTestMotionResult2D.new())
+		assert(PhysicsServer2D.body_test_motion(mover, parameters) == collides)
+
+	for rid in [mover, wall, mover_shape, wall_shape, space]:
+		PhysicsServer2D.free_rid(rid)
