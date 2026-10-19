@@ -445,8 +445,8 @@ jobs:
             build/package-a/*.zip
             build/package-a/*.json
             reports/ci/package
-            docs/gamedev/evidence/rapier2d-exact-feature-licenses.json
-            docs/gamedev/evidence/rapier2d-sbom.spdx.json
+            compat/provenance/rapier2d-exact-feature-licenses.json
+            compat/provenance/rapier2d-sbom.spdx.json
           if-no-files-found: error
           retention-days: 90
 

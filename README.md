@@ -1,6 +1,6 @@
 # Redot Rapier Physics
 
-[![Redot Rapier2D contract](https://github.com/dominicbytes/godot-rapier-physics/actions/workflows/redot-contract.yml/badge.svg?branch=redot-26.2)](https://github.com/dominicbytes/godot-rapier-physics/actions/workflows/redot-contract.yml)
+[![Redot Rapier2D contract](https://github.com/dominicbytes/redot-rapier-physics/actions/workflows/redot-contract.yml/badge.svg?branch=redot-26.2)](https://github.com/dominicbytes/redot-rapier-physics/actions/workflows/redot-contract.yml)
 
 An opt-in Rapier2D physics backend for Redot 26.2, based on [Godot Rapier Physics v0.35.2](https://github.com/appsinacup/godot-rapier-physics/releases/tag/v0.35.2) and Rapier 0.35.1.
 
@@ -37,9 +37,9 @@ Each plugin release targets one exact Redot release. macOS, mobile, web, other a
 
 ## Installation
 
-The current branch contains source and validation records, not an installable release archive. Once the first package is published:
+The current branch contains source and distribution metadata, not an installable release archive. Once the first package is published:
 
-1. Download the Rapier2D archive from [GitHub Releases](https://github.com/dominicbytes/godot-rapier-physics/releases).
+1. Download the Rapier2D archive from [GitHub Releases](https://github.com/dominicbytes/redot-rapier-physics/releases).
 2. Extract it into the root of your Redot project. The addon should end up at `addons/godot-rapier2d`.
 3. Open the project in Redot 26.2.
 4. Enable **Advanced Settings**, then set **Project Settings > Physics > 2D > Physics Engine** to `Rapier2D`.
@@ -50,7 +50,7 @@ To remove the addon, switch the project back to another 2D physics backend befor
 ## Project documentation
 
 - [Port and platform matrix](PORT_MATRIX.md)
-- [Rapier2D feature-parity ledger](docs/gamedev/rapier2d-parity-ledger.md)
+- [Rapier2D feature-parity ledger](docs/rapier2d-parity-ledger.md)
 - [Architecture](ARCHITECTURE.md)
 - [Changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md)

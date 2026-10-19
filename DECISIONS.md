@@ -288,7 +288,7 @@
 
 - Date: 2026-08-12
 - Status: accepted
-- Decision: create the public `dominicbytes/godot-rapier-physics` fork of `appsinacup/godot-rapier-physics`, commit the complete Redot implementation and retained evidence, and push it on branch `redot-26.2`.
+- Decision: create the public `dominicbytes/redot-rapier-physics` fork of `appsinacup/godot-rapier-physics`, commit the complete Redot implementation and retained evidence, and push it on branch `redot-26.2`.
 - Repository boundary: keep `origin` on the `dominicbytes` fork and `upstream` on `appsinacup`; make `redot-26.2` the fork's default branch so visitors and the pinned workflow see the Redot implementation.
 - Publication boundary: this authorizes source hosting and public CI only. It does not authorize `v0.35.2-redot.1`, a GitHub Release or attached candidate archive, a package-only Asset Library commit, or an Asset Library submission.
 - Hygiene: exclude transient `build/`, Cargo targets, editor caches, Python bytecode, and machine-local paths from the public source commit while retaining the compact validation evidence and legal/SBOM records.

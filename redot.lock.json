@@ -49,7 +49,7 @@
   },
   "infrastructure": {
     "source_hint": "../redot-porting-infrastructure",
-    "snapshot_manifest": "docs/gamedev/evidence/redot-porting-infrastructure.snapshot.json",
+    "snapshot_manifest": "compat/provenance/redot-porting-infrastructure.snapshot.json",
     "snapshot_manifest_sha256": "ec5f2e8fe2fe65b94a17d577043aad16b70652bf23a09930e34001710b2ddf54"
   }
 }

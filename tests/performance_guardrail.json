@@ -20,7 +20,6 @@
   "frozen_after_baseline": {
     "platform": "windows-x86_64",
     "redot": "26.2.stable.official.4f5b14aba",
-    "baseline_report": "docs/gamedev/evidence/performance-windows/performance-default.json",
     "baseline_report_sha256": "06e04090c06e35a3312fb27bfb84bb66adf731a77cb50f86b5ad83ef033fc5f8"
   },
   "body_scenarios": {
