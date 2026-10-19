@@ -17,6 +17,10 @@ func _ready() -> void:
 	add_child(custom_integrator_gravity)
 	assert(await custom_integrator_gravity.run(), "Custom integration must keep automatic gravity disabled")
 	custom_integrator_gravity.queue_free()
+	var area_override_refresh := preload("res://test/unit/test_area_override_refresh.gd").new()
+	add_child(area_override_refresh)
+	assert(await area_override_refresh.run(), "Body parameter changes must refresh overlapping area overrides")
+	area_override_refresh.queue_free()
 	# Wait for scene tests that run across physics frames.
 	for test in get_tree().get_nodes_in_group(&"async_unit_tests"):
 		while not test.done:
