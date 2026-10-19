@@ -1,0 +1,5 @@
+id = "area-override-refresh"
+summary = "Refresh overlapping area overrides when body gravity or damping parameters change."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/bodies/rapier_body.rs"]

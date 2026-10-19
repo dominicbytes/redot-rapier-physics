@@ -631,6 +631,7 @@ impl RapierBody {
         self.force_integration_array.clear();
         self.force_integration_callback = None;
         if callable.is_valid() {
+            self.create_direct_state();
             self.force_integration_callback = Some(callable);
             if let Some(direct_state) = self.direct_state_variant() {
                 self.force_integration_array.push(&direct_state);
@@ -1440,6 +1441,7 @@ impl RapierBody {
         physics_spaces: &mut PhysicsSpaces,
         physics_ids: &PhysicsIds,
     ) {
+        let mut area_override_changed = false;
         match p_param {
             BodyParameter::BOUNCE | BodyParameter::FRICTION => {
                 if p_value.get_type() != VariantType::FLOAT
@@ -1543,7 +1545,8 @@ impl RapierBody {
                 let new_gravity_scale = variant_to_float(&p_value);
                 if self.gravity_scale != new_gravity_scale {
                     self.gravity_scale = new_gravity_scale;
-                    if !self.using_area_gravity {
+                    area_override_changed = true;
+                    if !self.using_area_gravity && !self.omit_force_integration {
                         self.apply_gravity_scale(self.gravity_scale, physics_engine);
                     }
                 }
@@ -1555,12 +1558,8 @@ impl RapierBody {
                 let mode_value = p_value.try_to().unwrap_or_default();
                 if self.linear_damping_mode.ord() != mode_value {
                     self.linear_damping_mode = BodyDampMode::from_ord(mode_value);
-                    if self.linear_damping_mode == BodyDampMode::REPLACE {
-                        self.using_area_linear_damping = false;
-                    }
-                    if self.using_area_linear_damping {
-                        // Update linear damping from areas
-                    } else {
+                    area_override_changed = true;
+                    if !self.using_area_linear_damping {
                         self.apply_linear_damping(
                             self.linear_damping,
                             self.linear_damping_mode == BodyDampMode::COMBINE,
@@ -1578,12 +1577,8 @@ impl RapierBody {
                 let mode_value = p_value.try_to().unwrap_or_default();
                 if self.angular_damping_mode.ord() != mode_value {
                     self.angular_damping_mode = BodyDampMode::from_ord(mode_value);
-                    if self.angular_damping_mode == BodyDampMode::REPLACE {
-                        self.using_area_angular_damping = false;
-                    }
-                    if self.using_area_angular_damping {
-                        // Update angular damping from areas
-                    } else {
+                    area_override_changed = true;
+                    if !self.using_area_angular_damping {
                         self.apply_angular_damping(
                             self.angular_damping,
                             self.angular_damping_mode == BodyDampMode::COMBINE,
@@ -1603,6 +1598,7 @@ impl RapierBody {
                 let new_value = variant_to_float(&p_value);
                 if new_value != self.linear_damping {
                     self.linear_damping = new_value;
+                    area_override_changed = true;
                     if !self.using_area_linear_damping {
                         self.apply_linear_damping(
                             self.linear_damping,
@@ -1623,6 +1619,7 @@ impl RapierBody {
                 let new_value = variant_to_float(&p_value);
                 if new_value != self.angular_damping {
                     self.angular_damping = new_value;
+                    area_override_changed = true;
                     if !self.using_area_angular_damping {
                         self.apply_angular_damping(
                             self.angular_damping,
@@ -1635,6 +1632,11 @@ impl RapierBody {
                 }
             }
             _ => {}
+        }
+        if area_override_changed
+            && let Some(space) = physics_spaces.get_mut(&self.base.get_space(physics_ids))
+        {
+            self.on_area_updated(space);
         }
     }
 

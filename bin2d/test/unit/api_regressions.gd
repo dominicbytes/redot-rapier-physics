@@ -13,6 +13,18 @@ func _ready() -> void:
 	await preload("res://test/unit/test_shape_replacement.gd").new().run(get_tree())
 	preload("res://test/unit/test_shape.gd").new().run()
 	preload("res://test/unit/test_world_boundary.gd").new().run()
+	var custom_integrator_gravity := preload("res://test/unit/test_custom_integrator_gravity.gd").new()
+	add_child(custom_integrator_gravity)
+	assert(await custom_integrator_gravity.run(), "Custom integration must keep automatic gravity disabled")
+	custom_integrator_gravity.queue_free()
+	var area_override_refresh := preload("res://test/unit/test_area_override_refresh.gd").new()
+	add_child(area_override_refresh)
+	assert(await area_override_refresh.run(), "Body parameter changes must refresh overlapping area overrides")
+	area_override_refresh.queue_free()
+	var force_integration_argument := preload("res://test/unit/test_force_integration_argument.gd").new()
+	add_child(force_integration_argument)
+	assert(await force_integration_argument.run(), "Force integration callbacks must receive state and optional userdata")
+	force_integration_argument.queue_free()
 	# Wait for scene tests that run across physics frames.
 	for test in get_tree().get_nodes_in_group(&"async_unit_tests"):
 		while not test.done:

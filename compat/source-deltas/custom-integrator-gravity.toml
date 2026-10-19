@@ -1,0 +1,5 @@
+id = "custom-integrator-gravity"
+summary = "Keep automatic gravity disabled when force integration is omitted."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/bodies/rapier_body.rs"]
