@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - redot-26.2
+      - redot-26.3
   workflow_dispatch:
 
 permissions:
@@ -24,8 +24,22 @@ defaults:
     shell: bash
 
 jobs:
+  identity:
+    name: Read certified engine identity
+    runs-on: ubuntu-24.04
+    outputs:
+      engine: ${{ steps.lock.outputs.engine }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - name: Read lock
+        id: lock
+        run: |
+          python3 -c 'import json, os; lock=json.load(open("redot.lock.json")); print("engine=" + lock["redot"]["version_output"], file=open(os.environ["GITHUB_OUTPUT"], "a"))'
+
   windows-x86-64:
     name: Windows x86-64
+    needs: identity
     runs-on: windows-2022
     timeout-minutes: 120
     steps:
@@ -45,50 +59,18 @@ jobs:
           rustup default 1.94.0
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
 
-      - name: Download and verify Redot 26.2
+      - name: Download and verify the runtime and binding ABI
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          New-Item -ItemType Directory -Force build/redot | Out-Null
-          $archive = "build/redot/Redot_v26.2-stable_windows_win64.zip"
-          curl.exe --fail --location --output $archive "https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_windows_win64.zip"
-          if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
-          $actual = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
-          if ($actual -ne "4644c7591bbe8019b861deb0ccdb64fd4f59a88514abf7c788cf176c259855af") {
-            throw "Redot Windows archive hash mismatch: $actual"
-          }
-          Expand-Archive -LiteralPath $archive -DestinationPath build/redot/editor
-          $console = (Get-ChildItem build/redot/editor -Recurse -Filter "redot.windows.editor.x86_64.console.exe" | Select-Object -First 1).FullName
-          if (-not $console) { throw "Redot Windows console launcher not found" }
-          "REDOT_BIN=$console" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
-      - name: Reproduce and verify the locked API
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = 'Stop'
-          New-Item -ItemType Directory -Force build/api | Out-Null
-          Push-Location build/api
-          & $env:REDOT_BIN --headless --dump-extension-api
-          if ($LASTEXITCODE -ne 0) { throw "Redot API dump failed" }
-          & $env:REDOT_BIN --headless --dump-gdextension-interface
-          if ($LASTEXITCODE -ne 0) { throw "Redot interface dump failed" }
-          Pop-Location
-          $apiHash = (Get-FileHash -Algorithm SHA256 build/api/extension_api.json).Hash.ToLowerInvariant()
-          $interfaceHash = (Get-FileHash -Algorithm SHA256 build/api/gdextension_interface.h).Hash.ToLowerInvariant()
-          if ($apiHash -ne "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577") {
-            throw "Redot API hash mismatch: $apiHash"
-          }
-          if ($interfaceHash -ne "4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320") {
-            throw "Redot interface hash mismatch: $interfaceHash"
-          }
-          $api = (Resolve-Path build/api/extension_api.json).Path
-          "GDRUST_GODOT_API_JSON=$api" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          python scripts/prepare_redot.py --platform windows-x86_64 --with-binding-abi
+          if ($LASTEXITCODE -ne 0) { throw 'Locked engine preparation failed' }
 
       - name: Validate the portable contract
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          python scripts/redot_porting.py validate --skip-local-files
+          python scripts/redot_porting.py validate --redot-bin $env:REDOT_BIN
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           python -m unittest discover -s tests -p "test_*.py"
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
@@ -143,7 +125,7 @@ jobs:
           Copy-Item -LiteralPath build/native/windows-release.dll -Destination "$addonBin/libgodot_rapier.windows.release.x86_64-pc-windows-msvc.dll" -Force
           New-Item -ItemType Directory -Force reports/ci/windows | Out-Null
           $evidence = (Resolve-Path reports/ci/windows).Path
-          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/import.log" -- --headless --audio-driver Dummy --path bin2d --import --quit-after 300
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/import.log" --import-allowlist compat/redot-26.3-import-allowlist.json -- --headless --audio-driver Dummy --path bin2d --import --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Redot import failed" }
           python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/smoke.log" --sentinel "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/redot/compatibility_smoke.tscn --quit-after 600
           if ($LASTEXITCODE -ne 0) { throw "Rapier2D smoke failed" }
@@ -205,19 +187,20 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          New-Item -ItemType Directory -Force reports/ci/windows,build/native,build/api | Out-Null
+          New-Item -ItemType Directory -Force reports/ci/windows,build/native,build/redot/engine-api,build/redot/binding-api | Out-Null
           python scripts/publication_paths.py sanitize reports/ci/windows
           if ($LASTEXITCODE -ne 0) { throw 'Evidence sanitization failed' }
-          python scripts/publication_paths.py scan reports/ci/windows build/native build/api
+          python scripts/publication_paths.py scan reports/ci/windows build/native build/redot/engine-api build/redot/binding-api
           if ($LASTEXITCODE -ne 0) { throw 'Publication path scan failed' }
 
       - name: Upload Windows evidence
         if: always() && steps.publication.outcome == 'success'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: rapier2d-windows-evidence
+          name: rapier2d-windows-evidence-${{ needs.identity.outputs.engine }}
           path: |
-            build/api
+            build/redot/engine-api
+            build/redot/binding-api
             build/native
             reports/ci/windows
           if-no-files-found: warn
@@ -225,6 +208,7 @@ jobs:
 
   linux-x86-64:
     name: Linux x86-64
+    needs: identity
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:
@@ -240,33 +224,15 @@ jobs:
           rustup component add clippy rustfmt --toolchain 1.94.0
           rustup default 1.94.0
 
-      - name: Download and verify Redot 26.2
+      - name: Download and verify the runtime and binding ABI
         run: |
           set -euo pipefail
-          mkdir -p build/redot/editor
-          archive="build/redot/Redot_v26.2-stable_linux_x64.zip"
-          curl --fail --location --output "$archive" "https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_linux_x64.zip"
-          echo "f474d890806c41af15513cf5a8600243e241882e11b68dbb95660e3465b5b1e4  $archive" | sha256sum --check --strict
-          unzip -q "$archive" -d build/redot/editor
-          redot_bin="$(find build/redot/editor -type f -name 'redot.linuxbsd.editor.x86_64' -print -quit)"
-          test -n "$redot_bin"
-          chmod +x "$redot_bin"
-          echo "REDOT_BIN=$GITHUB_WORKSPACE/$redot_bin" >> "$GITHUB_ENV"
-
-      - name: Reproduce and verify the locked API
-        run: |
-          set -euo pipefail
-          mkdir -p build/api
-          (cd build/api && "$REDOT_BIN" --headless --dump-extension-api)
-          (cd build/api && "$REDOT_BIN" --headless --dump-gdextension-interface)
-          echo "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577  build/api/extension_api.json" | sha256sum --check --strict
-          echo "4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320  build/api/gdextension_interface.h" | sha256sum --check --strict
-          echo "GDRUST_GODOT_API_JSON=$GITHUB_WORKSPACE/build/api/extension_api.json" >> "$GITHUB_ENV"
+          python3 scripts/prepare_redot.py --platform linux-x86_64 --with-binding-abi
 
       - name: Validate the portable contract
         run: |
           set -euo pipefail
-          python3 scripts/redot_porting.py validate --skip-local-files
+          python3 scripts/redot_porting.py validate --redot-bin "$REDOT_BIN"
           python3 -m unittest discover -s tests -p 'test_*.py'
           python3 scripts/verify_2d_parity.py --report reports/ci/linux/parity.json
 
@@ -303,7 +269,7 @@ jobs:
           cp build/native/linux-editor.so "$addon_bin/libgodot_rapier.linux.editor.x86_64-unknown-linux-gnu.so"
           cp build/native/linux-debug.so "$addon_bin/libgodot_rapier.linux.debug.x86_64-unknown-linux-gnu.so"
           cp build/native/linux-release.so "$addon_bin/libgodot_rapier.linux.release.x86_64-unknown-linux-gnu.so"
-          python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/import.log" -- --headless --audio-driver Dummy --path bin2d --import --quit-after 300
+          python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/import.log" --import-allowlist compat/redot-26.3-import-allowlist.json -- --headless --audio-driver Dummy --path bin2d --import --quit-after 300
           python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/smoke.log" --sentinel "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/redot/compatibility_smoke.tscn --quit-after 600
           python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/regression.log" --sentinel "STATUS: SUCCESS" --timeout 900 -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --quit-after 30000
           python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/unit.log" --sentinel "UNIT TESTS STATUS: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/unit/run_unit_tests.tscn --quit-after 1200
@@ -342,19 +308,20 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          New-Item -ItemType Directory -Force reports/ci/linux,build/native,build/api | Out-Null
+          New-Item -ItemType Directory -Force reports/ci/linux,build/native,build/redot/engine-api,build/redot/binding-api | Out-Null
           python scripts/publication_paths.py sanitize reports/ci/linux
           if ($LASTEXITCODE -ne 0) { throw 'Evidence sanitization failed' }
-          python scripts/publication_paths.py scan reports/ci/linux build/native build/api
+          python scripts/publication_paths.py scan reports/ci/linux build/native build/redot/engine-api build/redot/binding-api
           if ($LASTEXITCODE -ne 0) { throw 'Publication path scan failed' }
 
       - name: Upload Linux evidence
         if: always() && steps.publication.outcome == 'success'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: rapier2d-linux-evidence
+          name: rapier2d-linux-evidence-${{ needs.identity.outputs.engine }}
           path: |
-            build/api
+            build/redot/engine-api
+            build/redot/binding-api
             build/native
             reports/ci/linux
           if-no-files-found: warn
@@ -363,6 +330,7 @@ jobs:
   package:
     name: Deterministic desktop package
     needs:
+      - identity
       - windows-x86-64
       - linux-x86-64
     runs-on: ubuntu-24.04
@@ -382,13 +350,13 @@ jobs:
       - name: Download Windows native artifacts
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
         with:
-          name: rapier2d-windows-evidence
+          name: rapier2d-windows-evidence-${{ needs.identity.outputs.engine }}
           path: build/from-windows
 
       - name: Download Linux native artifacts
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
         with:
-          name: rapier2d-linux-evidence
+          name: rapier2d-linux-evidence-${{ needs.identity.outputs.engine }}
           path: build/from-linux
 
       - name: Stage the exact six-profile payload
@@ -406,11 +374,11 @@ jobs:
       - name: Verify legal metadata, parity, determinism, and packaging
         run: |
           set -euo pipefail
-          export GDRUST_GODOT_API_JSON="$GITHUB_WORKSPACE/build/from-linux/build/api/extension_api.json"
+          export GDRUST_GODOT_API_JSON="$GITHUB_WORKSPACE/build/from-linux/build/redot/binding-api/extension_api.json"
           python3 scripts/generate_distribution_metadata.py --cargo "$(command -v cargo)" --api "$GDRUST_GODOT_API_JSON" --check
           python3 scripts/redot_porting.py package --output-dir build/package-a --report reports/ci/package/package-a.json
           python3 scripts/redot_porting.py package --output-dir build/package-b --report reports/ci/package/package-b.json
-          archive="redot-rapier-physics-2d-0.35.2-redot.1.zip"
+          archive="$(python3 -c 'import json; print("redot-rapier-physics-2d-" + json.load(open("porting.json"))["product"]["release_version"] + ".zip")')"
           cmp "build/package-a/$archive" "build/package-b/$archive"
           python3 scripts/redot_porting.py verify-package --archive "build/package-a/$archive" --report reports/ci/package/verification.json
           python3 scripts/verify_2d_parity.py --archive "build/package-a/$archive" --report reports/ci/package/parity.json
@@ -440,7 +408,7 @@ jobs:
         if: success() && steps.publication.outcome == 'success'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: redot-rapier2d-unpublished-candidate
+          name: redot-rapier2d-unpublished-candidate-${{ needs.identity.outputs.engine }}
           path: |
             build/package-a/*.zip
             build/package-a/*.json
@@ -452,19 +420,15 @@ jobs:
 
   clean-install:
     name: Clean install (${{ matrix.os }})
-    needs: package
+    needs: [identity, package]
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: windows-2022
             platform: windows
-            archive_url: https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_windows_win64.zip
-            archive_sha256: 4644c7591bbe8019b861deb0ccdb64fd4f59a88514abf7c788cf176c259855af
           - os: ubuntu-24.04
             platform: linux
-            archive_url: https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_linux_x64.zip
-            archive_sha256: f474d890806c41af15513cf5a8600243e241882e11b68dbb95660e3465b5b1e4
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     steps:
@@ -474,31 +438,15 @@ jobs:
       - name: Download package candidate
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
         with:
-          name: redot-rapier2d-unpublished-candidate
+          name: redot-rapier2d-unpublished-candidate-${{ needs.identity.outputs.engine }}
           path: build/candidate
 
-      - name: Download and verify Redot
+      - name: Download and verify the locked runtime
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          New-Item -ItemType Directory -Force build/redot | Out-Null
-          $archive = "build/redot/editor.zip"
-          Invoke-WebRequest -Uri '${{ matrix.archive_url }}' -OutFile $archive -ErrorAction Stop
-          $actual = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
-          if ($actual -ne '${{ matrix.archive_sha256 }}') { throw "Redot archive hash mismatch: $actual" }
-          Expand-Archive -LiteralPath $archive -DestinationPath build/redot/editor
-          if ('${{ matrix.platform }}' -eq 'windows') {
-            $executables = @(Get-ChildItem build/redot/editor -Recurse -File -Filter 'redot.windows.editor.x86_64.console.exe')
-          } else {
-            $executables = @(Get-ChildItem build/redot/editor -Recurse -File -Filter 'redot.linuxbsd.editor.x86_64')
-          }
-          if ($executables.Count -ne 1) { throw "Expected exactly one Redot executable" }
-          $redot = $executables[0].FullName
-          if ('${{ runner.os }}' -eq 'Linux') {
-            chmod +x $redot
-            if ($LASTEXITCODE -ne 0) { throw "chmod failed" }
-          }
-          "REDOT_BIN=$redot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          python scripts/prepare_redot.py --platform ${{ matrix.platform }}-x86_64
+          if ($LASTEXITCODE -ne 0) { throw 'Locked engine preparation failed' }
 
       - name: Materialize and run selected/default controls
         shell: pwsh
@@ -511,11 +459,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           New-Item -ItemType Directory -Force reports/ci/clean-${{ matrix.platform }} | Out-Null
           $evidence = (Resolve-Path reports/ci/clean-${{ matrix.platform }}).Path
-          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/selected-import.log" -- --headless --audio-driver Dummy --path build/clean-selected --import --quit-after 300
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/selected-import.log" --import-allowlist compat/redot-26.3-import-allowlist.json -- --headless --audio-driver Dummy --path build/clean-selected --import --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/selected.log" --result "$evidence/selected.json" --backend "Rapier2D" --sentinel "REDOT RAPIER2D CLEAN INSTALL: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path build/clean-selected --scene res://main.tscn --quit-after 600
           if ($LASTEXITCODE -ne 0) { throw 'Selected clean install failed' }
-          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/default-import.log" -- --headless --audio-driver Dummy --path build/clean-default --import --quit-after 300
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/default-import.log" --import-allowlist compat/redot-26.3-import-allowlist.json -- --headless --audio-driver Dummy --path build/clean-default --import --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/default.log" --result "$evidence/default.json" --backend "DEFAULT" --sentinel "REDOT RAPIER2D DEFAULT CONTROL: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path build/clean-default --scene res://main.tscn --quit-after 600
           if ($LASTEXITCODE -ne 0) { throw 'Default clean install control failed' }
@@ -536,7 +484,7 @@ jobs:
         if: always() && steps.publication.outcome == 'success'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: rapier2d-clean-install-${{ matrix.platform }}
+          name: rapier2d-clean-install-${{ matrix.platform }}-${{ needs.identity.outputs.engine }}
           path: reports/ci/clean-${{ matrix.platform }}
           if-no-files-found: warn
           retention-days: 90
@@ -544,7 +492,7 @@ jobs:
   full-export-gate:
     name: Full debug/release export gate (${{ matrix.platform }})
     if: github.event_name == 'workflow_dispatch'
-    needs: [package, clean-install]
+    needs: [identity, package, clean-install]
     strategy:
       fail-fast: false
       matrix:
@@ -553,16 +501,10 @@ jobs:
             platform: windows
             preset: Windows x86-64
             extension: exe
-            executable: redot.windows.editor.x86_64.console.exe
-            archive: Redot_v26.2-stable_windows_win64.zip
-            sha256: 4644c7591bbe8019b861deb0ccdb64fd4f59a88514abf7c788cf176c259855af
           - os: ubuntu-24.04
             platform: linux
             preset: Linux x86-64
             extension: x86_64
-            executable: redot.linuxbsd.editor.x86_64
-            archive: Redot_v26.2-stable_linux_x64.zip
-            sha256: f474d890806c41af15513cf5a8600243e241882e11b68dbb95660e3465b5b1e4
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     steps:
@@ -572,29 +514,15 @@ jobs:
       - name: Download package candidate
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
         with:
-          name: redot-rapier2d-unpublished-candidate
+          name: redot-rapier2d-unpublished-candidate-${{ needs.identity.outputs.engine }}
           path: build/candidate
 
-      - name: Download and verify Redot editor and export templates
+      - name: Download and verify the locked runtime and export templates
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          New-Item -ItemType Directory -Force build/redot/editor,build/templates | Out-Null
-          Invoke-WebRequest -Uri 'https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/${{ matrix.archive }}' -OutFile build/redot/editor.zip -ErrorAction Stop
-          Invoke-WebRequest -Uri 'https://github.com/Redot-Engine/redot-engine/releases/download/redot-26.2-stable/Redot_v26.2-stable_export_templates.tpz' -OutFile build/redot/templates.tpz -ErrorAction Stop
-          if ((Get-FileHash -Algorithm SHA256 build/redot/editor.zip).Hash.ToLowerInvariant() -ne '${{ matrix.sha256 }}') { throw 'Editor hash mismatch' }
-          if ((Get-FileHash -Algorithm SHA256 build/redot/templates.tpz).Hash.ToLowerInvariant() -ne 'fa8c648bd9a9d911daffbcc4e1786d0248794571a7e4ed954444197c809079ea') { throw 'Template hash mismatch' }
-          Expand-Archive -LiteralPath build/redot/editor.zip -DestinationPath build/redot/editor
-          tar -xf build/redot/templates.tpz -C build/templates
-          if ($LASTEXITCODE -ne 0) { throw 'Template extraction failed' }
-          $executables = @(Get-ChildItem build/redot/editor -Recurse -File -Filter '${{ matrix.executable }}')
-          if ($executables.Count -ne 1) { throw 'Expected exactly one Redot executable' }
-          $redot = $executables[0].FullName
-          if ('${{ matrix.platform }}' -eq 'linux') {
-            chmod +x $redot
-            if ($LASTEXITCODE -ne 0) { throw 'chmod failed' }
-          }
-          "REDOT_BIN=$redot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          python scripts/prepare_redot.py --platform ${{ matrix.platform }}-x86_64 --with-templates
+          if ($LASTEXITCODE -ne 0) { throw 'Locked engine preparation failed' }
 
       - name: Export and run supported debug/release products
         shell: pwsh
@@ -604,12 +532,12 @@ jobs:
           if ($packages.Count -ne 1) { throw 'Expected exactly one package candidate' }
           python scripts/redot_porting.py materialize-clean-install --archive $packages[0].FullName --fixture tests/fixtures/rapier2d-clean-install --project-config tests/fixtures/rapier2d-clean-install/project.godot --output build/export-project
           if ($LASTEXITCODE -ne 0) { throw 'Materialization failed' }
-          python scripts/redot_porting.py configure-export-templates --project build/export-project --windows-debug-template build/templates/templates/windows_debug_x86_64.exe --windows-release-template build/templates/templates/windows_release_x86_64.exe --linux-debug-template build/templates/templates/linux_debug.x86_64 --linux-release-template build/templates/templates/linux_release.x86_64
+          python scripts/redot_porting.py configure-export-templates --project build/export-project --windows-debug-template build/redot/export-templates/templates/windows_debug_x86_64.exe --windows-release-template build/redot/export-templates/templates/windows_release_x86_64.exe --linux-debug-template build/redot/export-templates/templates/linux_debug.x86_64 --linux-release-template build/redot/export-templates/templates/linux_release.x86_64
           if ($LASTEXITCODE -ne 0) { throw 'Template configuration failed' }
           New-Item -ItemType Directory -Force build/exports,reports/ci/full-export | Out-Null
           $exports = (Resolve-Path build/exports).Path
           $evidence = (Resolve-Path reports/ci/full-export).Path
-          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/import.log" -- --headless --audio-driver Dummy --path build/export-project --import --quit-after 300
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/import.log" --import-allowlist compat/redot-26.3-import-allowlist.json -- --headless --audio-driver Dummy --path build/export-project --import --quit-after 300
           if ($LASTEXITCODE -ne 0) { throw 'Export project import failed' }
           foreach ($profile in @('debug', 'release')) {
             $product = Join-Path $exports "${{ matrix.platform }}-$profile.${{ matrix.extension }}"
@@ -639,7 +567,7 @@ jobs:
         if: always() && steps.publication.outcome == 'success'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: rapier2d-full-export-evidence-${{ matrix.platform }}
+          name: rapier2d-full-export-evidence-${{ matrix.platform }}-${{ needs.identity.outputs.engine }}
           path: reports/ci/full-export
           if-no-files-found: warn
           retention-days: 90

@@ -316,6 +316,7 @@ def validate_documents(
         "commit",
         "compatibility_version",
         "precision",
+        "version_output",
     ):
         _require(
             support_identity.get(key) == redot.get(key),
@@ -355,6 +356,36 @@ def validate_documents(
         support_identity.get("interface_sha256") == api.get("interface_sha256"),
         "interface hash mismatch",
     )
+
+    _require(api.get("purpose") == "certified-engine-audit", "raw API audit purpose required")
+    for identity, snapshot, label in ((redot, api, "certified engine"),
+                                      (lock.get("binding_abi") or {}, lock.get("binding_abi") or {}, "binding ABI")):
+        _require(re.fullmatch(r"[0-9a-f]{40}", identity.get("commit", "")) is not None,
+                 f"{label} commit must be a full SHA-1")
+        expected_version = f"{identity.get('version')}.{identity.get('status')}.official.{identity['commit'][:9]}"
+        _require(identity.get("version_output") == expected_version, f"{label} version_output mismatch")
+        _require(identity.get("compatibility_version") == "4.5.2" and identity.get("precision") == "single",
+                 f"{label} requires compatibility API 4.5.2, single precision")
+        for field in ("sha256", "interface_sha256"):
+            _require(re.fullmatch(r"[0-9a-f]{64}", snapshot.get(field, "")) is not None,
+                     f"{label} {field} must be a SHA-256")
+        for field in ("snapshot", "interface_header"):
+            value = snapshot.get(field, "")
+            _require(bool(value) and not Path(value).is_absolute() and ":" not in value,
+                     f"{label} {field} must be a relative path")
+    abi = lock["binding_abi"]
+    _require(abi.get("environment_variable") == "GDRUST_GODOT_API_JSON", "binding ABI environment variable required")
+    _require(abi.get("unsupported_variant_types") == ["Struct"], "binding ABI must declare unsupported Struct values")
+    source = abi.get("source") or {}
+    _require(source.get("method") == "verified-release-dump", "binding ABI requires verified release dumps")
+    source_assets = source.get("assets") or {}
+    _require(set(source_assets) == {"windows-x86_64", "linux-x86_64"}, "binding ABI archive lock is incomplete")
+    for asset_id, asset in source_assets.items():
+        prefix = f"https://github.com/Redot-Engine/redot-engine/releases/download/{abi.get('tag')}/"
+        _require(asset.get("url") == prefix + asset.get("filename", ""), "binding ABI archive URL mismatch")
+        _require(re.fullmatch(r"[0-9a-f]{64}", asset.get("sha256", "")) is not None,
+                 "binding ABI archive hash is invalid")
+        _require(bool(asset.get("executable")), "binding ABI executable required")
 
     bindings = lock.get("bindings") or {}
     _require(bindings.get("mode") == "redot-rust-cargo", "Rust/Cargo mode required")
@@ -469,11 +500,11 @@ def api_inputs(
     interface_header: Path | None = None,
 ) -> tuple[Path, Path]:
     api_value = api or os.environ.get("GDRUST_GODOT_API_JSON")
-    api_path = Path(api_value) if api_value else root / lock["api"]["snapshot"]
+    api_path = Path(api_value) if api_value else root / lock["binding_abi"]["snapshot"]
     header_value = interface_header or os.environ.get("REDOT_INTERFACE_HEADER")
     header = Path(header_value) if header_value else (
         api_path.with_name("gdextension_interface.h") if api_value
-        else root / lock["api"]["interface_header"]
+        else root / lock["binding_abi"]["interface_header"]
     )
     for path, hash_key, label, option in (
         (api_path, "sha256", "Redot API JSON", "--api or GDRUST_GODOT_API_JSON"),
@@ -483,7 +514,7 @@ def api_inputs(
         ),
     ):
         _require(path.is_file(), f"{label} is missing; supply {option}")
-        _require(sha256_file(path) == lock["api"][hash_key], f"{label} pinned hash mismatch")
+        _require(sha256_file(path) == lock["binding_abi"][hash_key], f"{label} pinned hash mismatch")
     return api_path.absolute(), header.absolute()
 
 
@@ -798,7 +829,7 @@ def cargo_build(
     config = (root / "compat/rapier-cargo-config.toml").resolve()
     api_json, _ = api_inputs(root, lock, api, interface_header)
     environment = os.environ.copy()
-    environment[lock["api"]["environment_variable"]] = str(api_json)
+    environment[lock["binding_abi"]["environment_variable"]] = str(api_json)
     environment["CARGO_TARGET_DIR"] = str(target_dir.resolve())
     environment["CARGO_HOME"] = str((target_dir.resolve().parent / "cargo-home").resolve())
     cargo = cargo.absolute()
@@ -824,7 +855,8 @@ def cargo_build(
         "artifact_kind": artifact_kind,
         "cargo_profile": "release" if artifact_kind == "release" else "dev",
         "features": features,
-        "api_sha256": lock["api"]["sha256"],
+        "binding_abi_sha256": lock["binding_abi"]["sha256"],
+        "certified_engine_api_sha256": lock["api"]["sha256"],
         "gdext_revision": lock["bindings"]["gdext_revision"],
         "target_dir": report_path(target_dir, "target"),
         "contract": contract,

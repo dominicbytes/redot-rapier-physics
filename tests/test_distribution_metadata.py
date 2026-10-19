@@ -48,6 +48,12 @@ class DistributionMetadataTests(unittest.TestCase):
         licenses = json.loads(METADATA.LICENSE_REPORT.read_text(encoding="utf-8"))
         spdx = json.loads(METADATA.SPDX_REPORT.read_text(encoding="utf-8"))
         self.assertEqual(licenses["status"], "PASS")
+        lock = json.loads((ROOT / "redot.lock.json").read_text())
+        self.assertEqual(licenses["inputs"]["certified_engine"], lock["redot"]["version_output"])
+        self.assertEqual(licenses["inputs"]["redot_api_sha256"], lock["api"]["sha256"])
+        self.assertEqual(licenses["inputs"]["binding_abi_sha256"], lock["binding_abi"]["sha256"])
+        self.assertNotEqual(licenses["inputs"]["redot_api_sha256"], licenses["inputs"]["binding_abi_sha256"])
+        self.assertEqual(json.loads(spdx["comment"]), licenses["inputs"])
         self.assertEqual(len(licenses["packages"]), 87)
         self.assertEqual(
             licenses["profile_membership_scope"],

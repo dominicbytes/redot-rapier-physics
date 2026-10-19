@@ -1,9 +1,15 @@
 Redot Rapier Physics 2D exact-profile third-party notices
 ==========================================================
 
-Release: 0.35.2-redot.1
-Cargo.lock SHA-256: 9c8d4ef7866aaf0261dbc3b83b2f7c09db7e50919d91388c49e113c915b87c88
-Redot API SHA-256: 177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577
+Release: 0.35.2-redot.2
+Cargo.lock SHA-256: bfbc48d37f76b718d2e4df3b9c408f8a5d5df8edd5745e82dc8388a09887ac3f
+Certified engine: 26.3.stable.official.85e520394
+Raw engine API SHA-256: 4c709d5920855dfe7294d01b9899d21aec4e94d3df9fc46f7aa90ad8fff5a38e
+Raw engine interface SHA-256: 558c1f54f5e37afdf259fec29d6eb72da83781afdce48e51a1783942f9cf9895
+Binding ABI source: 26.2.stable.official.4f5b14aba
+Binding API SHA-256: 177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577
+Binding interface SHA-256: 4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320
+New Struct values are unsupported by this binding (ADR-0317).
 Build profiles: Windows x86-64 and Linux x86-64; editor and export;
 single-dim2 + redot-compat + serde-serialize + parallel, with
 register-docs only in editor builds and godot/api-custom-json supplied
@@ -59,7 +65,7 @@ Exact resolved package inventory
 - godot-core 0.5.5 | MPL-2.0 | git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7
 - godot-ffi 0.5.5 | MPL-2.0 | git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7
 - godot-macros 0.5.5 | MPL-2.0 | git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7
-- godot-rapier 0.35.2-redot.1 | MIT | https://github.com/dominicbytes/redot-rapier-physics
+- godot-rapier 0.35.2-redot.2 | MIT | https://github.com/dominicbytes/redot-rapier-physics
 - hashbrown 0.16.1 | MIT OR Apache-2.0 | registry+https://github.com/rust-lang/crates.io-index
 - hashbrown 0.17.1 | MIT OR Apache-2.0 | registry+https://github.com/rust-lang/crates.io-index
 - heck 0.5.0 | MIT OR Apache-2.0 | registry+https://github.com/rust-lang/crates.io-index
@@ -2744,7 +2750,7 @@ the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 
 ===== LICENSE TEXT SHA-256 b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8 =====
-Applies to: godot-rapier 0.35.2-redot.1
+Applies to: godot-rapier 0.35.2-redot.2
 Source filenames: LICENSE
 
 MIT License

@@ -2,8 +2,8 @@
   "schema_version": 2,
   "product": {
     "repository": "https://github.com/dominicbytes/redot-rapier-physics",
-    "release_version": "0.35.2-redot.1",
-    "release_tag": "v0.35.2-redot.1",
+    "release_version": "0.35.2-redot.2",
+    "release_tag": "v0.35.2-redot.2",
     "publication_state": "unpublished-candidate"
   },
   "upstream": {
@@ -17,16 +17,17 @@
   },
   "certified_redot": [
     {
-      "version": "26.2",
+      "version": "26.3",
       "status": "stable",
-      "tag": "redot-26.2-stable",
-      "commit": "4f5b14abade2239104847d03d8f9056e4467cfcd",
+      "tag": "redot-26.3-stable",
+      "commit": "85e5203945af15755dd2f66cb6fdf7545fd88c0b",
       "compatibility_version": "4.5.2",
       "precision": "single",
-      "api_snapshot": "../api/redot-26.2/4f5b14aba-single-windows-x86_64/extension_api.json",
-      "api_sha256": "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577",
-      "interface_header": "../api/redot-26.2/4f5b14aba-single-windows-x86_64/gdextension_interface.h",
-      "interface_sha256": "4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320"
+      "api_snapshot": "../api/redot-26.3/85e520394-single-windows-x86_64/extension_api.json",
+      "api_sha256": "4c709d5920855dfe7294d01b9899d21aec4e94d3df9fc46f7aa90ad8fff5a38e",
+      "interface_header": "../api/redot-26.3/85e520394-single-windows-x86_64/gdextension_interface.h",
+      "interface_sha256": "558c1f54f5e37afdf259fec29d6eb72da83781afdce48e51a1783942f9cf9895",
+      "version_output": "26.3.stable.official.85e520394"
     }
   ],
   "addons": [

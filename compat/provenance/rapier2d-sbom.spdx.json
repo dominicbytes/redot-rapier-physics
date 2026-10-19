@@ -1,17 +1,18 @@
 {
   "SPDXID": "SPDXRef-DOCUMENT",
+  "comment": "{\"binding_abi\": \"26.2.stable.official.4f5b14aba\", \"binding_abi_sha256\": \"177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577\", \"binding_interface_sha256\": \"4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320\", \"cargo_lock_sha256\": \"bfbc48d37f76b718d2e4df3b9c408f8a5d5df8edd5745e82dc8388a09887ac3f\", \"certified_engine\": \"26.3.stable.official.85e520394\", \"gdext_repository\": \"https://github.com/godot-rust/gdext\", \"gdext_revision\": \"637cef73172bba23850131acd8583b0c72ebf0c7\", \"redot_api_sha256\": \"4c709d5920855dfe7294d01b9899d21aec4e94d3df9fc46f7aa90ad8fff5a38e\", \"redot_interface_sha256\": \"558c1f54f5e37afdf259fec29d6eb72da83781afdce48e51a1783942f9cf9895\", \"redot_rust_commit\": \"18ad5c538c452b8640420366794354e3ed48f205\", \"redot_rust_repository\": \"https://github.com/dominicbytes/redot-rust\", \"rust_toolchain\": \"1.94.0\"}",
   "creationInfo": {
-    "created": "2026-08-12T00:00:00Z",
+    "created": "2026-10-19T00:00:00Z",
     "creators": [
       "Tool: redot-rapier2d-generate-distribution-metadata/1"
     ]
   },
   "dataLicense": "CC0-1.0",
   "documentDescribes": [
-    "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+    "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
   ],
-  "documentNamespace": "https://github.com/dominicbytes/redot-rapier-physics/sbom/0.35.2-redot.1/9c8d4ef7866aaf02",
-  "name": "redot-rapier-physics-2d-0.35.2-redot.1",
+  "documentNamespace": "https://github.com/dominicbytes/redot-rapier-physics/sbom/0.35.2-redot.2/bfbc48d37f76b718",
+  "name": "redot-rapier-physics-2d-0.35.2-redot.2",
   "packages": [
     {
       "SPDXID": "SPDXRef-Package-allocator-api2-0.2.21-f72f8d4b",
@@ -633,13 +634,13 @@
       "versionInfo": "0.5.5"
     },
     {
-      "SPDXID": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684",
+      "SPDXID": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622",
       "copyrightText": "NOASSERTION",
       "downloadLocation": "https://github.com/dominicbytes/redot-rapier-physics",
       "externalRefs": [
         {
           "referenceCategory": "PACKAGE-MANAGER",
-          "referenceLocator": "pkg:cargo/godot-rapier@0.35.2-redot.1",
+          "referenceLocator": "pkg:cargo/godot-rapier@0.35.2-redot.2",
           "referenceType": "purl"
         }
       ],
@@ -647,7 +648,7 @@
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
       "name": "godot-rapier",
-      "versionInfo": "0.35.2-redot.1"
+      "versionInfo": "0.35.2-redot.2"
     },
     {
       "SPDXID": "SPDXRef-Package-hashbrown-0.16.1-707e2353",
@@ -1963,439 +1964,439 @@
   ],
   "relationships": [
     {
-      "relatedSpdxElement": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684",
+      "relatedSpdxElement": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622",
       "relationshipType": "DESCRIBES",
       "spdxElementId": "SPDXRef-DOCUMENT"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-allocator-api2-0.2.21-f72f8d4b",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-approx-0.5.1-23612640",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-arrayvec-0.7.8-603ac76d",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-autocfg-1.5.1-15275796",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-bincode-1.3.3-986b3528",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-bitflags-2.13.1-0cb5e5b2",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-bytemuck-1.25.2-d4f62647",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-cfg-if-1.0.4-ffc41bac",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-crossbeam-deque-0.8.7-d8b3b446",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-crossbeam-epoch-0.9.20-a427eb73",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-crossbeam-utils-0.8.22-3fd83367",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-downcast-rs-2.0.2-8e7a5676",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-either-1.17.0-b56da0d1",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-ena-0.14.4-52ebc0ea",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-equivalent-1.0.2-a1023597",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-fnv-1.0.7-d126ad89",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-foldhash-0.2.0-be49207d",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-gdextension-api-0.5.1-cce937a4",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-generational-arena-0.2.9-3873be61",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-glam-0.32.1-7080df15",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-glam-0.33.3-f8067bb6",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-glamx-0.3.0-d45a2f92",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-godot-0.5.5-0a10c23f",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-godot-bindings-0.5.5-e4872f47",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-godot-cell-0.5.5-78cc34aa",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-godot-codegen-0.5.5-13b7433c",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-godot-core-0.5.5-d3b070e1",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-godot-ffi-0.5.5-da9041bc",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-godot-macros-0.5.5-45d9f7cd",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-hashbrown-0.16.1-707e2353",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-hashbrown-0.17.1-851151f9",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-heck-0.5.0-dc2d85cd",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-indexmap-2.14.0-330ea4bf",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-itertools-0.14.0-b76ddbf3",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-itoa-1.0.18-971ac085",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-libc-0.2.189-016c11ba",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-libm-0.2.16-5ecf5039",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-litrs-1.0.0-e5db7843",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-log-0.4.33-6a30fd76",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-markdown-1.0.0-0a960c25",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-matrixmultiply-0.3.11-cc4ba341",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-memchr-2.8.3-a92d906d",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-nalgebra-0.35.0-551cd5dd",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-nalgebra-macros-0.3.0-5b41a6a2",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-nanoserde-0.2.1-e956e356",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-nanoserde-derive-0.2.1-37efc126",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-num-complex-0.4.6-57461665",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-num-cpus-1.17.0-65a1e036",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-num-derive-0.4.2-0e20461c",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-num-integer-0.1.46-af848736",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-num-rational-0.4.2-a143c157",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-num-traits-0.2.19-52b2379b",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-ordered-float-5.3.0-060afe99",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-parry2d-0.30.2-8fa81ee4",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-proc-macro2-1.0.107-b0e870ae",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-profiling-1.0.18-52860aa3",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-profiling-procmacros-1.0.18-47d311f3",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-quote-1.0.47-c8d100d5",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-rapier2d-0.35.1-4f04f227",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-rawpointer-0.2.1-9b51f2dc",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-rayon-1.12.0-62d6aeac",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-rayon-core-1.13.0-73d83d34",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-robust-1.2.0-dceb10fb",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-safe-arch-1.1.0-232cb0c6",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-salva2d-0.10.0-63ddbbed",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-serde-1.0.229-6425d610",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-serde-arrays-0.2.0-190ebc9a",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-serde-core-1.0.229-b30cb7b6",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-serde-derive-1.0.229-39e0584e",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-serde-json-1.0.151-3b5ee236",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-simba-0.10.2-b71e9b58",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-slab-0.4.12-fdc540b0",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-smallvec-1.15.2-00ca6d2f",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-spade-2.15.1-6c53ff18",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-static-assertions-1.1.0-eef8bf84",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-syn-2.0.119-5a9ee538",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-syn-3.0.3-c50aa285",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-thiserror-2.0.20-5fcb3f2d",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-thiserror-impl-2.0.20-d7dd04a5",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-typenum-1.20.1-e590bddb",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-unicode-id-0.3.6-9dd35eff",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-unicode-ident-1.0.24-032c349f",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-venial-0.6.1-747af1a5",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-which-8.0.5-90f65675",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-wide-1.6.1-d3aca6cf",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     },
     {
       "relatedSpdxElement": "SPDXRef-Package-zmij-1.0.23-0aa54962",
       "relationshipType": "DEPENDS_ON",
-      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
+      "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.2-b9f80622"
     }
   ],
   "spdxVersion": "SPDX-2.3"

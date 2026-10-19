@@ -22,23 +22,26 @@
 | Porting foundation adaptation | Retain Redot bootstrap/API validation/evidence/packaging/desktop CI/release contracts; replace C++/SCons/`redot-cpp` compilation with redot-rust/Cargo and extend metadata to two addons |
 | gdext pin | `637cef73172bba23850131acd8583b0c72ebf0c7` (0.5.5 line) |
 | Rust toolchain | 1.94.0 |
-| Redot engine | 26.2 stable at `4f5b14abade2239104847d03d8f9056e4467cfcd` |
+| Redot engine | 26.3 stable at `85e5203945af15755dd2f66cb6fdf7545fd88c0b`, output `26.3.stable.official.85e520394` |
 | Compatible API | Godot API 4.5.2, single precision |
-| API JSON SHA-256 | `177E7796166929B2193C9CCE2FD32F59601A0147D0D1E7FE904B94E8F69F6577` |
-| Interface header SHA-256 | `4CD695E86B92E2BF4E60BBE19CE137FAF41205DA1CF94F29E069AFEC0F7BF320` |
+| Raw engine API JSON SHA-256 | `4c709d5920855dfe7294d01b9899d21aec4e94d3df9fc46f7aa90ad8fff5a38e` |
+| Raw engine interface SHA-256 | `558c1f54f5e37afdf259fec29d6eb72da83781afdce48e51a1783942f9cf9895` |
+| Binding ABI input | Redot 26.2 stable (`4f5b14abade2239104847d03d8f9056e4467cfcd`), reproduced from checksum-pinned release archives; ADR-0317 |
+| Binding API / interface SHA-256 | `177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577` / `4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320` |
+| Binding capability limit | New Struct values are unsupported; remove the ABI split only with working engine converters and a Struct-capable binding revision |
 | Required base API contract | Rapier `single-dim2` or `single-dim3`, plus dependency `godot/api-custom-json`; no Rapier top-level `api-*` feature; non-API feature profiles are tested separately |
-| Authorized compatibility delta | Empty `redot-compat` feature plus one cfg selector in each existing 2D/3D nullable `_get_space_state` branch; no JSON mutation and no forwarded Godot API feature |
+| Authorized compatibility delta | Empty `redot-compat` feature plus one cfg selector in each existing 2D/3D nullable `_get_space_state` branch; no JSON mutation and no forwarded Godot API feature; explicit 26.2 binding-ABI / 26.3 engine split (ADR-0317) |
 | Recorded runtime fixes | Each change to an upstream runtime file is listed in `compat/source-deltas/` (ADR-0307); the parity report enumerates them |
-| Downstream package version | `0.35.2-redot.1`; Cargo manifest and lock agree |
-| Local deterministic candidate | 58-file `redot-rapier-physics-2d-0.35.2-redot.1.zip`; SHA-256 `af8ec56c054981c3c699f166efd91ae1685fda18a87d67762603e609d984b258`; byte-identical repeat build |
-| Current downstream Cargo.lock SHA-256 | `9c8d4ef7866aaf0261dbc3b83b2f7c09db7e50919d91388c49e113c915b87c88` |
+| Downstream package version | `0.35.2-redot.2` / `v0.35.2-redot.2`; unpublished-candidate; Cargo manifest and lock agree |
+| 26.3 package qualification | Pending hosted builds, determinism, performance, clean-install and export gates |
+| Current downstream Cargo.lock SHA-256 | `bfbc48d37f76b718d2e4df3b9c408f8a5d5df8edd5745e82dc8388a09887ac3f` |
 | Registry lock preservation | Unrelated registry packages remain at upstream-locked versions, including `num-integer 0.1.46`; the only dependency-source substitution is the recorded gdext pin |
 | Rapier2D release scope | Full applicable feature parity with the pinned upstream 2D plugin; every capability requires parity proof, technical not-applicable evidence, or explicit owner waiver |
 | First-release platform matrix | Windows x86-64 and Linux x86-64 required; macOS, web, mobile, other architectures, and double precision deferred |
 | Determinism release contract | Pinned single-threaded Rapier2D profile must produce identical canonical replay hashes on Windows x86-64 and Linux x86-64; parallel profile tested separately without a cross-platform byte-equality claim |
 | Proven floor | v0.8.40, unchanged source, 2D single precision only, Windows debug/release runtime 9/9 |
-| License | upstream MIT plus exact-feature dependency notices and MPL-2.0 source-availability obligation for the patched gdext fork |
-| Downstream branch | `redot-26.2` |
+| License | upstream MIT plus exact-feature dependency notices and MPL-2.0 source-availability obligation for the pinned, unmodified gdext crates |
+| Downstream branch | `redot-26.3` |
 | Distribution channels | GitHub Releases and separate Redot Asset Library entries for each approved dimension and exact Redot version |
 | Asset Library mirror rule | Publish from an immutable package-only commit in this same repository; compare the installed-file path/SHA-256 manifest with the corresponding GitHub release asset and reject any drift or independent rebuild |
 | Installable payload | Runtime addon plus README and complete upstream/dependency/MPL notices; examples, parity fixtures, and test projects are separate GitHub companion assets and are excluded from Asset Library payloads |
@@ -50,4 +53,4 @@
 | Maintainer intake | The owner reviews repository pull requests and issues between Redot cycles and records acceptance, rejection, deferral, duplication, or need for more evidence; review creates no response-time or immediate-release commitment |
 | Emergency release exception | A confirmed security defect, data-loss defect, or release-blocking crash may trigger a narrowly scoped out-of-cycle patch on the current supported line only; the full applicable gate matrix remains mandatory, and features or routine dependency upgrades are excluded |
 
-This remains an implementation input lock, not a stable-release authorization. The release line fixes `v0.35.2` as its input. Unchanged Rapier `v0.35.2` failed at the shared `_get_space_state` nullability boundary and remains preserved as historical evidence. The `redot-compat` remediation and the complete local Rapier2D Windows/Linux automated matrix now pass, including parity, deterministic replay, performance guardrails, legal output, deterministic packaging, clean installs, exports, and exported runtimes. Do not float on `main`, select a prerelease, mutate the API JSON, enable a top-level Rapier API feature, create a version tag, or publish a stable package before the external promotion gates in `BLOCKERS.md` are closed.
+This remains an implementation input lock, not a stable-release authorization. The release line fixes `v0.35.2` as its input. Unchanged Rapier `v0.35.2` failed at the shared `_get_space_state` nullability boundary and remains preserved as historical evidence. The 26.2 automated evidence remains historical. The 26.3 line retains the nullability remediation and now distinguishes the certified engine audit snapshot from the binding input. Its Windows/Linux publication matrix is pending hosted CI and the remaining promotion gates. Do not float on `main`, select a prerelease, mutate the API JSON, enable a top-level Rapier API feature, create a version tag, or publish a stable package before the external promotion gates in `BLOCKERS.md` are closed.

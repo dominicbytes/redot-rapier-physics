@@ -51,7 +51,7 @@ class ContractTests(unittest.TestCase):
         self.lock = load("redot.lock.json")
 
     def test_checked_in_contract_passes(self) -> None:
-        api_path = (ROOT / self.lock["api"]["snapshot"]).resolve()
+        api_path = (ROOT / self.lock["binding_abi"]["snapshot"]).resolve()
         infrastructure_path = (
             ROOT / self.lock["infrastructure"]["source_hint"]
         ).resolve()
@@ -59,7 +59,7 @@ class ContractTests(unittest.TestCase):
         result = PORTING.validate_contract(
             ROOT, verify_local_files=verify_local_files
         )
-        self.assertEqual(result["release_tag"], "v0.35.2-redot.1")
+        self.assertEqual(result["release_tag"], "v0.35.2-redot.2")
         self.assertEqual(result["required_platforms"], ["linux-x86_64", "windows-x86_64"])
         self.assertEqual(result["deferred_platforms"], ["macos-universal"])
         self.assertEqual(result["local_api_verified"], verify_local_files)
@@ -74,6 +74,35 @@ class ContractTests(unittest.TestCase):
             (ROOT / "rust-toolchain.toml").read_text(encoding="utf-8"),
         )
 
+    def test_binding_abi_is_separate_and_required(self):
+        self.assertEqual(self.lock["redot"]["version"], "26.3")
+        self.assertEqual(self.lock["binding_abi"]["version"], "26.2")
+        self.assertNotEqual(self.lock["api"]["sha256"], self.lock["binding_abi"]["sha256"])
+        for field in ("snapshot", "sha256", "interface_header", "interface_sha256",
+                      "version_output", "source", "unsupported_variant_types"):
+            changed = copy.deepcopy(self.lock)
+            del changed["binding_abi"][field]
+            with self.subTest(field=field), self.assertRaises(PORTING.ContractError):
+                PORTING.validate_documents(self.porting, changed)
+
+    def test_engine_version_output_must_match_identity_and_contract(self):
+        for target in ("redot", "binding_abi"):
+            changed = copy.deepcopy(self.lock)
+            changed[target]["version_output"] = "26.3.stable.official.wrong"
+            with self.subTest(target=target), self.assertRaises(PORTING.ContractError):
+                PORTING.validate_documents(self.porting, changed)
+        changed = copy.deepcopy(self.porting)
+        changed["certified_redot"][0]["version_output"] = "wrong"
+        with self.assertRaises(PORTING.ContractError):
+            PORTING.validate_documents(changed, self.lock)
+
+    def test_binding_source_archive_must_be_pinned_to_its_release(self):
+        for field, value in (("sha256", "bad"), ("url", "https://example.invalid/input.zip")):
+            changed = copy.deepcopy(self.lock)
+            changed["binding_abi"]["source"]["assets"]["windows-x86_64"][field] = value
+            with self.subTest(field=field), self.assertRaises(PORTING.ContractError):
+                PORTING.validate_documents(self.porting, changed)
+
     def test_second_redot_identity_is_rejected(self) -> None:
         changed = copy.deepcopy(self.porting)
         changed["certified_redot"].append(copy.deepcopy(changed["certified_redot"][0]))
@@ -84,7 +113,7 @@ class ContractTests(unittest.TestCase):
         templates = self.lock["redot"]["assets"]["export-templates"]
         self.assertEqual(
             templates["sha256"],
-            "fa8c648bd9a9d911daffbcc4e1786d0248794571a7e4ed954444197c809079ea",
+            "a05e5d34d8c09b6ac1bcfe9cdca8452dedf5efe42c6b63f7ae5e62c1d04ef410",
         )
         changed = copy.deepcopy(self.lock)
         del changed["redot"]["assets"]["export-templates"]
@@ -93,7 +122,7 @@ class ContractTests(unittest.TestCase):
 
     def test_release_tag_must_match_version(self) -> None:
         changed = copy.deepcopy(self.porting)
-        changed["product"]["release_tag"] = "v0.35.2-redot.2"
+        changed["product"]["release_tag"] = "v0.35.2-redot.3"
         with self.assertRaisesRegex(PORTING.ContractError, "tag/version mismatch"):
             PORTING.validate_documents(changed, self.lock)
 
@@ -324,7 +353,7 @@ class ContractTests(unittest.TestCase):
         self.assertIn("scripts/performance_guardrail.py compare", workflow)
         self.assertIn("materialize-clean-install", workflow)
         self.assertIn('"--export-$profile"', workflow)
-        self.assertIn("needs: [package, clean-install]", workflow)
+        self.assertIn("needs: [identity, package, clean-install]", workflow)
 
 
 if __name__ == "__main__":

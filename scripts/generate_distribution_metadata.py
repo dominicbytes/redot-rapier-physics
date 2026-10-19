@@ -16,6 +16,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote
+from redot_porting import validate_documents
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,7 +30,7 @@ NOTICE = ADDON / "THIRDPARTY-REDOT.txt"
 MPL_LICENSE = ADDON / "LICENSE-MPL-2.0.txt"
 LICENSE_REPORT = ROOT / "compat" / "provenance" / "rapier2d-exact-feature-licenses.json"
 SPDX_REPORT = ROOT / "compat" / "provenance" / "rapier2d-sbom.spdx.json"
-CREATED = "2026-08-12T00:00:00Z"
+CREATED = "2026-10-19T00:00:00Z"
 PACKAGE_RE = re.compile(r"^(?P<name>[A-Za-z0-9_.+-]+) v(?P<version>\S+)")
 LICENSE_NAMES = re.compile(r"^(?:licen[cs]e|copying|unlicense|notice)(?:[._-].*)?$", re.I)
 LICENSE_NORMALIZATION = {
@@ -327,6 +328,7 @@ def purl(package: dict[str, Any]) -> str:
 def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
     porting = json.loads(PORTING.read_text(encoding="utf-8"))
     redot_lock = json.loads(REDOT_LOCK.read_text(encoding="utf-8"))
+    validate_documents(porting, redot_lock)
     profile_features = profiles(porting)
     memberships, runtime_memberships, packages_by_key = cargo_graph(
         cargo, api, profile_features, offline
@@ -461,7 +463,12 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
         },
         "inputs": {
             "cargo_lock_sha256": sha256_file(LOCK),
+            "certified_engine": redot_lock["redot"]["version_output"],
             "redot_api_sha256": redot_lock["api"]["sha256"],
+            "redot_interface_sha256": redot_lock["api"]["interface_sha256"],
+            "binding_abi": redot_lock["binding_abi"]["version_output"],
+            "binding_abi_sha256": redot_lock["binding_abi"]["sha256"],
+            "binding_interface_sha256": redot_lock["binding_abi"]["interface_sha256"],
             "redot_rust_repository": redot_lock["bindings"]["compatibility_repository"],
             "redot_rust_commit": redot_lock["bindings"]["compatibility_commit"],
             "gdext_repository": redot_lock["bindings"]["gdext_repository"],
@@ -482,7 +489,13 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
         "",
         f"Release: {porting['product']['release_version']}",
         f"Cargo.lock SHA-256: {sha256_file(LOCK)}",
-        f"Redot API SHA-256: {redot_lock['api']['sha256']}",
+        f"Certified engine: {redot_lock['redot']['version_output']}",
+        f"Raw engine API SHA-256: {redot_lock['api']['sha256']}",
+        f"Raw engine interface SHA-256: {redot_lock['api']['interface_sha256']}",
+        f"Binding ABI source: {redot_lock['binding_abi']['version_output']}",
+        f"Binding API SHA-256: {redot_lock['binding_abi']['sha256']}",
+        f"Binding interface SHA-256: {redot_lock['binding_abi']['interface_sha256']}",
+        "New Struct values are unsupported by this binding (ADR-0317).",
         "Build profiles: Windows x86-64 and Linux x86-64; editor and export;",
         "single-dim2 + redot-compat + serde-serialize + parallel, with",
         "register-docs only in editor builds and godot/api-custom-json supplied",
@@ -545,6 +558,7 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
             "created": CREATED,
             "creators": ["Tool: redot-rapier2d-generate-distribution-metadata/1"],
         },
+        "comment": json.dumps(license_report["inputs"], sort_keys=True),
         "documentDescribes": [root_spdx],
         "packages": [package_by_spdx[key] for key in sorted(package_by_spdx)],
         "relationships": relationships,
@@ -573,10 +587,10 @@ def apply_outputs(outputs: dict[Path, bytes], check: bool) -> None:
 
 def api_input(redot_lock: dict[str, Any], explicit: Path | None) -> Path:
     value = explicit or os.environ.get("GDRUST_GODOT_API_JSON")
-    api = Path(value) if value else ROOT / redot_lock["api"]["snapshot"]
+    api = Path(value) if value else ROOT / redot_lock["binding_abi"]["snapshot"]
     if not api.is_file():
         raise MetadataError("Redot API JSON is missing; supply --api or GDRUST_GODOT_API_JSON")
-    if sha256(api.read_bytes()) != redot_lock["api"]["sha256"]:
+    if sha256(api.read_bytes()) != redot_lock["binding_abi"]["sha256"]:
         raise MetadataError("Redot API JSON pinned hash mismatch")
     return api.absolute()
 
@@ -589,6 +603,7 @@ def main() -> int:
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     redot_lock = json.loads(REDOT_LOCK.read_text(encoding="utf-8"))
+    validate_documents(json.loads(PORTING.read_text(encoding="utf-8")), redot_lock)
     cargo_value = args.cargo or (Path(shutil.which("cargo")) if shutil.which("cargo") else None)
     if cargo_value is None or not cargo_value.is_file():
         raise SystemExit("Cargo executable not found; pass --cargo")
