@@ -1,0 +1,5 @@
+id = "shape-replacement"
+summary = "Rebuild replaced body and area shapes from the updated slot and transfer ownership."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/bodies/rapier_collision_object_impl.rs"]

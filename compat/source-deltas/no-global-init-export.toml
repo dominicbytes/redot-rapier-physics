@@ -1,0 +1,5 @@
+id = "no-global-init-export"
+summary = "Keep the direct space state constructor out of the global export table."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/spaces/rapier_direct_space_state_2d.rs"]

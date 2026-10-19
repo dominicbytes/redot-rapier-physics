@@ -22,7 +22,6 @@ impl RapierDirectSpaceState2D {
 }
 #[godot_api]
 impl IPhysicsDirectSpaceState2DExtension for RapierDirectSpaceState2D {
-    #[unsafe(no_mangle)]
     fn init(base: Base<PhysicsDirectSpaceState2DExtension>) -> Self {
         Self {
             inner: RapierDirectSpaceStateImpl::default(),

@@ -1,0 +1,5 @@
+id = "same-shape-collide"
+summary = "Allow both sides of a shape collision query to share one resource."
+origin = "inherited-upstream"
+upstream = "fixed upstream in 4179137422a24c4318d1fcf7d0d71c954319fcdf"
+files = ["src/servers/rapier_physics_server_impl.rs"]

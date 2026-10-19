@@ -253,17 +253,6 @@ impl PhysicsEngine {
         self.insert_shape(shape_compound, handle);
     }
 
-    pub fn shape_get_halfspace(&self, shape_handle: ShapeHandle) -> (Vector, Real) {
-        if let Some(shape) = self.get_shape(shape_handle)
-            && let Some(shape) = shape.as_compound()
-            && let Some(shape) = shape.shapes().first()
-        {
-            let normal = shape.0.translation;
-            return (normal.normalize_or_zero(), normal.length());
-        }
-        (Vector::ZERO, 0.0)
-    }
-
     pub fn shape_create_circle(&mut self, radius: Real, handle: ShapeHandle) {
         let shape = SharedShape::ball(radius);
         self.insert_shape(shape, handle);
