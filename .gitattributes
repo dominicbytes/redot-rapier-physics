@@ -5,3 +5,11 @@ Cargo.lock text eol=lf
 *.sh text eol=lf
 bin2d/addons/godot-rapier2d/THIRDPARTY-REDOT.txt text eol=lf
 bin2d/addons/godot-rapier2d/LICENSE-MPL-2.0.txt text eol=lf
+
+# Preserve the checksum-verified crate payload byte for byte.
+compat/vendor/rapier2d-0.35.1/** -text
+compat/patches/*.patch text eol=lf
+# Canonicalize only the downstream-patched text file.
+compat/vendor/rapier2d-0.35.1/src/pipeline/physics_pipeline/mod.rs text eol=lf
+# Retain two upstream trailing-space lines; the byte inventory forbids changes.
+compat/vendor/rapier2d-0.35.1/src/dynamics/rigid_body.rs whitespace=-blank-at-eol

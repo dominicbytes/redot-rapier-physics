@@ -17,6 +17,8 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import quote
 
+from verify_rapier_vendor import PROVENANCE, VENDOR_PATH, vendor_package, verify as verify_rapier_vendor
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "compat" / "rapier-cargo-config.toml"
@@ -257,7 +259,9 @@ def source_location(package: dict[str, Any], root_repository: str) -> str:
         return str(source)
     if package["name"] == "godot-rapier":
         return root_repository
-    return "NOASSERTION"
+    if vendor_package(package, ROOT):
+        return root_repository + "/tree/redot-26.2/" + VENDOR_PATH
+    raise MetadataError("unapproved local dependency: " + package["name"])
 
 
 def related_license_candidates(
@@ -325,6 +329,8 @@ def purl(package: dict[str, Any]) -> str:
 
 
 def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
+    verify_rapier_vendor(ROOT)
+    vendor_record = json.loads((ROOT / PROVENANCE).read_text(encoding="utf-8"))
     porting = json.loads(PORTING.read_text(encoding="utf-8"))
     redot_lock = json.loads(REDOT_LOCK.read_text(encoding="utf-8"))
     profile_features = profiles(porting)
@@ -393,6 +399,11 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
             "profiles": member_profiles,
             "license_files": sorted(license_files, key=lambda item: (item["filename"], item["sha256"])),
         }
+        if vendor_package(package, ROOT):
+            record["vendored_source"] = {
+                key: vendor_record[key]
+                for key in ("path", "archive_url", "archive_sha256", "patch", "patch_sha256", "upstream_issue")
+            }
         package_records.append(record)
         if "MPL-2.0" in declared:
             mpl_records.append(
@@ -424,6 +435,13 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
                 }
             ],
         }
+        if vendor_package(package, ROOT):
+            spdx_package["sourceInfo"] = (
+                "Vendored at " + VENDOR_PATH + "; upstream archive SHA-256 "
+                + vendor_record["archive_sha256"] + "; downstream patch "
+                + vendor_record["patch"] + " SHA-256 " + vendor_record["patch_sha256"]
+                + "; " + vendor_record["upstream_issue"]
+            )
         if checksum:
             spdx_package["checksums"] = [{"algorithm": "SHA256", "checksumValue": checksum}]
         package_by_spdx[identifier] = spdx_package
@@ -501,6 +519,16 @@ def build_outputs(cargo: Path, api: Path, offline: bool) -> dict[Path, bytes]:
         notice_lines.append(
             f"- {record['name']} {record['version']}: {record['source_code']}"
         )
+    notice_lines += [
+        "", "Patched dependency source", "-------------------------",
+        "rapier2d 0.35.1 is vendored at " + VENDOR_PATH + ".",
+        "Source: " + root_repository + "/tree/redot-26.2/" + VENDOR_PATH,
+        "Original archive: " + vendor_record["archive_url"],
+        "Original archive SHA-256: " + vendor_record["archive_sha256"],
+        "Downstream patch: " + vendor_record["patch"],
+        "Patch SHA-256: " + vendor_record["patch_sha256"],
+        "Upstream issue: " + vendor_record["upstream_issue"],
+    ]
     notice_lines += ["", "Exact resolved package inventory", "-------------------------------", ""]
     for record in package_records:
         notice_lines.append(

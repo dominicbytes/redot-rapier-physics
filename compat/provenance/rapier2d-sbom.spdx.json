@@ -10,7 +10,7 @@
   "documentDescribes": [
     "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
   ],
-  "documentNamespace": "https://github.com/dominicbytes/redot-rapier-physics/sbom/0.35.2-redot.1/9c8d4ef7866aaf02",
+  "documentNamespace": "https://github.com/dominicbytes/redot-rapier-physics/sbom/0.35.2-redot.1/cf6f1afe01abc0ed",
   "name": "redot-rapier-physics-2d-0.35.2-redot.1",
   "packages": [
     {
@@ -1317,15 +1317,9 @@
       "versionInfo": "1.0.47"
     },
     {
-      "SPDXID": "SPDXRef-Package-rapier2d-0.35.1-4f04f227",
-      "checksums": [
-        {
-          "algorithm": "SHA256",
-          "checksumValue": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065"
-        }
-      ],
+      "SPDXID": "SPDXRef-Package-rapier2d-0.35.1-b4d43009",
       "copyrightText": "NOASSERTION",
-      "downloadLocation": "registry+https://github.com/rust-lang/crates.io-index",
+      "downloadLocation": "https://github.com/dominicbytes/redot-rapier-physics/tree/redot-26.2/compat/vendor/rapier2d-0.35.1",
       "externalRefs": [
         {
           "referenceCategory": "PACKAGE-MANAGER",
@@ -1337,6 +1331,7 @@
       "licenseConcluded": "Apache-2.0",
       "licenseDeclared": "Apache-2.0",
       "name": "rapier2d",
+      "sourceInfo": "Vendored at compat/vendor/rapier2d-0.35.1; upstream archive SHA-256 74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065; downstream patch compat/patches/rapier-deferred-bvh-join.patch SHA-256 ad1a4e160f530b7221a6a4651003e48e01c65441d6d02eeb029dcba476c2d528; https://github.com/dimforge/rapier/issues/1008",
       "versionInfo": "0.35.1"
     },
     {
@@ -2258,7 +2253,7 @@
       "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
     },
     {
-      "relatedSpdxElement": "SPDXRef-Package-rapier2d-0.35.1-4f04f227",
+      "relatedSpdxElement": "SPDXRef-Package-rapier2d-0.35.1-b4d43009",
       "relationshipType": "DEPENDS_ON",
       "spdxElementId": "SPDXRef-Package-godot-rapier-0.35.2-redot.1-5e3fb684"
     },

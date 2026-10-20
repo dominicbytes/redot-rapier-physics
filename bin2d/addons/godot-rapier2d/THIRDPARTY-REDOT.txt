@@ -2,7 +2,7 @@ Redot Rapier Physics 2D exact-profile third-party notices
 ==========================================================
 
 Release: 0.35.2-redot.1
-Cargo.lock SHA-256: 9c8d4ef7866aaf0261dbc3b83b2f7c09db7e50919d91388c49e113c915b87c88
+Cargo.lock SHA-256: cf6f1afe01abc0ed7ffa76059ddd796c3f837bdb43ba3786e370eb3e1508d1bb
 Redot API SHA-256: 177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577
 Build profiles: Windows x86-64 and Linux x86-64; editor and export;
 single-dim2 + redot-compat + serde-serialize + parallel, with
@@ -26,6 +26,16 @@ A complete MPL-2.0 license is included as LICENSE-MPL-2.0.txt.
 - godot-core 0.5.5: git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7
 - godot-ffi 0.5.5: git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7
 - godot-macros 0.5.5: git+https://github.com/godot-rust/gdext?rev=637cef73172bba23850131acd8583b0c72ebf0c7#637cef73172bba23850131acd8583b0c72ebf0c7
+
+Patched dependency source
+-------------------------
+rapier2d 0.35.1 is vendored at compat/vendor/rapier2d-0.35.1.
+Source: https://github.com/dominicbytes/redot-rapier-physics/tree/redot-26.2/compat/vendor/rapier2d-0.35.1
+Original archive: https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate
+Original archive SHA-256: 74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065
+Downstream patch: compat/patches/rapier-deferred-bvh-join.patch
+Patch SHA-256: ad1a4e160f530b7221a6a4651003e48e01c65441d6d02eeb029dcba476c2d528
+Upstream issue: https://github.com/dimforge/rapier/issues/1008
 
 Exact resolved package inventory
 -------------------------------
@@ -89,7 +99,7 @@ Exact resolved package inventory
 - profiling 1.0.18 | MIT OR Apache-2.0 | registry+https://github.com/rust-lang/crates.io-index
 - profiling-procmacros 1.0.18 | MIT OR Apache-2.0 | registry+https://github.com/rust-lang/crates.io-index
 - quote 1.0.47 | MIT OR Apache-2.0 | registry+https://github.com/rust-lang/crates.io-index
-- rapier2d 0.35.1 | Apache-2.0 | registry+https://github.com/rust-lang/crates.io-index
+- rapier2d 0.35.1 | Apache-2.0 | https://github.com/dominicbytes/redot-rapier-physics/tree/redot-26.2/compat/vendor/rapier2d-0.35.1
 - rawpointer 0.2.1 | MIT OR Apache-2.0 | registry+https://github.com/rust-lang/crates.io-index
 - rayon 1.12.0 | MIT OR Apache-2.0 | registry+https://github.com/rust-lang/crates.io-index
 - rayon-core 1.13.0 | MIT OR Apache-2.0 | registry+https://github.com/rust-lang/crates.io-index
@@ -3018,7 +3028,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 3. This notice may not be removed or altered from any source distribution.
 
 ===== LICENSE TEXT SHA-256 ceacfa4d7fa67df64ab09a56fe248c50a3bfc9bc00374d69bd74ad763b14b89c =====
-Applies to: nalgebra 0.35.0, nalgebra-macros 0.3.0, simba 0.10.2
+Applies to: nalgebra 0.35.0, nalgebra-macros 0.3.0, rapier2d 0.35.1, simba 0.10.2
 Source filenames: LICENSE
 
                                  Apache License
@@ -3224,7 +3234,7 @@ Source filenames: LICENSE
    limitations under the License.
 
 ===== LICENSE TEXT SHA-256 cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30 =====
-Applies to: approx 0.5.1, parry2d 0.30.2, rapier2d 0.35.1, salva2d 0.10.0, serde_arrays 0.2.0, spade 2.15.1, static_assertions 1.1.0
+Applies to: approx 0.5.1, parry2d 0.30.2, salva2d 0.10.0, serde_arrays 0.2.0, spade 2.15.1, static_assertions 1.1.0
 Source filenames: LICENSE, LICENSE-APACHE
 
 

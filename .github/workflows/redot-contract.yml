@@ -118,6 +118,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           cargo test --config compat/rapier-cargo-config.toml --locked --no-default-features --features $env:RAPIER2D_EDITOR_FEATURES
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
+          cargo test --manifest-path compat/vendor/rapier2d-0.35.1/Cargo.toml --locked --features parallel,enhanced-determinism,serde-serialize --lib deferred_bvh_join_tests
+          if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
           $env:CARGO_ENCODED_RUSTFLAGS = $remap
           cargo --config compat/rapier-cargo-config.toml build --locked --no-default-features --features $env:RAPIER2D_EDITOR_FEATURES
           if ($LASTEXITCODE -ne 0) { throw "Native command failed" }
@@ -292,6 +294,7 @@ jobs:
           # recognizes proc-macro code. Only packaged builds need the remap.
           env -u CARGO_ENCODED_RUSTFLAGS cargo clippy --config compat/rapier-cargo-config.toml --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES" -- -D warnings
           env -u CARGO_ENCODED_RUSTFLAGS cargo test --config compat/rapier-cargo-config.toml --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES"
+          env -u CARGO_ENCODED_RUSTFLAGS cargo test --manifest-path compat/vendor/rapier2d-0.35.1/Cargo.toml --locked --features parallel,enhanced-determinism,serde-serialize --lib deferred_bvh_join_tests
           cargo --config compat/rapier-cargo-config.toml build --locked --no-default-features --features "$RAPIER2D_EDITOR_FEATURES"
           cp target/debug/libgodot_rapier.so build/native/linux-editor.so
           cargo --config compat/rapier-cargo-config.toml build --locked --no-default-features --features "$RAPIER2D_EXPORT_FEATURES"
