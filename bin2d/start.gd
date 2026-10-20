@@ -91,3 +91,7 @@ func completed() -> void:
 	await get_tree().create_timer(1.0).timeout
 	#get_tree().reload_current_scene()
 	Global.exit(error_code)
+
+func _physics_process(_delta: float) -> void:
+	if Global.VERBOSE and Engine.get_physics_frames() % 60 == 0:
+		print("REGRESSION FRAME frame=%d" % Engine.get_physics_frames())
