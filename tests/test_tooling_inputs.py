@@ -132,6 +132,7 @@ class ToolingInputTests(unittest.TestCase):
         cargo.absolute.assert_called_once_with()
         cargo.resolve.assert_not_called()
         self.assertEqual(run.call_args.args[0][0], str(shim))
+        self.assertEqual(run.call_args.args[0][2], str((ROOT / "compat/rapier-cargo-config.toml").resolve()))
         self.assertEqual(run.call_args.kwargs["env"]["GDRUST_GODOT_API_JSON"], str(self.api))
         self.assertEqual(run.call_args.kwargs["env"]["RUSTC"], str(rustc))
         self.assertEqual(validate.call_args.kwargs["infrastructure_source"], self.root)
@@ -144,7 +145,7 @@ class ToolingInputTests(unittest.TestCase):
         license_file.write_bytes(b"Mozilla Public License Version 2.0\n")
         packages = {
             ("godot-rapier", porting["product"]["release_version"]): {"name": "godot-rapier", "version": porting["product"]["release_version"], "license": "MPL-2.0"},
-            ("godot", lock["bindings"]["gdext_crate_version"]): {"name": "godot", "version": lock["bindings"]["gdext_crate_version"], "license": "MPL-2.0"},
+            ("godot", lock["bindings"]["gdext_crate_version"]): {"name": "godot", "version": lock["bindings"]["gdext_crate_version"], "license": "MPL-2.0", "source": "git+https://example.invalid/bindings#pinned"},
         }
         memberships = {"windows-x86_64/editor": set(packages)}
         with (mock.patch.object(METADATA, "LOCK", cargo_lock),

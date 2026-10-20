@@ -4,7 +4,7 @@
     "binding_abi": "26.2.stable.official.4f5b14aba",
     "binding_abi_sha256": "177e7796166929b2193c9cce2fd32f59601a0147d0d1e7fe904b94e8f69f6577",
     "binding_interface_sha256": "4cd695e86b92e2bf4e60bbe19ce137faf41205da1cf94f29e069afec0f7bf320",
-    "cargo_lock_sha256": "bfbc48d37f76b718d2e4df3b9c408f8a5d5df8edd5745e82dc8388a09887ac3f",
+    "cargo_lock_sha256": "b264fa3f4d1e96515d7ff8b08393a62fdacc6c6b512340c1761ef42bc3377c18",
     "certified_engine": "26.3.stable.official.85e520394",
     "gdext_repository": "https://github.com/godot-rust/gdext",
     "gdext_revision": "637cef73172bba23850131acd8583b0c72ebf0c7",
@@ -1376,12 +1376,12 @@
       "version": "1.0.47"
     },
     {
-      "cargo_checksum_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+      "cargo_checksum_sha256": null,
       "license": "Apache-2.0",
       "license_files": [
         {
           "filename": "LICENSE",
-          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+          "sha256": "ceacfa4d7fa67df64ab09a56fe248c50a3bfc9bc00374d69bd74ad763b14b89c"
         }
       ],
       "name": "rapier2d",
@@ -1392,7 +1392,15 @@
         "windows-x86_64/export"
       ],
       "repository": "https://github.com/dimforge/rapier",
-      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "source": "https://github.com/dominicbytes/redot-rapier-physics/tree/redot-26.2/compat/vendor/rapier2d-0.35.1",
+      "vendored_source": {
+        "archive_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+        "archive_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+        "patch": "compat/patches/rapier-deferred-bvh-join.patch",
+        "patch_sha256": "ad1a4e160f530b7221a6a4651003e48e01c65441d6d02eeb029dcba476c2d528",
+        "path": "compat/vendor/rapier2d-0.35.1",
+        "upstream_issue": "https://github.com/dimforge/rapier/issues/1008"
+      },
       "version": "0.35.1"
     },
     {

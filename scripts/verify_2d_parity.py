@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 from publication_paths import report_path, safe_report, scrub_text
 from redot_porting import ContractError, validate_documents
+from verify_rapier_vendor import verify as verify_rapier_vendor
 
 
 ADDON_SOURCE = Path("bin2d/addons/godot-rapier2d")
@@ -265,6 +266,7 @@ def verify(repo: Path, archive: Path | None) -> dict[str, Any]:
     _check_feature_profile(config)
     report: dict[str, Any] = {
         "status": "PASS",
+        "rapier_vendor": verify_rapier_vendor(repo),
         "upstream_commit": commit,
         "release_version": release_version,
         "certified_engine": lock["redot"]["version_output"],

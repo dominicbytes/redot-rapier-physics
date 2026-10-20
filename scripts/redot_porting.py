@@ -21,6 +21,7 @@ from copy import deepcopy
 from pathlib import Path, PurePosixPath
 from typing import Any
 from publication_paths import report_path, safe_report, scrub_text
+from verify_rapier_vendor import verify as verify_rapier_vendor
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -547,6 +548,8 @@ def validate_contract(
         )
     summary["infrastructure"] = verify_snapshot(snapshot, source)
 
+    summary["rapier_vendor"] = verify_rapier_vendor(root)
+
     cargo_manifest = _read_text(root / "Cargo.toml")
     cargo_version = re.search(
         r'^version\s*=\s*"([^"]+)"\s*$', cargo_manifest, re.MULTILINE
@@ -903,6 +906,7 @@ def package_addon(root: Path, dimension: str, output_dir: Path) -> dict[str, Any
         "certified_redot": porting["certified_redot"][0],
         "required_platforms": contract["required_platforms"],
         "upstream": porting["upstream"],
+        "vendored_dependencies": [contract["rapier_vendor"]],
         "cargo_features": addon["cargo_features"],
         "build_profiles": {
             "editor": addon["cargo_features"] + addon["dependency_features"],

@@ -27,7 +27,8 @@ def load(name: str) -> dict:
 
 class ContractTests(unittest.TestCase):
     def test_packaging_uses_vendored_infrastructure_provenance(self) -> None:
-        contract = {"required_platforms": ["linux-x86_64", "windows-x86_64"]}
+        contract = {"required_platforms": ["linux-x86_64", "windows-x86_64"],
+                    "rapier_vendor": {"path": "compat/vendor/rapier2d-0.35.1"}}
         with tempfile.TemporaryDirectory() as temp_name:
             with (
                 mock.patch.object(PORTING, "validate_contract", return_value=contract) as validate,
@@ -44,6 +45,9 @@ class ContractTests(unittest.TestCase):
                 ),
             ):
                 PORTING.package_addon(ROOT, "2d", Path(temp_name))
+                manifest_path = next(Path(temp_name).glob("*.manifest.json"))
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                self.assertEqual(manifest["vendored_dependencies"], [contract["rapier_vendor"]])
         validate.assert_called_once_with(ROOT, verify_local_files=False)
 
     def setUp(self) -> None:
