@@ -66,6 +66,15 @@ class PublicationPathTests(unittest.TestCase):
             for source in (Path.home(), ROOT, temp / "cargo", temp / "cargo/registry", temp / "cargo/git", temp / "rustup", temp / "toolchain", temp / "target"):
                 self.assertTrue(any(flag.startswith("--remap-path-prefix=" + str(source.resolve()) + "=") for flag in flags))
             self.assertIn("link-arg=/PDBALTPATH:%_PDB%", flags)
+            vendor = ROOT / "compat/vendor/rapier2d-0.35.1/src/pipeline/physics_pipeline/mod.rs"
+            remapped = str(vendor.resolve())
+            for flag in flags:
+                if flag.startswith("--remap-path-prefix="):
+                    source, destination = flag[len("--remap-path-prefix="):].split("=", 1)
+                    if str(vendor.resolve()).startswith(source):
+                        remapped = str(vendor.resolve()).replace(source, destination, 1)
+            self.assertEqual(remapped.replace(chr(92), "/"),
+                             "/source/compat/vendor/rapier2d-0.35.1/src/pipeline/physics_pipeline/mod.rs")
 
     def test_failed_report_does_not_serialize_private_exception_paths(self):
         spec = importlib.util.spec_from_file_location("porting_report", ROOT / "scripts/redot_porting.py")
