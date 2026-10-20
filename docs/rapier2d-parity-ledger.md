@@ -29,9 +29,13 @@ This ledger answers the first-release requirement that Rapier2D retain every app
 | RP2D-021 | Distribution notices and exact-feature dependency record | PASS | 87-package exact-feature license report, SPDX 2.3 SBOM, MIT/MPL notices, and source-availability record included |
 | RP2D-022 | Upstream `profiling` feature | N/A | Development instrumentation is not enabled in upstream release profiles and is not a user-facing 2D product capability. It remains available for developer builds rather than becoming a deferred release feature. |
 
-## Point-query pickability difference
+## Point-query pickability
 
-By default, Rapier2D `intersect_point` skips bodies with `input_pickable = false`, unlike gameplay point queries in the built-in server. The extension API does not expose the flag that distinguishes Viewport mouse picking from gameplay point queries, so the default preserves mouse-picking behavior. Setting `physics/rapier/queries/point_query_honors_pickable = false` makes gameplay point queries match the built-in server, at the cost of mouse picking delivering input events to non-pickable bodies.
+When the engine provides `PhysicsDirectSpaceState2DExtension.is_picking_query()`, Rapier2D detects it at runtime and matches the built-in server: script point queries return all matching bodies and areas regardless of `input_pickable`; viewport mouse picking filters out non-pickable objects. No new virtual signature or API snapshot is required.
+
+Official Redot 26.2 and 26.3 lack this method. On those engines, `physics/rapier/queries/point_query_honors_pickable` keeps its existing meaning and default `true`, preserving mouse-picking behavior. Setting it to `false` includes non-pickable objects in script queries and viewport picking alike. Changing the default cannot provide both built-in behaviors without the missing query context. With the method available, the setting is ignored for 2D point queries.
+
+The point-picking unit regression checks overlapping pickable and non-pickable bodies and areas through script queries and viewport input events. Built-in parity assertions are gated on method availability; on official engines, the test verifies the existing fallback contract instead.
 
 ## Verification
 
