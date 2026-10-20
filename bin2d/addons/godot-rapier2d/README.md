@@ -13,7 +13,9 @@ Each supported platform has distinct editor, debug-export, and release-export na
 
 Installing the addon does not change an existing project's backend. Projects continue using their configured/default PhysicsServer2D until `Rapier2D` is selected explicitly.
 
-Rapier's point queries honor a collision object's `input_pickable` state by default through `physics/rapier/queries/point_query_honors_pickable`. Set `input_pickable = true` for bodies or areas that a point query should return, or explicitly change that project setting if the project needs different behavior.
+When the engine exposes `PhysicsDirectSpaceState2DExtension.is_picking_query()`, Rapier2D point queries match built-in physics: script queries include non-pickable bodies and areas, while viewport mouse picking includes only input-pickable objects. The method is detected at runtime, so the addon still uses the pinned API snapshot.
+
+On engines without that method, `physics/rapier/queries/point_query_honors_pickable` remains the fallback and defaults to `true`: both kinds of query filter out non-pickable objects. Setting it to `false` includes those objects in script queries but also permits viewport input events on them. Engines with picking context ignore the fallback setting for 2D point queries.
 
 ## Supported targets
 

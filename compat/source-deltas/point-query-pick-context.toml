@@ -1,0 +1,5 @@
+id = "point-query-pick-context"
+summary = "Use engine picking context for 2D point queries when available, preserving the legacy setting as a fallback."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/spaces/rapier_direct_space_state_2d.rs", "src/spaces/rapier_direct_space_state_3d.rs", "src/spaces/rapier_direct_space_state_impl.rs"]

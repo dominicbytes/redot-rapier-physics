@@ -2,6 +2,8 @@ use std::ops::Mul;
 
 use godot::global::godot_error;
 use godot::global::godot_warn;
+#[cfg(feature = "dim2")]
+use rapier::parry::query::PersistentQueryDispatcher;
 use rapier::parry::query::QueryDispatcher;
 use rapier::parry::query::ShapeCastOptions;
 use rapier::parry::query::ShapeCastStatus;
@@ -516,6 +518,58 @@ impl PhysicsEngine {
         result
     }
 
+    #[cfg(feature = "dim2")]
+    pub fn shape_contact_pairs(
+        &self,
+        shape_info1: ShapeInfo,
+        shape_info2: ShapeInfo,
+        max_results: usize,
+    ) -> Vec<WitnessPair> {
+        let mut results = Vec::new();
+        if max_results == 0 {
+            return results;
+        }
+        let Some(raw_shape1) = self.get_shape(shape_info1.handle) else {
+            return results;
+        };
+        let Some(raw_shape2) = self.get_shape(shape_info2.handle) else {
+            return results;
+        };
+        let shape1 = scale_shape(raw_shape1, shape_info1);
+        let shape2 = scale_shape(raw_shape2, shape_info2);
+        let pos12 = shape_info1.transform.inv_mul(&shape_info2.transform);
+        let mut manifolds: Vec<ContactManifold> = Vec::new();
+        let prediction = contact_prediction(0.0);
+        let _ = separation_ray_query_dispatcher().contact_manifolds(
+            &pos12,
+            shape1.as_ref(),
+            shape2.as_ref(),
+            prediction,
+            &mut manifolds,
+            &mut None,
+        );
+        for manifold in &manifolds {
+            let pose1 =
+                shape_info1.transform * manifold.subshape_pos1().copied().unwrap_or_default();
+            let pose2 =
+                shape_info2.transform * manifold.subshape_pos2().copied().unwrap_or_default();
+            for contact in &manifold.points {
+                // A cast can stop just outside contact because of numerical tolerances.
+                if contact.dist > prediction {
+                    continue;
+                }
+                results.push(WitnessPair {
+                    pixel_witness1: pose1 * contact.local_p1,
+                    pixel_witness2: pose2 * contact.local_p2,
+                });
+                if results.len() == max_results {
+                    return results;
+                }
+            }
+        }
+        results
+    }
+
     #[allow(clippy::too_many_arguments)]
     pub fn shape_find_intersections(
         &self,
@@ -984,5 +1038,42 @@ impl PhysicsEngine {
             }
         }
         result
+    }
+}
+
+#[cfg(all(test, feature = "dim2"))]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn shape_contact_pairs_limit_complete_world_space_pairs() {
+        let mut engine = PhysicsEngine {
+            physics_worlds: Default::default(),
+            shapes: Default::default(),
+        };
+        engine.insert_shape(SharedShape::cuboid(5.0, 5.0), 1);
+        let first = ShapeInfo {
+            handle: 1,
+            transform: Pose::translation(30.0, 40.0),
+            skew: 0.0,
+            scale: Vector::ONE,
+        };
+        let second = ShapeInfo {
+            transform: Pose::translation(35.0, 40.0),
+            ..first
+        };
+        let full = engine.shape_contact_pairs(first, second, 8);
+        assert_eq!(full.len(), 2);
+        for limit in [0, 1, 2, 8] {
+            let pairs = engine.shape_contact_pairs(first, second, limit);
+            assert_eq!(pairs.len(), limit.min(2));
+            for (pair, expected) in pairs.iter().zip(&full) {
+                assert_eq!(pair.pixel_witness1, expected.pixel_witness1);
+                assert_eq!(pair.pixel_witness2, expected.pixel_witness2);
+                assert!((pair.pixel_witness1.x - 35.0).abs() < 0.001);
+                assert!((pair.pixel_witness2.x - 30.0).abs() < 0.001);
+                assert!((pair.pixel_witness1.y - pair.pixel_witness2.y).abs() < 0.001);
+            }
+        }
     }
 }
