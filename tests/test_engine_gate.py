@@ -26,6 +26,10 @@ class EngineGateTests(unittest.TestCase):
                     with self.assertRaises(RuntimeError):
                         GATE.run_gate("engine", [], Path(temp) / "engine.log", "SUCCESS")
 
+    def test_colored_runtime_diagnostics_are_not_hidden(self):
+        with self.assertRaises(RuntimeError):
+            GATE.require_clean_output("\x1b[31mWARNING: unexpected warning\x1b[0m")
+
     def test_stale_pass_result_cannot_satisfy_a_new_run(self):
         with tempfile.TemporaryDirectory() as temp:
             result = Path(temp) / "result.json"

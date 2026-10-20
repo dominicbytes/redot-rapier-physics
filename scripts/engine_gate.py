@@ -11,14 +11,15 @@ from publication_paths import scrub_text
 
 
 ERRORS = re.compile(
-    r"SCRIPT ERROR|Parse Error|Assertion failed|^ERROR:|"
+    r"SCRIPT ERROR|Parse Error|Assertion failed|^ERROR:|^WARNING:|CrashHandlerException|"
     r"GDExtension.*(?:error|fail)|Failed to (?:load|initialize).*|"
-    r"panicked at|thread .+ panicked|fatal runtime error",
+    r"panicked at|thread .+ panicked|fatal runtime error|^FATAL:|error\(-[0-9]+\)",
     re.IGNORECASE | re.MULTILINE,
 )
 
 
 def require_clean_output(text: str) -> None:
+    text = re.sub(r"\x1b\[[0-9;]*m", "", text)
     if ERRORS.search(text):
         raise RuntimeError("engine diagnostics contain an error")
 
