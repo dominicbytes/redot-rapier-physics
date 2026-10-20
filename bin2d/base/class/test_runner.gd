@@ -57,6 +57,8 @@ func run():
 		viewport.disable_3d = not is_3d
 
 		viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+		if Global.VERBOSE:
+			print("REGRESSION START id=%d frame=%d scene=%s" % [node.get_instance_id(), Engine.get_physics_frames(), node.get_script().resource_path])
 		viewport.add_child(node)
 		viewport.size =  Global.WINDOW_SIZE
 		viewport.size_2d_override = Global.WINDOW_SIZE
@@ -75,6 +77,8 @@ func run():
 		status_label.text = "%d / %d" % [current_test_index, total_tests]
 
 func update_test(node):
+	if Global.VERBOSE:
+		print("REGRESSION END id=%d frame=%d scene=%s" % [node.get_instance_id(), Engine.get_physics_frames(), node.get_script().resource_path])
 	var texture_rect: Node= node.get_parent().get_parent()
 	texture_rect.queue_free()
 	completed_tests += 1
