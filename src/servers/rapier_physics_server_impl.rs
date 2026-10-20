@@ -305,14 +305,38 @@ impl RapierPhysicsServerImpl {
         if !result.collided {
             return false;
         }
-        if result_max >= 1 {
-            if !result_count.ptr().is_null() {
-                unsafe { *result_count.ptr() = 1 };
-            }
+        if result_max >= 1 && !results_out.is_null() {
+            let mut impact_a = shape_a_info;
+            let mut impact_b = shape_b_info;
+            impact_a.transform.translation += rapier_a_motion * result.toi;
+            impact_b.transform.translation += rapier_b_motion * result.toi;
+            let contacts = physics_data.physics_engine.shape_contact_pairs(
+                impact_a,
+                impact_b,
+                result_max as usize,
+            );
+            // Preserve the cast witness for pairs without a manifold or a numerically
+            // separated impact pose.
+            let count = contacts.len().max(1);
             let vector2_slice: &mut [Vector] =
-                unsafe { std::slice::from_raw_parts_mut(results_out, result_max as usize * 2) };
-            vector2_slice[0] = vector_to_godot(result.pixel_witness1);
-            vector2_slice[1] = vector_to_godot(result.pixel_witness2);
+                unsafe { std::slice::from_raw_parts_mut(results_out, count * 2) };
+            if contacts.is_empty() {
+                vector2_slice[0] = vector_to_godot(result.pixel_witness1);
+                vector2_slice[1] = vector_to_godot(result.pixel_witness2);
+            } else {
+                for (pair, contact) in vector2_slice
+                    .as_chunks_mut::<2>()
+                    .0
+                    .iter_mut()
+                    .zip(&contacts)
+                {
+                    pair[0] = vector_to_godot(contact.pixel_witness1);
+                    pair[1] = vector_to_godot(contact.pixel_witness2);
+                }
+            }
+            if !result_count.ptr().is_null() {
+                unsafe { *result_count.ptr() = count as i32 };
+            }
         }
         true
     }

@@ -1,0 +1,5 @@
+id = "shape-collide-manifold"
+summary = "Return every contact pair from the 2D shape collision manifold within the result limit."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/rapier_wrapper/query.rs", "src/servers/rapier_physics_server_impl.rs"]
