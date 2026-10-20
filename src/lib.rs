@@ -48,7 +48,11 @@ unsafe impl ExtensionLibrary for RapierPhysics2DExtensionLibrary {
         }
     }
 
-    fn on_stage_deinit(_level: InitStage) {}
+    fn on_stage_deinit(level: InitStage) {
+        if level == InitStage::Servers {
+            servers::rapier_physics_singleton::deinit_physics_data();
+        }
+    }
 }
 #[cfg(feature = "dim3")]
 #[derive(GodotClass)]
@@ -74,5 +78,9 @@ unsafe impl ExtensionLibrary for RapierPhysics3DExtensionLibrary {
         }
     }
 
-    fn on_stage_deinit(_level: InitStage) {}
+    fn on_stage_deinit(level: InitStage) {
+        if level == InitStage::Servers {
+            servers::rapier_physics_singleton::deinit_physics_data();
+        }
+    }
 }

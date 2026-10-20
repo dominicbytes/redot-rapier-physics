@@ -167,6 +167,13 @@ jobs:
           }
           Get-FileHash -Algorithm SHA256 "$addonBin/libgodot_rapier.windows.*.x86_64-pc-windows-msvc.dll" | ForEach-Object { @{ file = (Split-Path $_.Path -Leaf); sha256 = $_.Hash.ToLowerInvariant() } } | ConvertTo-Json | Out-File "$evidence/binary-sha256.json" -Encoding utf8
 
+      - name: Stress parallel worker shutdown
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python scripts/stress_extension_shutdown.py --engine $env:REDOT_BIN --log-dir reports/ci/windows/shutdown
+          if ($LASTEXITCODE -ne 0) { throw 'Worker shutdown stress failed' }
+
       - name: Prove the Windows deterministic profile
         shell: pwsh
         run: |
@@ -313,6 +320,11 @@ jobs:
           grep -Fq "UNIT TESTS STATUS: SUCCESS" reports/ci/linux/unit.log
           grep -Fq "REDOT RAPIER2D FEATURE PARITY: SUCCESS" reports/ci/linux/feature-parity.log
           sha256sum "$addon_bin"/libgodot_rapier.linux.*.x86_64-unknown-linux-gnu.so > reports/ci/linux/binary.sha256
+
+      - name: Stress parallel worker shutdown
+        run: |
+          set -euo pipefail
+          python3 scripts/stress_extension_shutdown.py --engine "$REDOT_BIN" --log-dir reports/ci/linux/shutdown
 
       - name: Prove the Linux deterministic profile
         run: |
