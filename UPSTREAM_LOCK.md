@@ -16,7 +16,7 @@
 | Rapier / Salva lock | crates.io Rapier 0.35.1 / Salva 0.10.0 with checksums; no git sources in the v0.35.2 lock |
 | Rapier crate checksums | `rapier2d 0.35.1`: `74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065`; `rapier3d 0.35.1`: `e1c797fd96e34ae075c7b849741f89968ebedb86b584023420d68a1993bdc5cc` |
 | Shared compatibility repository | https://github.com/dominicbytes/redot-rust |
-| Compatibility repository pin | `18ad5c538c452b8640420366794354e3ed48f205` (pin commit; no tag/release exists) |
+| Compatibility repository pin | `1a7e4d43dd6f77d998e0df4e25724c4c40bc7776` (pin commit; no tag/release exists) |
 | Required porting foundation | `../redot-porting-infrastructure` |
 | Porting foundation identity | Ordered 31-file source manifest SHA-256 `ec5f2e8fe2fe65b94a17d577043aad16b70652bf23a09930e34001710b2ddf54`; generated/cache/binary exclusions are recorded in the snapshot JSON |
 | Porting foundation adaptation | Retain Redot bootstrap/API validation/evidence/packaging/desktop CI/release contracts; replace C++/SCons/`redot-cpp` compilation with redot-rust/Cargo and extend metadata to two addons |

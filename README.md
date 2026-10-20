@@ -31,7 +31,7 @@ Rapier3D is not part of this release. It will remain a separate installable and 
 | Platforms | Windows x86-64 and Linux x86-64 |
 | Upstream plugin | Godot Rapier Physics 0.35.2 |
 | Physics library | Rapier 0.35.1 |
-| Rust bindings | [`dominicbytes/redot-rust`](https://github.com/dominicbytes/redot-rust) at `18ad5c538c452b8640420366794354e3ed48f205` |
+| Rust bindings | [`dominicbytes/redot-rust`](https://github.com/dominicbytes/redot-rust) at `1a7e4d43dd6f77d998e0df4e25724c4c40bc7776` |
 
 Each plugin release targets one exact Redot release. macOS, mobile, web, other architectures, and double-precision builds are not supported by the first release line.
 
