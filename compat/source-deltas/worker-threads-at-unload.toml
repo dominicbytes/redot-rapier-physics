@@ -1,0 +1,5 @@
+id = "worker-threads-at-unload"
+summary = "Keep fluid work in owned pools and join workers before extension unload."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/lib.rs", "src/rapier_wrapper/physics_world.rs", "src/servers/rapier_physics_singleton.rs"]

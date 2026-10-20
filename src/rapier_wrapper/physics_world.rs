@@ -170,12 +170,66 @@ impl Clone for PhysicsObjects {
         }
     }
 }
+// Rayon only requests termination when a pool is dropped. Keep the native
+// handles so no worker (including its TLS destructors) can outlive the library.
+#[cfg(feature = "parallel")]
+pub struct PhysicsThreadPool {
+    pool: Option<rapier::rayon::ThreadPool>,
+    workers: Vec<std::thread::JoinHandle<()>>,
+}
+#[cfg(feature = "parallel")]
+impl PhysicsThreadPool {
+    fn new(thread_count: usize) -> Self {
+        let mut result = Self {
+            pool: None,
+            workers: Vec::new(),
+        };
+        result.pool = Some(
+            rapier::rayon::ThreadPoolBuilder::new()
+                .num_threads(thread_count)
+                .spawn_handler(|thread| {
+                    let worker = std::thread::Builder::new().spawn(|| thread.run())?;
+                    result.workers.push(worker);
+                    Ok(())
+                })
+                .build()
+                .unwrap(),
+        );
+        result
+    }
+
+    fn install<OP, R>(&self, operation: OP) -> R
+    where
+        OP: FnOnce() -> R + Send,
+        R: Send,
+    {
+        self.pool.as_ref().unwrap().install(operation)
+    }
+}
+#[cfg(feature = "parallel")]
+impl Drop for PhysicsThreadPool {
+    fn drop(&mut self) {
+        drop(self.pool.take());
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
+        while self.workers.iter().any(|worker| !worker.is_finished()) {
+            if std::time::Instant::now() >= deadline {
+                // Returning would allow the engine to unload executing code.
+                eprintln!("Rapier worker shutdown timed out");
+                std::process::abort();
+            }
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        }
+        for worker in self.workers.drain(..) {
+            let _ = worker.join();
+        }
+    }
+}
 pub struct PhysicsWorld {
     pub physics_objects: PhysicsObjects,
     pub physics_pipeline: PhysicsPipeline,
     pub fluids_pipeline: FluidsPipeline,
     #[cfg(feature = "parallel")]
-    pub thread_pool: rapier::rayon::ThreadPool,
+    pub thread_pool: PhysicsThreadPool,
 }
 impl PhysicsWorld {
     pub fn new(settings: &WorldSettings) -> PhysicsWorld {
@@ -207,10 +261,7 @@ impl PhysicsWorld {
                 settings.boundary_coef,
             ),
             #[cfg(feature = "parallel")]
-            thread_pool: rapier::rayon::ThreadPoolBuilder::new()
-                .num_threads(settings.thread_count)
-                .build()
-                .unwrap(),
+            thread_pool: PhysicsThreadPool::new(settings.thread_count),
         }
     }
 
@@ -296,6 +347,19 @@ impl PhysicsWorld {
         }
         if self.fluids_pipeline.liquid_world.fluids().len() > 0 {
             let _span = profiler::scope(profiler::Span::Fluids);
+            #[cfg(feature = "parallel")]
+            {
+                let fluids_pipeline = &mut self.fluids_pipeline;
+                self.thread_pool.install(|| {
+                    fluids_pipeline.step(
+                        &liquid_gravity,
+                        integration_parameters.dt,
+                        &self.physics_objects.collider_set,
+                        &mut self.physics_objects.rigid_body_set,
+                    );
+                });
+            }
+            #[cfg(not(feature = "parallel"))]
             self.fluids_pipeline.step(
                 &liquid_gravity,
                 integration_parameters.dt,
@@ -825,6 +889,38 @@ impl PhysicsEngine {
 
 #[cfg(test)]
 mod tests {
+    #[cfg(feature = "parallel")]
+    #[test]
+    fn pool_drop_joins_workers_and_thread_local_destructors() {
+        use std::cell::RefCell;
+        use std::sync::Arc;
+        use std::sync::atomic::{AtomicUsize, Ordering};
+
+        struct Exited(Arc<AtomicUsize>);
+        impl Drop for Exited {
+            fn drop(&mut self) {
+                // Make it observable if shutdown only waits for Rayon's exit
+                // handler, which runs before native thread-local destruction.
+                std::thread::sleep(std::time::Duration::from_millis(20));
+                self.0.fetch_add(1, Ordering::SeqCst);
+            }
+        }
+        thread_local! {
+            static EXITED: RefCell<Option<Exited>> = const { RefCell::new(None) };
+        }
+        let exited = Arc::new(AtomicUsize::new(0));
+        let pool = super::PhysicsThreadPool::new(4);
+        pool.pool.as_ref().unwrap().broadcast(|_| {
+            EXITED.with(|local| *local.borrow_mut() = Some(Exited(exited.clone())));
+        });
+        pool.install(|| {
+            assert_eq!(rapier::rayon::current_num_threads(), 4);
+            assert!(rapier::rayon::current_thread_index().is_some());
+        });
+        drop(pool);
+        assert_eq!(exited.load(Ordering::SeqCst), 4);
+    }
+
     use super::*;
 
     fn collider_handle(index: u32) -> ColliderHandle {
