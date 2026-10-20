@@ -20,9 +20,13 @@ var done := false
 
 func _ready():
 	add_to_group(&"async_unit_tests")
+	await test_free_space_detaches_objects()
 	await test_area_signal_creates_spaces()
 	await test_state_sync_creates_spaces_and_frees_body()
 	await test_monitor_callback_frees_space()
+	await test_state_sync_frees_space_with_pending_monitors()
+	if ClassDB.class_exists(&"RapierPhysicsServer2D"):
+		test_free_space_detaches_fluid()
 	print("Flush callback tests passed.")
 	done = true
 	finished.emit()
@@ -148,10 +152,6 @@ func test_monitor_callback_frees_space():
 	var events: Array[int] = []
 	var monitor := func(status: int, _body: RID, _instance: int, _body_shape: int, _area_shape: int):
 		events.append(status)
-		# Detach both objects first, so this covers only freeing the space being flushed and
-		# not freeing a space that still holds objects.
-		PhysicsServer2D.body_set_space(body, RID())
-		PhysicsServer2D.area_set_space(area, RID())
 		PhysicsServer2D.free_rid(space)
 	PhysicsServer2D.area_set_monitor_callback(area, monitor)
 
@@ -163,3 +163,118 @@ func test_monitor_callback_frees_space():
 	PhysicsServer2D.free_rid(area)
 	PhysicsServer2D.free_rid(body)
 	PhysicsServer2D.free_rid(shape)
+
+
+func test_free_space_detaches_objects() -> void:
+	print("test_free_space_detaches_objects")
+	var space := PhysicsServer2D.space_create()
+	var next_space := PhysicsServer2D.space_create()
+	var shape := PhysicsServer2D.circle_shape_create()
+	PhysicsServer2D.shape_set_data(shape, 4.0)
+	var bodies: Array[RID] = []
+	for mode in [PhysicsServer2D.BODY_MODE_STATIC, PhysicsServer2D.BODY_MODE_KINEMATIC,
+			PhysicsServer2D.BODY_MODE_RIGID, PhysicsServer2D.BODY_MODE_RIGID_LINEAR]:
+		var body := PhysicsServer2D.body_create()
+		PhysicsServer2D.body_set_mode(body, mode)
+		PhysicsServer2D.body_add_shape(body, shape)
+		PhysicsServer2D.body_set_state(body, PhysicsServer2D.BODY_STATE_TRANSFORM,
+			Transform2D(0, Vector2(bodies.size() * 20, 0)))
+		PhysicsServer2D.body_set_space(body, space)
+		bodies.append(body)
+	var area := PhysicsServer2D.area_create()
+	PhysicsServer2D.area_add_shape(area, shape)
+	PhysicsServer2D.area_set_space(area, space)
+	var other_body := PhysicsServer2D.body_create()
+	PhysicsServer2D.body_set_space(other_body, next_space)
+	var joint := PhysicsServer2D.joint_create()
+	PhysicsServer2D.joint_make_pin(joint, Vector2.ZERO, bodies[2], bodies[3])
+	var direct_state := PhysicsServer2D.space_get_direct_state(space)
+	assert(is_instance_valid(direct_state))
+	PhysicsServer2D.free_rid(space)
+	assert(not is_instance_valid(direct_state), "Freeing a space frees its direct state")
+	assert(PhysicsServer2D.area_get_space(area) == RID())
+	assert(PhysicsServer2D.area_get_shape_count(area) == 1)
+	assert(PhysicsServer2D.body_get_space(other_body) == next_space)
+	for i in bodies.size():
+		assert(PhysicsServer2D.body_get_space(bodies[i]) == RID())
+		assert(PhysicsServer2D.body_get_shape_count(bodies[i]) == 1)
+		assert(PhysicsServer2D.body_get_state(bodies[i], PhysicsServer2D.BODY_STATE_TRANSFORM)
+			== Transform2D(0, Vector2(i * 20, 0)))
+		PhysicsServer2D.body_set_space(bodies[i], next_space)
+		assert(PhysicsServer2D.body_get_space(bodies[i]) == next_space)
+	PhysicsServer2D.area_set_space(area, next_space)
+	PhysicsServer2D.pin_joint_set_param(joint, PhysicsServer2D.PIN_JOINT_SOFTNESS, 0.5)
+	PhysicsServer2D.joint_make_pin(joint, Vector2.ZERO, bodies[2], bodies[3])
+	PhysicsServer2D.space_set_active(next_space, true)
+	await wait_physics_frames(3)
+	var point := PhysicsPointQueryParameters2D.new()
+	var hits := PhysicsServer2D.space_get_direct_state(next_space).intersect_point(point)
+	assert(hits.size() == 1 and hits[0].rid == bodies[0], "Reattached body recreates its collider")
+	PhysicsServer2D.free_rid(next_space)
+	for body in bodies:
+		assert(PhysicsServer2D.body_get_space(body) == RID())
+		PhysicsServer2D.free_rid(body)
+	PhysicsServer2D.free_rid(other_body)
+	PhysicsServer2D.free_rid(area)
+	PhysicsServer2D.free_rid(joint)
+	PhysicsServer2D.free_rid(shape)
+
+
+# State sync runs before monitor callbacks. Destroy the space with both kinds of
+# callbacks queued, then reuse its objects without dispatching stale overlap events.
+func test_state_sync_frees_space_with_pending_monitors() -> void:
+	print("test_state_sync_frees_space_with_pending_monitors")
+	var space := PhysicsServer2D.space_create()
+	var shape := PhysicsServer2D.circle_shape_create()
+	PhysicsServer2D.shape_set_data(shape, 10.0)
+	var body := PhysicsServer2D.body_create()
+	PhysicsServer2D.body_set_mode(body, PhysicsServer2D.BODY_MODE_RIGID)
+	PhysicsServer2D.body_add_shape(body, shape)
+	PhysicsServer2D.body_set_space(body, space)
+	var area := PhysicsServer2D.area_create()
+	PhysicsServer2D.area_add_shape(area, shape)
+	PhysicsServer2D.area_set_space(area, space)
+	var events: Array[int] = []
+	PhysicsServer2D.area_set_monitor_callback(area,
+		func(status: int, _body: RID, _instance: int, _body_shape: int, _area_shape: int):
+			events.append(status))
+	var calls := [0]
+	PhysicsServer2D.body_set_state_sync_callback(body, func(_state: PhysicsDirectBodyState2D):
+		calls[0] += 1
+		PhysicsServer2D.free_rid(space))
+	PhysicsServer2D.space_set_active(space, true)
+	await wait_physics_frames(4)
+	assert(calls[0] == 1)
+	assert(events.is_empty(), "Destroyed space cancels pending monitor callbacks")
+	assert(PhysicsServer2D.body_get_space(body) == RID())
+	assert(PhysicsServer2D.area_get_space(area) == RID())
+	PhysicsServer2D.body_set_state_sync_callback(body, Callable())
+	var next_space := PhysicsServer2D.space_create()
+	PhysicsServer2D.body_set_space(body, next_space)
+	PhysicsServer2D.area_set_space(area, next_space)
+	PhysicsServer2D.space_set_active(next_space, true)
+	await wait_physics_frames(4)
+	assert(events == [PhysicsServer2D.AREA_BODY_ADDED], "Reattached area reports a fresh overlap")
+	PhysicsServer2D.free_rid(next_space)
+	PhysicsServer2D.free_rid(area)
+	PhysicsServer2D.free_rid(body)
+	PhysicsServer2D.free_rid(shape)
+
+
+# Fluids have no built-in counterpart. Exercise the extension API dynamically so
+# the collision-object tests can also run without the extension loaded.
+func test_free_space_detaches_fluid() -> void:
+	print("test_free_space_detaches_fluid")
+	var space := PhysicsServer2D.space_create()
+	var fluid: RID = ClassDB.class_call_static(&"RapierPhysicsServer2D", &"fluid_create")
+	ClassDB.class_call_static(&"RapierPhysicsServer2D", &"fluid_set_space", fluid, space)
+	var points := PackedVector2Array([Vector2(10, 10)])
+	ClassDB.class_call_static(&"RapierPhysicsServer2D", &"fluid_set_points", fluid, points)
+	assert(ClassDB.class_call_static(&"RapierPhysicsServer2D", &"fluid_get_points", fluid) == points)
+	PhysicsServer2D.free_rid(space)
+	assert(ClassDB.class_call_static(&"RapierPhysicsServer2D", &"fluid_get_points", fluid) == points)
+	var next_space := PhysicsServer2D.space_create()
+	ClassDB.class_call_static(&"RapierPhysicsServer2D", &"fluid_set_space", fluid, next_space)
+	assert(ClassDB.class_call_static(&"RapierPhysicsServer2D", &"fluid_get_points", fluid) == points)
+	PhysicsServer2D.free_rid(next_space)
+	PhysicsServer2D.free_rid(fluid)

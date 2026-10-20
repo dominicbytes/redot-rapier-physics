@@ -207,5 +207,7 @@ impl RapierJointBase {
     pub fn destroy_joint(&mut self, physics_engine: &mut PhysicsEngine) {
         physics_engine.destroy_joint(self.state.space_handle, self.state.handle);
         self.state.handle = JointHandle::default();
+        self.state.space_handle = WorldHandle::default();
+        self.state.space_id = RapierId::default();
     }
 }
