@@ -2629,7 +2629,40 @@ impl RapierPhysicsServerImpl {
                 &mut physics_data.ids,
             );
             remove_id_rid(body.get_base().get_id(), &mut physics_data.ids);
-        } else if let Some(mut space) = physics_data.spaces.remove(&rid) {
+        } else if physics_data.spaces.contains_key(&rid) {
+            // Keep the space and its ID alive until set_space has removed all Rapier handles.
+            for joint in physics_data.joints.values_mut() {
+                if joint.get_base().get_space(&physics_data.ids) == rid {
+                    joint
+                        .get_mut_base()
+                        .destroy_joint(&mut physics_data.physics_engine);
+                }
+            }
+            for fluid in physics_data.fluids.values_mut() {
+                if fluid.get_space() == rid {
+                    fluid.set_space(
+                        Rid::Invalid,
+                        &mut physics_data.spaces,
+                        &mut physics_data.physics_engine,
+                    );
+                }
+            }
+            for object in physics_data.collision_objects.values_mut() {
+                if object.get_base().get_space(&physics_data.ids) != rid {
+                    continue;
+                }
+                if let Some(area) = object.get_mut_area() {
+                    area.clear_monitored_objects();
+                    area.clear_event_queue();
+                }
+                object.set_space(
+                    Rid::Invalid,
+                    &mut physics_data.physics_engine,
+                    &mut physics_data.spaces,
+                    &mut physics_data.ids,
+                );
+            }
+            let mut space = physics_data.spaces.remove(&rid).unwrap();
             let space_handle = space.get_state().get_id();
             remove_id_rid(space.get_state().get_id(), &mut physics_data.ids);
             space

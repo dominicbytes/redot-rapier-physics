@@ -773,6 +773,9 @@ impl RapierSpace {
                 crate::servers::rapier_profiler::Span::FlushDispatch,
             );
             for callback in callbacks.drain(..) {
+                if !physics_data().spaces.contains_key(space_rid) {
+                    break;
+                }
                 callback.call();
             }
         }

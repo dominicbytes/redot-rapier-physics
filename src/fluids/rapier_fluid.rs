@@ -266,6 +266,10 @@ impl RapierFluid {
         }
     }
 
+    pub fn get_space(&self) -> Rid {
+        self.space
+    }
+
     pub fn set_space(
         &mut self,
         p_space: Rid,
@@ -281,8 +285,8 @@ impl RapierFluid {
         }
         self.fluid_handle = invalid_handle_double();
         self.space_id = WorldHandle::default();
+        self.space = p_space;
         if let Some(space) = physics_spaces.get(&p_space) {
-            self.space = p_space;
             self.space_id = space.get_state().get_id();
             if self.space_id != WorldHandle::default() {
                 self.fluid_handle = physics_engine.fluid_create(

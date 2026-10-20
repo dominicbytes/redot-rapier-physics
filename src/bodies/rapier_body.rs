@@ -2448,6 +2448,7 @@ impl IRapierCollisionObject for RapierBody {
             return;
         }
         self.set_space_before(physics_spaces, physics_ids);
+        self.state.areas.clear();
         self.base
             .set_space(space, physics_engine, physics_spaces, physics_ids);
         self.recreate_shapes(physics_engine, physics_spaces, physics_ids);
