@@ -147,7 +147,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Redot import failed" }
           python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/smoke.log" --sentinel "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/redot/compatibility_smoke.tscn --quit-after 600
           if ($LASTEXITCODE -ne 0) { throw "Rapier2D smoke failed" }
-          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/regression.log" --sentinel "STATUS: SUCCESS" --timeout 900 -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --quit-after 30000
+          python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/regression.log" --sentinel "STATUS: SUCCESS" --timeout 900 --scene-timeout 120 -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --quit-after 30000
           if ($LASTEXITCODE -ne 0) { throw "Rapier2D regression failed" }
           python scripts/engine_gate.py --engine $env:REDOT_BIN --log "$evidence/unit.log" --sentinel "UNIT TESTS STATUS: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/unit/run_unit_tests.tscn --quit-after 1200
           if ($LASTEXITCODE -ne 0) { throw "Rapier2D unit scene failed" }
@@ -312,7 +312,7 @@ jobs:
           cp build/native/linux-release.so "$addon_bin/libgodot_rapier.linux.release.x86_64-unknown-linux-gnu.so"
           python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/import.log" -- --headless --audio-driver Dummy --path bin2d --import --quit-after 300
           python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/smoke.log" --sentinel "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/redot/compatibility_smoke.tscn --quit-after 600
-          python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/regression.log" --sentinel "STATUS: SUCCESS" --timeout 900 -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --quit-after 30000
+          python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/regression.log" --sentinel "STATUS: SUCCESS" --timeout 900 --scene-timeout 120 -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --quit-after 30000
           python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/unit.log" --sentinel "UNIT TESTS STATUS: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/unit/run_unit_tests.tscn --quit-after 1200
           python3 scripts/engine_gate.py --engine "$REDOT_BIN" --log "$GITHUB_WORKSPACE/reports/ci/linux/feature-parity.log" --sentinel "REDOT RAPIER2D FEATURE PARITY: SUCCESS" -- --headless --audio-driver Dummy --fixed-fps 60 --path bin2d --scene res://test/redot/feature_parity_smoke.tscn --quit-after 1200
           grep -Fq "REDOT RAPIER2D COMPATIBILITY SMOKE: SUCCESS" reports/ci/linux/smoke.log

@@ -181,6 +181,7 @@ impl RapierDirectSpaceStateImpl {
         &mut self,
         position: Vector,
         canvas_instance_id: u64,
+        query_pickable: bool,
         collision_mask: u32,
         collide_with_bodies: bool,
         collide_with_areas: bool,
@@ -203,8 +204,7 @@ impl RapierDirectSpaceStateImpl {
         let query_excluded_info = QueryExcludedInfo {
             query_canvas_instance_id: Some(canvas_instance_id),
             query_collision_layer_mask: collision_mask,
-            query_pickable: crate::servers::rapier_project_settings::motion_settings()
-                .point_query_honors_pickable,
+            query_pickable,
             ..Default::default()
         };
         // Perform intersection

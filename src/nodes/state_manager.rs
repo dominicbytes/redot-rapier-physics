@@ -23,6 +23,8 @@ use crate::servers::rapier_physics_singleton::insert_id_rid;
 use crate::servers::rapier_physics_singleton::physics_data;
 use crate::servers::rapier_physics_singleton::remove_id_rid;
 use crate::servers::try_rapier_physics_server;
+use crate::shapes::rapier_shape::IRapierShape;
+use crate::shapes::rapier_shape::ShapeParameters;
 use crate::spaces::rapier_space::RapierSpace;
 use crate::spaces::rapier_space::SpaceExport;
 use crate::spaces::rapier_space::SpaceImport;
@@ -84,6 +86,7 @@ struct RawExportState<'a> {
     physics_server_id: i64,
     physics_objects_state: BTreeMap<String, CollatedObjectExportState<'a>>,
     body_parameters: BTreeMap<String, BodyParameters>,
+    shape_parameters: BTreeMap<String, ShapeParameters>,
 }
 impl<'a> RawExportState<'a> {
     fn from_import_state(import_state: &'a RawImportState) -> Self {
@@ -97,6 +100,7 @@ impl<'a> RawExportState<'a> {
             physics_server_id: import_state.physics_server_id,
             physics_objects_state: phys_objs,
             body_parameters: import_state.body_parameters.clone(),
+            shape_parameters: import_state.shape_parameters.clone(),
         }
     }
 }
@@ -108,6 +112,8 @@ struct RawImportState {
     physics_objects_state: BTreeMap<String, CollatedObjectImportState>,
     #[serde(default)]
     body_parameters: BTreeMap<String, BodyParameters>,
+    #[serde(default)]
+    shape_parameters: BTreeMap<String, ShapeParameters>,
 }
 impl RawImportState {
     // Destroys (takes ownership of) the export object.
@@ -117,6 +123,7 @@ impl RawImportState {
             rapier_space: *export_state.rapier_space.into_import(), // Unbox the space state (boxed to keep down enum size)
             physics_server_id: export_state.physics_server_id,
             body_parameters: export_state.body_parameters,
+            shape_parameters: export_state.shape_parameters,
             physics_objects_state: {
                 let mut phys_objs = BTreeMap::new();
                 for (key, val) in export_state.physics_objects_state {
@@ -128,6 +135,14 @@ impl RawImportState {
     }
 }
 // Binary serde structs are positional; defaults alone cannot read an older layout.
+#[derive(serde::Deserialize)]
+struct PreviousRawImportState {
+    root_node: String,
+    rapier_space: SpaceImport,
+    physics_server_id: i64,
+    physics_objects_state: BTreeMap<String, CollatedObjectImportState>,
+    body_parameters: BTreeMap<String, BodyParameters>,
+}
 #[derive(serde::Deserialize)]
 struct LegacyRawImportState {
     root_node: String,
@@ -141,6 +156,20 @@ impl RawImportState {
             Ok(state) => Ok(state),
             Err(error) => {
                 let mut cursor = std::io::Cursor::new(bytes);
+                if let Ok(previous) =
+                    bincode::deserialize_from::<_, PreviousRawImportState>(&mut cursor)
+                    && cursor.position() == bytes.len() as u64
+                {
+                    return Ok(Self {
+                        root_node: previous.root_node,
+                        rapier_space: previous.rapier_space,
+                        physics_server_id: previous.physics_server_id,
+                        physics_objects_state: previous.physics_objects_state,
+                        body_parameters: previous.body_parameters,
+                        shape_parameters: BTreeMap::new(),
+                    });
+                }
+                let mut cursor = std::io::Cursor::new(bytes);
                 if let Ok(legacy) =
                     bincode::deserialize_from::<_, LegacyRawImportState>(&mut cursor)
                     && cursor.position() == bytes.len() as u64
@@ -151,6 +180,7 @@ impl RawImportState {
                         physics_server_id: legacy.physics_server_id,
                         physics_objects_state: legacy.physics_objects_state,
                         body_parameters: BTreeMap::new(),
+                        shape_parameters: BTreeMap::new(),
                     });
                 }
                 Err(error)
@@ -646,6 +676,15 @@ impl StateManager {
         }
         // Reinsert the space id as it could have been removed again by a body that had the same id previously.
         insert_id_rid(space.get_state().get_id(), space_rid, &mut physics_data.ids);
+        // Restore wrapper metadata after shape geometry and IDs, before state callbacks.
+        for shape in physics_data.shapes.values_mut() {
+            if let Some(parameters) = loaded_state
+                .shape_parameters
+                .get(&shape.get_base().get_id().to_string())
+            {
+                shape.restore_parameters(Some(parameters), &physics_data.physics_engine);
+            }
+        }
         // 6) Open the new intersections for our areas, and re-register bodies for state sync.
         // Importing the space cleared the state query list, and the physics step that would
         // otherwise repopulate it (via after_step) is skipped during load. Without re-adding the
@@ -792,12 +831,35 @@ impl StateManager {
                     ))
                 })
                 .collect();
+            let shape_parameters = physics_data
+                .shapes
+                .values()
+                .filter_map(|shape| {
+                    let in_space = shape.get_base().get_owners().keys().any(|owner| {
+                        physics_data
+                            .ids
+                            .get(owner)
+                            .and_then(|rid| physics_data.collision_objects.get(rid))
+                            .is_some_and(|object| {
+                                object.get_base().get_space(&physics_data.ids) == in_space
+                            })
+                    });
+                    if !in_space {
+                        return None;
+                    }
+                    Some((
+                        shape.get_base().get_id().to_string(),
+                        shape.snapshot_parameters()?,
+                    ))
+                })
+                .collect();
             let raw_state = RawExportState {
                 root_node: root_nodepath,
                 rapier_space: space_state,
                 physics_server_id: physics_server_index,
                 physics_objects_state: object_states,
                 body_parameters,
+                shape_parameters,
             };
             return Some(raw_state);
         }
