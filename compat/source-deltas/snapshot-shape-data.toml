@@ -1,0 +1,5 @@
+id = "snapshot-shape-data"
+summary = "Restore shape wrapper parameters alongside simulation snapshots."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = ["src/nodes/state_manager.rs", "src/shapes/rapier_shape.rs", "src/shapes/rapier_world_boundary_shape.rs", "src/shapes/rapier_separation_ray_shape.rs", "src/rapier_wrapper/shape.rs", "src/servers/rapier_physics_server_extra.rs"]

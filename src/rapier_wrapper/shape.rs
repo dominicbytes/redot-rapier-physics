@@ -253,6 +253,18 @@ impl PhysicsEngine {
         self.insert_shape(shape_compound, handle);
     }
 
+    #[cfg(feature = "serde-serialize")]
+    pub fn shape_get_halfspace(&self, handle: ShapeHandle) -> (Vector, Real) {
+        if let Some(shape) = self.get_shape(handle)
+            && let Some(compound) = shape.as_compound()
+            && let Some((pose, shape)) = compound.shapes().first()
+            && let Some(halfspace) = shape.as_halfspace()
+        {
+            return (halfspace.normal, pose.translation.dot(halfspace.normal));
+        }
+        (Vector::ZERO, 0.0)
+    }
+
     pub fn shape_create_circle(&mut self, radius: Real, handle: ShapeHandle) {
         let shape = SharedShape::ball(radius);
         self.insert_shape(shape, handle);
