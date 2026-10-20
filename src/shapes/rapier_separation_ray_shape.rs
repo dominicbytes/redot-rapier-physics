@@ -46,6 +46,33 @@ impl IRapierShape for RapierSeparationRayShape {
         Some((self.length, self.slide_on_slope))
     }
 
+    #[cfg(feature = "serde-serialize")]
+    fn snapshot_parameters(&self) -> Option<super::rapier_shape::ShapeParameters> {
+        Some(super::rapier_shape::ShapeParameters::SeparationRay {
+            length: self.length,
+            slide_on_slope: self.slide_on_slope,
+        })
+    }
+
+    #[cfg(feature = "serde-serialize")]
+    fn restore_parameters(
+        &mut self,
+        parameters: Option<&super::rapier_shape::ShapeParameters>,
+        physics_engine: &PhysicsEngine,
+    ) {
+        if let Some(super::rapier_shape::ShapeParameters::SeparationRay {
+            length,
+            slide_on_slope,
+        }) = parameters
+        {
+            self.length = *length;
+            self.slide_on_slope = *slide_on_slope;
+        } else {
+            (self.length, self.slide_on_slope) =
+                physics_engine.shape_get_separation_ray(self.base.get_id());
+        }
+    }
+
     fn set_data(&mut self, data: Variant, physics_engine: &mut PhysicsEngine) {
         if data.get_type() != VariantType::DICTIONARY {
             godot_error!(

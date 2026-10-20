@@ -43,6 +43,33 @@ impl IRapierShape for RapierWorldBoundaryShape {
         true
     }
 
+    #[cfg(feature = "serde-serialize")]
+    fn snapshot_parameters(&self) -> Option<super::rapier_shape::ShapeParameters> {
+        Some(super::rapier_shape::ShapeParameters::WorldBoundary {
+            normal: self.normal,
+            distance: self.distance,
+        })
+    }
+
+    #[cfg(feature = "serde-serialize")]
+    fn restore_parameters(
+        &mut self,
+        parameters: Option<&super::rapier_shape::ShapeParameters>,
+        physics_engine: &PhysicsEngine,
+    ) {
+        if let Some(super::rapier_shape::ShapeParameters::WorldBoundary { normal, distance }) =
+            parameters
+        {
+            self.normal = *normal;
+            self.distance = *distance;
+        } else {
+            // Older snapshots retain the plane geometry, but not the input normal's scale.
+            let (normal, distance) = physics_engine.shape_get_halfspace(self.base.get_id());
+            self.normal = vector_to_godot(normal);
+            self.distance = distance;
+        }
+    }
+
     #[cfg(feature = "dim2")]
     fn set_data(&mut self, data: Variant, physics_engine: &mut PhysicsEngine) {
         use crate::types::variant_to_float;

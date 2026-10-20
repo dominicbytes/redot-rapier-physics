@@ -35,6 +35,18 @@ pub(crate) use impl_rapier_shape_create;
 pub fn is_valid_shape_dimension(value: real) -> bool {
     value.is_finite() && value > 0.0
 }
+#[cfg(feature = "serde-serialize")]
+#[derive(serde::Serialize, serde::Deserialize, Clone)]
+pub enum ShapeParameters {
+    WorldBoundary {
+        normal: crate::types::Vector,
+        distance: real,
+    },
+    SeparationRay {
+        length: f32,
+        slide_on_slope: bool,
+    },
+}
 pub trait IRapierShape {
     fn get_base(&self) -> &RapierShapeBase;
     fn get_mut_base(&mut self) -> &mut RapierShapeBase;
@@ -43,6 +55,17 @@ pub trait IRapierShape {
     /// The ray's length and `slide_on_slope` flag, or `None` for every other shape.
     fn as_separation_ray(&self) -> Option<(f32, bool)> {
         None
+    }
+    #[cfg(feature = "serde-serialize")]
+    fn snapshot_parameters(&self) -> Option<ShapeParameters> {
+        None
+    }
+    #[cfg(feature = "serde-serialize")]
+    fn restore_parameters(
+        &mut self,
+        _parameters: Option<&ShapeParameters>,
+        _physics_engine: &PhysicsEngine,
+    ) {
     }
     fn set_data(&mut self, data: Variant, physics_engine: &mut PhysicsEngine);
     fn get_data(&self, physics_engine: &PhysicsEngine) -> Variant;
@@ -92,6 +115,20 @@ macro_rules! impl_rapier_shape_trait {
             fn as_separation_ray(&self) -> Option<(f32, bool)> {
                 match self {
                     $(Self::$variant(s) => s.as_separation_ray(),)*
+                }
+            }
+
+            #[cfg(feature = "serde-serialize")]
+            fn snapshot_parameters(&self) -> Option<ShapeParameters> {
+                match self {
+                    $(Self::$variant(s) => s.snapshot_parameters(),)*
+                }
+            }
+
+            #[cfg(feature = "serde-serialize")]
+            fn restore_parameters(&mut self, parameters: Option<&ShapeParameters>, physics_engine: &PhysicsEngine) {
+                match self {
+                    $(Self::$variant(s) => s.restore_parameters(parameters, physics_engine),)*
                 }
             }
 
