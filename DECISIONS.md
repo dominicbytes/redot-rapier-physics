@@ -12,7 +12,8 @@
 
 - Date: 2026-08-10
 - Status: accepted
-- Decision: use `dominicbytes/redot-rust` commit `18ad5c538c452b8640420366794354e3ed48f205`, gdext commit `637cef73172bba23850131acd8583b0c72ebf0c7`, Rust 1.94.0, and the recorded Redot 26.2 API artifacts.
+- Decision: use `dominicbytes/redot-rust` commit `1a7e4d43dd6f77d998e0df4e25724c4c40bc7776`, gdext commit `637cef73172bba23850131acd8583b0c72ebf0c7`, Rust 1.94.0, and the recorded Redot 26.2 API artifacts.
+- Pin update (2026-10-20): `dominicbytes/redot-rust` was republished with rewritten history, so its former pin commit no longer exists. The pin moved to `1a7e4d43dd6f77d998e0df4e25724c4c40bc7776`, whose contract is unchanged: the same gdext commit, Rust 1.94.0, Redot 26.2 binding API and interface hashes, and certified 26.2 and 26.3 runtime profiles.
 - Evidence: public three-platform compatibility-layer CI and exact local API hashes.
 - Consequences: `main` is not an acceptable dependency identity; the repository has no release or tag yet.
 

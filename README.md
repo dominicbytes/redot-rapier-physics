@@ -31,7 +31,7 @@ Rapier3D is not part of this release. It will remain a separate installable and 
 | Platform targets | Windows x86-64 and Linux x86-64; hosted gates pending |
 | Upstream plugin | Godot Rapier Physics 0.35.2 |
 | Physics library | Rapier 0.35.1 |
-| Rust bindings | [`dominicbytes/redot-rust`](https://github.com/dominicbytes/redot-rust) at `18ad5c538c452b8640420366794354e3ed48f205` |
+| Rust bindings | [`dominicbytes/redot-rust`](https://github.com/dominicbytes/redot-rust) at `1a7e4d43dd6f77d998e0df4e25724c4c40bc7776` |
 
 The certified-engine audit hashes and binding-generation hashes are separate in `redot.lock.json` (ADR-0317). New Redot Struct values are unsupported by this binding.
 
