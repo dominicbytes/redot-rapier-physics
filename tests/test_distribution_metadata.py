@@ -3,12 +3,14 @@ from __future__ import annotations
 import importlib.util
 import json
 import tempfile
+import sys
 import unittest
 from pathlib import Path
 from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
 SPEC = importlib.util.spec_from_file_location(
     "distribution_metadata", ROOT / "scripts/generate_distribution_metadata.py"
 )
@@ -62,6 +64,28 @@ class DistributionMetadataTests(unittest.TestCase):
             "Mozilla Public License Version 2.0",
             METADATA.MPL_LICENSE.read_text(encoding="utf-8"),
         )
+
+    def test_vendored_source_is_identified_without_a_registry_checksum(self) -> None:
+        licenses = json.loads(METADATA.LICENSE_REPORT.read_text(encoding="utf-8"))
+        rapier = next(p for p in licenses["packages"] if p["name"] == "rapier2d")
+        self.assertIsNone(rapier["cargo_checksum_sha256"])
+        self.assertTrue(rapier["source"].endswith("/compat/vendor/rapier2d-0.35.1"))
+        self.assertEqual(rapier["vendored_source"]["archive_sha256"], METADATA.json.loads(
+            (ROOT / METADATA.PROVENANCE).read_text(encoding="utf-8"))["archive_sha256"])
+        spdx = json.loads(METADATA.SPDX_REPORT.read_text(encoding="utf-8"))
+        package = next(p for p in spdx["packages"] if p["name"] == "rapier2d")
+        self.assertNotIn("checksums", package)
+        self.assertIn("downstream patch", package["sourceInfo"])
+
+    def test_only_the_approved_vendor_path_is_a_local_dependency(self) -> None:
+        package = {"name": "rapier2d", "version": "0.35.1", "source": None,
+                   "manifest_path": str(ROOT / METADATA.VENDOR_PATH / "Cargo.toml")}
+        repository = "https://example.invalid/product"
+        self.assertEqual(METADATA.source_location(package, repository),
+                         repository + "/tree/redot-26.2/" + METADATA.VENDOR_PATH)
+        for key, value in (("name", "other"), ("version", "0.35.2"), ("manifest_path", "other/Cargo.toml")):
+            with self.subTest(key=key), self.assertRaisesRegex(METADATA.MetadataError, "unapproved local dependency"):
+                METADATA.source_location(dict(package, **{key: value}), repository)
 
     def test_check_mode_rejects_stale_output(self) -> None:
         with tempfile.TemporaryDirectory() as temp_name:

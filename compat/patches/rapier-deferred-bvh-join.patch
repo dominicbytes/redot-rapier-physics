@@ -1,0 +1,73 @@
+--- a/src/pipeline/physics_pipeline/mod.rs
++++ b/src/pipeline/physics_pipeline/mod.rs
+@@ -132,7 +132,29 @@
+     fn join_deferred_bvh_optimize(&mut self, broad_phase: &mut BroadPhaseBvh) {
+         #[cfg(feature = "parallel")]
+         if let Some(rx) = self.deferred_bvh.get_mut().unwrap().take() {
+-            let task = rx.recv().expect("the deferred BVH optimization task died");
++            let task = loop {
++                match rx.try_recv() {
++                    Ok(task) => break task,
++                    Err(std::sync::mpsc::TryRecvError::Disconnected) => {
++                        panic!("the deferred BVH optimization task died");
++                    }
++                    Err(std::sync::mpsc::TryRecvError::Empty) => {}
++                }
++
++                // Internal spawns need not wake another worker. Keep this worker
++                // available for the optimization and its parallel refit jobs.
++                if rayon::yield_now() != Some(rayon::Yield::Executed) {
++                    // Avoid spinning while another worker finishes the task, but
++                    // periodically return to Rayon in case it needs our help.
++                    match rx.recv_timeout(std::time::Duration::from_millis(1)) {
++                        Ok(task) => break task,
++                        Err(std::sync::mpsc::RecvTimeoutError::Disconnected) => {
++                            panic!("the deferred BVH optimization task died");
++                        }
++                        Err(std::sync::mpsc::RecvTimeoutError::Timeout) => {}
++                    }
++                }
++            };
+             broad_phase.finish_deferred_optimize(task);
+             return;
+         }
+@@ -289,3 +311,39 @@
+             .map(|pool| pool.current_num_threads())
+     }
+ }
++
++#[cfg(all(test, feature = "parallel"))]
++mod deferred_bvh_join_tests {
++    use super::*;
++
++    #[test]
++    #[should_panic(expected = "the deferred BVH optimization task died")]
++    fn join_executes_a_queued_sender_on_one_worker() {
++        rayon::ThreadPoolBuilder::new()
++            .num_threads(1)
++            .build()
++            .unwrap()
++            .install(|| {
++                let mut pipeline = PhysicsPipeline::new();
++                let (tx, rx) = std::sync::mpsc::channel();
++                rayon::spawn(move || drop(tx));
++                *pipeline.deferred_bvh.get_mut().unwrap() = Some(rx);
++                // Deliberately bypass the one-worker inline guard to prove the
++                // join drives a queued task even when no thief can help it.
++                pipeline.join_deferred_bvh_optimize(&mut BroadPhaseBvh::new());
++            });
++    }
++
++    #[test]
++    #[should_panic(expected = "the deferred BVH optimization task died")]
++    fn join_waits_for_a_running_sender() {
++        let mut pipeline = PhysicsPipeline::new();
++        let (tx, rx) = std::sync::mpsc::channel();
++        std::thread::spawn(move || {
++            std::thread::sleep(std::time::Duration::from_millis(100));
++            drop(tx);
++        });
++        *pipeline.deferred_bvh.get_mut().unwrap() = Some(rx);
++        pipeline.join_deferred_bvh_optimize(&mut BroadPhaseBvh::new());
++    }
++}

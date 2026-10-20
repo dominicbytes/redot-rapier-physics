@@ -5,3 +5,6 @@
 
 [patch.crates-io]
 godot = { git = "https://github.com/godot-rust/gdext", rev = "637cef73172bba23850131acd8583b0c72ebf0c7" }
+
+# Cargo resolves this relative to the parent of compat/, including with --config.
+rapier2d = { path = "compat/vendor/rapier2d-0.35.1" }
