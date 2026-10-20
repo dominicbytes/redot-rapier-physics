@@ -12,6 +12,7 @@ use crate::servers::rapier_physics_singleton::physics_data;
 pub struct RapierDirectSpaceState2D {
     inner: RapierDirectSpaceStateImpl,
     space: Rid,
+    supports_picking_query: Option<bool>,
     base: Base<PhysicsDirectSpaceState2DExtension>,
 }
 impl RapierDirectSpaceState2D {
@@ -26,6 +27,7 @@ impl IPhysicsDirectSpaceState2DExtension for RapierDirectSpaceState2D {
         Self {
             inner: RapierDirectSpaceStateImpl::default(),
             space: Rid::Invalid,
+            supports_picking_query: None,
             base,
         }
     }
@@ -65,11 +67,26 @@ impl IPhysicsDirectSpaceState2DExtension for RapierDirectSpaceState2D {
         results: RawPtr<*mut PhysicsServer2DExtensionShapeResult>,
         max_results: i32,
     ) -> i32 {
+        let supports_picking_query = match self.supports_picking_query {
+            Some(supported) => supported,
+            None => {
+                let supported = self.base().has_method("is_picking_query");
+                self.supports_picking_query = Some(supported);
+                supported
+            }
+        };
+        // Keep the legacy setting only for engines without picking context.
+        let query_pickable = if supports_picking_query {
+            self.base_mut().call("is_picking_query", &[]).to::<bool>()
+        } else {
+            crate::servers::rapier_project_settings::motion_settings().point_query_honors_pickable
+        };
         let physics_data = physics_data();
         unsafe {
             self.inner.intersect_point(
                 position,
                 canvas_instance_id,
+                query_pickable,
                 collision_mask,
                 collide_with_bodies,
                 collide_with_areas,

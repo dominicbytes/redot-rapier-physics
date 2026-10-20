@@ -31,6 +31,10 @@ func _ready() -> void:
 	assert(await preload("res://test/unit/test_snapshot_shape_data.gd").new().run(self), "Snapshot shape data must match restored geometry")
 	_run_expected_diagnostics("res://test/unit/test_snapshot_contact_validation.gd", "ERROR: Invalid snapshot: body contact count exceeds stored contacts or is negative.", 2)
 	_run_expected_diagnostics("res://test/unit/test_state_cache_zero_length.gd", "WARNING: Count of cached states exceeds the new maximum limit; the oldest 1 states will be removed.", 2)
+	var point_picking := preload("res://test/unit/test_point_picking.gd").new()
+	add_child(point_picking)
+	assert(await point_picking.run(), "Point queries and viewport picking must honor the available engine context")
+	point_picking.queue_free()
 	# Wait for scene tests that run across physics frames.
 	for test in get_tree().get_nodes_in_group(&"async_unit_tests"):
 		while not test.done:

@@ -71,6 +71,8 @@ impl IPhysicsDirectSpaceState3DExtension for RapierDirectSpaceState3D {
             self.inner.intersect_point(
                 position,
                 0,
+                crate::servers::rapier_project_settings::motion_settings()
+                    .point_query_honors_pickable,
                 collision_mask,
                 collide_with_bodies,
                 collide_with_areas,
