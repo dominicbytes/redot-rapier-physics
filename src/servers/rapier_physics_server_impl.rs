@@ -324,7 +324,12 @@ impl RapierPhysicsServerImpl {
                 vector2_slice[0] = vector_to_godot(result.pixel_witness1);
                 vector2_slice[1] = vector_to_godot(result.pixel_witness2);
             } else {
-                for (pair, contact) in vector2_slice.chunks_exact_mut(2).zip(&contacts) {
+                for (pair, contact) in vector2_slice
+                    .as_chunks_mut::<2>()
+                    .0
+                    .iter_mut()
+                    .zip(&contacts)
+                {
                     pair[0] = vector_to_godot(contact.pixel_witness1);
                     pair[1] = vector_to_godot(contact.pixel_witness2);
                 }
