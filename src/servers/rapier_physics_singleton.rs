@@ -53,6 +53,16 @@ pub fn physics_data() -> &'static mut PhysicsData {
         (*data_ptr).as_mut().unwrap()
     }
 }
+pub(crate) fn deinit_physics_data() {
+    // Server deinitialization runs after physics and scene callbacks stop.
+    // Static storage has no destructor. Drop the remaining worlds to join
+    // their workers before the extension library can be unloaded.
+    unsafe {
+        if let Some(data) = (*PHYSICS_SINGLETON.data.get()).as_mut() {
+            data.physics_engine.physics_worlds.clear();
+        }
+    }
+}
 pub fn get_id_rid(id: RapierId, physics_ids: &PhysicsIds) -> Rid {
     *physics_ids.get(&id).unwrap_or(&Rid::Invalid)
 }
