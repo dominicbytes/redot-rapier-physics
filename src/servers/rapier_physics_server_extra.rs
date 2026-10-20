@@ -487,6 +487,7 @@ macro_rules! make_rapier_server_godot_impl {
                     shape
                         .get_mut_base()
                         .import_state(&mut physics_data.physics_engine, data);
+                    shape.restore_parameters(None, &physics_data.physics_engine);
                     insert_id_rid(
                         shape.get_base().get_id(),
                         shape.get_base().get_rid(),

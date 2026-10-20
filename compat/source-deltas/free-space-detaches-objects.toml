@@ -1,0 +1,11 @@
+id = "free-space-detaches-objects"
+summary = "Detach collision objects, joints and fluids before freeing a space, and cancel its pending callbacks."
+origin = "inherited-upstream"
+upstream = "not yet reported"
+files = [
+    "src/bodies/rapier_body.rs",
+    "src/fluids/rapier_fluid.rs",
+    "src/joints/rapier_joint_base.rs",
+    "src/servers/rapier_physics_server_impl.rs",
+    "src/spaces/rapier_space.rs",
+]

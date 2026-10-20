@@ -12,6 +12,7 @@ func _ready() -> void:
 	await get_tree().physics_frame
 	await preload("res://test/unit/test_shape_replacement.gd").new().run(get_tree())
 	preload("res://test/unit/test_shape.gd").new().run()
+	preload("res://test/unit/test_shape_collide_manifold.gd").new().run()
 	preload("res://test/unit/test_world_boundary.gd").new().run()
 	var custom_integrator_gravity := preload("res://test/unit/test_custom_integrator_gravity.gd").new()
 	add_child(custom_integrator_gravity)
@@ -27,8 +28,13 @@ func _ready() -> void:
 	force_integration_argument.queue_free()
 	_run_expected_diagnostics("res://test/unit/test_fluid_array_lengths.gd", "ERROR: Points and velocities must have the same length.", 4)
 	assert(await preload("res://test/unit/test_snapshot_body_parameters.gd").new().run(self), "Regression test did not complete")
+	assert(await preload("res://test/unit/test_snapshot_shape_data.gd").new().run(self), "Snapshot shape data must match restored geometry")
 	_run_expected_diagnostics("res://test/unit/test_snapshot_contact_validation.gd", "ERROR: Invalid snapshot: body contact count exceeds stored contacts or is negative.", 2)
 	_run_expected_diagnostics("res://test/unit/test_state_cache_zero_length.gd", "WARNING: Count of cached states exceeds the new maximum limit; the oldest 1 states will be removed.", 2)
+	var point_picking := preload("res://test/unit/test_point_picking.gd").new()
+	add_child(point_picking)
+	assert(await point_picking.run(), "Point queries and viewport picking must honor the available engine context")
+	point_picking.queue_free()
 	# Wait for scene tests that run across physics frames.
 	for test in get_tree().get_nodes_in_group(&"async_unit_tests"):
 		while not test.done:
