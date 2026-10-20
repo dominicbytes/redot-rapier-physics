@@ -12,6 +12,7 @@ func _ready() -> void:
 	await get_tree().physics_frame
 	await preload("res://test/unit/test_shape_replacement.gd").new().run(get_tree())
 	preload("res://test/unit/test_shape.gd").new().run()
+	preload("res://test/unit/test_shape_collide_manifold.gd").new().run()
 	preload("res://test/unit/test_world_boundary.gd").new().run()
 	var custom_integrator_gravity := preload("res://test/unit/test_custom_integrator_gravity.gd").new()
 	add_child(custom_integrator_gravity)
