@@ -41,7 +41,7 @@
   "bindings": {
     "mode": "redot-rust-cargo",
     "compatibility_repository": "https://github.com/dominicbytes/redot-rust",
-    "compatibility_commit": "18ad5c538c452b8640420366794354e3ed48f205",
+    "compatibility_commit": "1a7e4d43dd6f77d998e0df4e25724c4c40bc7776",
     "gdext_repository": "https://github.com/godot-rust/gdext",
     "gdext_revision": "637cef73172bba23850131acd8583b0c72ebf0c7",
     "gdext_crate_version": "0.5.5",
